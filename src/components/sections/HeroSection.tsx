@@ -100,7 +100,7 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* Hero Image/Visual */}
+          {/* Hero Video/Visual */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -108,16 +108,18 @@ export function HeroSection() {
             className="relative hidden lg:block"
           >
             <div className="relative aspect-square">
-              {/* Main image placeholder - will be replaced with actual image */}
+              {/* Main video */}
               <div className="absolute inset-8 rounded-3xl bg-gradient-to-br from-gray-700 to-gray-900 shadow-2xl overflow-hidden">
-                <div className="absolute inset-0 bg-[url('/placeholder.svg')] bg-cover bg-center opacity-50" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-6xl font-black text-primary mb-2">.</div>
-                    <div className="text-3xl font-black text-white">RISE</div>
-                    <div className="text-sm text-white/60 mt-2">Premium Quality Prints</div>
-                  </div>
-                </div>
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover"
+                >
+                  <source src="/videos/hero-video.mp4" type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               </div>
 
               {/* Floating cards */}
