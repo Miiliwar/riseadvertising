@@ -39,7 +39,7 @@ export function HeroSection() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6"
             >
               <Star className="h-4 w-4 text-primary fill-primary" />
-              <span className="text-sm font-medium">Nigeria's #1 Print Solutions</span>
+              <span className="text-sm font-medium">Ethiopia's #1 Print Solutions</span>
             </motion.div>
 
             <h1 className="hero-title mb-6">
@@ -144,8 +144,8 @@ export function HeroSection() {
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                 className="absolute bottom-10 left-0 bg-white rounded-2xl p-4 shadow-xl"
               >
-                <div className="text-sm font-bold text-foreground">🚀 Express Delivery</div>
-                <div className="text-xs text-muted-foreground">Same-day available</div>
+                {/* <div className="text-sm font-bold text-foreground">🚀 Express Delivery</div> */}
+                {/* <div className="text-xs text-muted-foreground">Same-day available</div> */}
               </motion.div>
             </div>
           </motion.div>

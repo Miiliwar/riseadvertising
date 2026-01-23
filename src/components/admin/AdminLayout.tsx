@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo.png";
+import { Logo } from "../layout/Logo";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -56,16 +57,15 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 lg:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="flex items-center justify-between p-4 border-b">
-            <Link to="/admin" className="flex items-center gap-2">
-              <img src={logo} alt="RISE" className="h-10" />
-              <span className="font-bold text-lg">Admin</span>
+            <Link to="/admin" className="flex items-center">
+              <Logo size="lg" />
+              <span className="font-bold text-xl text-primary ml-2 italic">Admin</span>
             </Link>
             <button
               onClick={() => setSidebarOpen(false)}
@@ -84,11 +84,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                   key={item.path}
                   to={item.path}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                    isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive
+                    ? "bg-primary text-primary-foreground"
+                    : "text-gray-600 hover:bg-gray-100"
+                    }`}
                 >
                   <item.icon className="h-5 w-5" />
                   <span className="font-medium">{item.label}</span>

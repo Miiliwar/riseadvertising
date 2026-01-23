@@ -1,25 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { CTASection } from "@/components/sections/CTASection";
 import { cn } from "@/lib/utils";
-import { Eye, X } from "lucide-react";
+import { Eye, X, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-// Import portfolio images
+// Import portfolio images (fallbacks)
 import brandingItems from "@/assets/portfolio/branding-items.jpg";
 import keychains from "@/assets/portfolio/keychains.jpg";
 import lightbox from "@/assets/portfolio/lightbox.jpg";
 import teardropFlags from "@/assets/portfolio/teardrop-flags.jpg";
 import signage3d from "@/assets/portfolio/3d-signage.jpg";
-import backlightFoam from "@/assets/portfolio/backlight-foam.jpg";
-import lightbox3d from "@/assets/portfolio/3d-lightbox.jpg";
-import letters3d from "@/assets/portfolio/3d-letters.jpg";
+
+interface PortfolioItem {
+  id: string;
+  title: string;
+  client: string | null;
+  category?: string | null;
+  description: string | null;
+  images: string[];
+  featured: boolean | null;
+  tags?: string[] | null;
+}
 
 const categories = ["All", "Banners", "Signage", "Promotional", "Branding", "Events"];
 
-const portfolioItems = [
+const fallbackPortfolioItems = [
   {
-    id: 1,
+    id: "1",
     title: "All Branding Items Collection",
     client: "RISE Advertising",
     category: "Branding",
@@ -28,7 +37,7 @@ const portfolioItems = [
     featured: true,
   },
   {
-    id: 2,
+    id: "2",
     title: "Metal Keychains - Odaa Roobaa Hospital",
     client: "Odaa Roobaa Hospital",
     category: "Promotional",
@@ -36,69 +45,59 @@ const portfolioItems = [
     images: [keychains],
     featured: false,
   },
-  {
-    id: 3,
-    title: "Circle Lightbox - Hamiltan Travel Agency",
-    client: "Hamiltan Travel Agency",
-    category: "Signage",
-    description: "Illuminated circle lightbox signage for travel agency storefront, featuring backlit LED technology.",
-    images: [lightbox],
-    featured: true,
-  },
-  {
-    id: 4,
-    title: "Teardrop Promotional Flag",
-    client: "Mamo Fish",
-    category: "Banners",
-    description: "Double-sided teardrop promotional flags for outdoor advertising and brand visibility.",
-    images: [teardropFlags],
-    featured: false,
-  },
-  {
-    id: 5,
-    title: "3D Lightbox Signage Collection",
-    client: "Various Clients",
-    category: "Signage",
-    description: "Premium 3D lightbox signage featuring neon lights, LED backlighting, and custom letter designs.",
-    images: [signage3d],
-    featured: true,
-  },
-  {
-    id: 6,
-    title: "Backlight 3D Foam Signage",
-    client: "Sadam Hussien Law Office",
-    category: "Signage",
-    description: "Professional backlit 3D foam signage with warm LED illumination for law office branding.",
-    images: [backlightFoam],
-    featured: false,
-  },
-  {
-    id: 7,
-    title: "3D Lightbox - Gold Beans Coffee",
-    client: "Gold Beans Coffee & Roastery",
-    category: "Signage",
-    description: "Stunning 3D lightbox signage with LED strip lighting for coffee shop exterior branding.",
-    images: [lightbox3d],
-    featured: true,
-  },
-  {
-    id: 8,
-    title: "3D Letter Signage - Restaurant",
-    client: "Restaurant",
-    category: "Signage",
-    description: "Custom 3D letter signage with front-lit LED illumination for restaurant exterior.",
-    images: [letters3d],
-    featured: false,
-  },
 ];
 
 export default function PortfolioPage() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [selectedItem, setSelectedItem] = useState<typeof portfolioItems[0] | null>(null);
+  const [items, setItems] = useState<PortfolioItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
+
+  useEffect(() => {
+    async function fetchItems() {
+      try {
+        const { data, error } = await supabase
+          .from("portfolio")
+          .select("*")
+          .eq("published", true)
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          const transformedData = data.map(item => ({
+            ...item,
+            images: Array.isArray(item.images) ? item.images : [],
+            category: item.tags && item.tags.length > 0 ? item.tags[0] : "Other"
+          }));
+          setItems(transformedData as unknown as PortfolioItem[]);
+        } else {
+          setItems(fallbackPortfolioItems as unknown as PortfolioItem[]);
+        }
+      } catch (error) {
+        console.error("Error fetching portfolio items:", error);
+        setItems(fallbackPortfolioItems as PortfolioItem[]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchItems();
+  }, []);
 
   const filteredItems = activeCategory === "All"
-    ? portfolioItems
-    : portfolioItems.filter(item => item.category === activeCategory);
+    ? items
+    : items.filter(item => item.category === activeCategory);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="flex justify-center py-32">
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -159,12 +158,12 @@ export default function PortfolioPage() {
                   className="portfolio-item group block w-full text-left aspect-[4/3] relative rounded-xl overflow-hidden"
                 >
                   {/* Image */}
-                  <img 
+                  <img
                     src={item.images[0]}
                     alt={item.title}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  
+
                   {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
@@ -197,7 +196,7 @@ export default function PortfolioPage() {
 
       {/* Lightbox Modal */}
       {selectedItem && (
-        <div 
+        <div
           className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
           onClick={() => setSelectedItem(null)}
         >
@@ -209,8 +208,8 @@ export default function PortfolioPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative aspect-video bg-secondary">
-              <img 
-                src={selectedItem.images[0]} 
+              <img
+                src={selectedItem.images[0]}
                 alt={selectedItem.title}
                 className="w-full h-full object-cover"
               />

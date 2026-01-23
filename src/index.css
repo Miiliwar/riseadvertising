@@ -120,6 +120,36 @@
   * {
     @apply border-border;
   }
+.rise-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  line-height: 1;
+}
+
+.rise-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  margin-top: 0.3rem;
+}
+
+/* color handling */
+:root {
+  --rise-color: #e10600;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --rise-color: #cd0909;
+  }
+}
+
+.rise-logo,
+.rise-sub {
+  color: var(--rise-color);
+}
 
   html {
     scroll-behavior: smooth;

@@ -113,7 +113,7 @@ export default function ContactPage() {
               </div>
               <h1 className="text-3xl font-bold mb-4">Quote Request Received!</h1>
               <p className="text-muted-foreground mb-8">
-                Thank you for your interest. Our team will review your request and 
+                Thank you for your interest. Our team will review your request and
                 get back to you within 24 hours with a detailed quote.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -164,8 +164,8 @@ export default function ContactPage() {
               <Mail className="h-5 w-5" />
               <span>riseadvertising11@gmail.com</span>
             </a>
-            <a 
-              href="https://maps.google.com/maps?q=8.951208,38.696209&ll=8.951208,38.696209&z=16"
+            <a
+              href="https://www.google.com/maps/place/RISE+ADVERTISING+AND+PRINTING/@8.9510213,38.7177277,17z"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 hover:opacity-80 transition-opacity"
@@ -275,8 +275,8 @@ export default function ContactPage() {
                                         return checked
                                           ? field.onChange([...field.value, service])
                                           : field.onChange(
-                                              field.value?.filter((value) => value !== service)
-                                            );
+                                            field.value?.filter((value) => value !== service)
+                                          );
                                       }}
                                     />
                                   </FormControl>
@@ -470,7 +470,7 @@ export default function ContactPage() {
               <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6">
                 <h3 className="text-lg font-bold mb-2">Fast Response</h3>
                 <p className="text-sm text-muted-foreground">
-                  We respond to all quote requests within 24 hours. For urgent orders, 
+                  We respond to all quote requests within 24 hours. For urgent orders,
                   please call us directly.
                 </p>
               </div>
@@ -482,7 +482,7 @@ export default function ContactPage() {
       {/* Google Map Embed */}
       <section className="h-[400px] relative">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1969.8!2d38.696209!3d8.951208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwNTcnMDQuMyJOIDM4wrA0MSc0Ni40IkU!5e0!3m2!1sen!2set!4v1706000000000!5m2!1sen!2set"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.84!2d38.717!3d8.951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b818075755b19%3A0x324707bba2617f21!2sRISE%20ADVERTISING%20AND%20PRINTING!5e1!3m2!1sen!2set!4v1706000000000!5m2!1sen!2set"
           width="100%"
           height="100%"
           style={{ border: 0 }}
@@ -492,13 +492,13 @@ export default function ContactPage() {
           title="RISE Advertising Location - ZAM Mall, Lebu, Addis Ababa"
           className="grayscale hover:grayscale-0 transition-all duration-500"
         />
-        <div className="absolute bottom-4 left-4 bg-background/95 backdrop-blur-sm p-4 rounded-xl shadow-lg max-w-xs">
+        <div className="absolute top-11 right-4 bg-background/95 backdrop-blur-sm p-4 rounded-xl shadow-lg max-w-xs">
           <h3 className="font-bold text-lg mb-1">Visit Our Office</h3>
           <p className="text-sm text-muted-foreground">
             ZAM Mall 2nd Floor, Lebu, Addis Ababa, Ethiopia
           </p>
-          <a 
-            href="https://maps.google.com/maps?q=8.951208,38.696209&ll=8.951208,38.696209&z=16"
+          <a
+            href="https://www.google.com/maps/place/RISE+ADVERTISING+AND+PRINTING/@8.9510213,38.7177277,17z/data=!3m1!1e3"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-primary font-semibold hover:underline mt-2 inline-block"

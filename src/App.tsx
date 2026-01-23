@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -27,72 +28,74 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Index />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/services/:slug" element={<ServiceDetailPage />} />
-            <Route path="/portfolio" element={<PortfolioPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
+    <ThemeProvider defaultTheme="light" storageKey="rise-theme">
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AuthProvider>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Index />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/services/:slug" element={<ServiceDetailPage />} />
+              <Route path="/portfolio" element={<PortfolioPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
 
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/services"
-              element={
-                <ProtectedRoute>
-                  <AdminServices />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/portfolio"
-              element={
-                <ProtectedRoute>
-                  <AdminPortfolio />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/quotes"
-              element={
-                <ProtectedRoute>
-                  <AdminQuotes />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/settings"
-              element={
-                <ProtectedRoute>
-                  <AdminSettings />
-                </ProtectedRoute>
-              }
-            />
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/services"
+                element={
+                  <ProtectedRoute>
+                    <AdminServices />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/portfolio"
+                element={
+                  <ProtectedRoute>
+                    <AdminPortfolio />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/quotes"
+                element={
+                  <ProtectedRoute>
+                    <AdminQuotes />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/settings"
+                element={
+                  <ProtectedRoute>
+                    <AdminSettings />
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* Catch-all */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
+              {/* Catch-all */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

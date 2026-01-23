@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, Edit, Trash2, Eye, EyeOff } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, Upload, Image } from "lucide-react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,6 +35,8 @@ export default function AdminServices() {
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -79,6 +81,7 @@ export default function AdminServices() {
       image_url: service.image_url || "",
       published: service.published ?? true,
     });
+    setImagePreview(service.image_url || null);
     setDialogOpen(true);
   }
 
@@ -94,7 +97,52 @@ export default function AdminServices() {
       image_url: "",
       published: true,
     });
+    setImagePreview(null);
     setDialogOpen(true);
+  }
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size should be less than 5MB');
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `services/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('images')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('images')
+        .getPublicUrl(filePath);
+
+      setImagePreview(publicUrl);
+      setFormData(prev => ({ ...prev, image_url: publicUrl }));
+      toast.success('Image uploaded successfully');
+    } catch (error: any) {
+      console.error('Upload error:', error);
+      toast.error(error.message || 'Failed to upload image');
+    } finally {
+      setUploading(false);
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -246,16 +294,66 @@ export default function AdminServices() {
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="image_url">Image URL</Label>
-                  <Input
-                    id="image_url"
-                    value={formData.image_url}
-                    onChange={(e) =>
-                      setFormData({ ...formData, image_url: e.target.value })
-                    }
-                    placeholder="https://..."
-                  />
+                <div className="space-y-4">
+                  <Label>Service Image</Label>
+                  <div className="flex flex-col gap-4">
+                    {imagePreview ? (
+                      <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-gray-100 border">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-full h-full object-cover"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-2 right-2"
+                          onClick={() => {
+                            setImagePreview(null);
+                            setFormData(prev => ({ ...prev, image_url: "" }));
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="border-2 border-dashed rounded-xl p-8 text-center bg-gray-50 hover:bg-gray-100 transition-colors">
+                        <Image className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
+                        <p className="text-sm text-muted-foreground mb-4">
+                          Upload a service image (Max 5MB)
+                        </p>
+                        <Label
+                          htmlFor="image-upload"
+                          className="cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                        >
+                          <Upload className="h-4 w-4 mr-2" />
+                          {uploading ? "Uploading..." : "Select File"}
+                        </Label>
+                        <input
+                          id="image-upload"
+                          type="file"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={handleFileUpload}
+                          disabled={uploading}
+                        />
+                      </div>
+                    )}
+
+                    <div className="space-y-2">
+                      <Label htmlFor="image_url">Or Image URL</Label>
+                      <Input
+                        id="image_url"
+                        value={formData.image_url}
+                        onChange={(e) => {
+                          setFormData({ ...formData, image_url: e.target.value });
+                          setImagePreview(e.target.value);
+                        }}
+                        placeholder="https://..."
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -332,11 +430,10 @@ export default function AdminServices() {
                     <td className="p-4">
                       <button
                         onClick={() => togglePublished(service)}
-                        className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
-                          service.published
-                            ? "bg-green-100 text-green-700"
-                            : "bg-gray-100 text-gray-600"
-                        }`}
+                        className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${service.published
+                          ? "bg-green-100 text-green-700"
+                          : "bg-gray-100 text-gray-600"
+                          }`}
                       >
                         {service.published ? (
                           <>

@@ -28,12 +28,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .from('user_roles')
         .select('role')
         .eq('user_id', userId);
-      
+
       if (error) {
         console.error('Error checking user role:', error);
         return;
       }
-      
+
       const roles = data?.map(r => r.role) || [];
       setIsAdmin(roles.includes('admin'));
       setIsEditor(roles.includes('editor') || roles.includes('admin'));
@@ -48,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        
+
         if (session?.user) {
           // Use setTimeout to avoid potential race conditions
           setTimeout(() => checkUserRole(session.user.id), 0);
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setIsAdmin(false);
           setIsEditor(false);
         }
-        
+
         setLoading(false);
       }
     );
@@ -65,11 +65,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
+
       if (session?.user) {
         checkUserRole(session.user.id);
       }
-      
+
       setLoading(false);
     });
 

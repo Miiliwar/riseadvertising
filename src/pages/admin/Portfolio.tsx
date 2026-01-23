@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, Edit, Trash2, Star, StarOff } from "lucide-react";
+import { Plus, Edit, Trash2, Star, StarOff, Upload, Image, X } from "lucide-react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,6 +35,8 @@ export default function AdminPortfolio() {
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<PortfolioItem | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -59,12 +61,12 @@ export default function AdminPortfolio() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      
+
       const transformedData = (data || []).map(item => ({
         ...item,
         images: Array.isArray(item.images) ? item.images : []
       }));
-      
+
       setItems(transformedData as PortfolioItem[]);
     } catch (error) {
       console.error("Error fetching portfolio:", error);
@@ -88,6 +90,7 @@ export default function AdminPortfolio() {
       featured: item.featured ?? false,
       published: item.published ?? true,
     });
+    setImagePreviews(imageArray);
     setDialogOpen(true);
   }
 
@@ -104,8 +107,68 @@ export default function AdminPortfolio() {
       featured: false,
       published: true,
     });
+    setImagePreviews([]);
     setDialogOpen(true);
   }
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+    const newPreviews: string[] = [...imagePreviews];
+    const newImages: string[] = [...formData.images];
+
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (!file.type.startsWith('image/')) continue;
+
+        // Max 5MB per file
+        if (file.size > 5 * 1024 * 1024) {
+          toast.error(`${file.name} is too large (>5MB)`);
+          continue;
+        }
+
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `portfolio/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('images')
+          .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('images')
+          .getPublicUrl(filePath);
+
+        newPreviews.push(publicUrl);
+        newImages.push(publicUrl);
+      }
+
+      setImagePreviews(newPreviews);
+      setFormData(prev => ({ ...prev, images: newImages }));
+      toast.success("Images added successfully");
+    } catch (error: any) {
+      console.error("Upload error:", error);
+      toast.error(error.message || "Failed to upload some images");
+    } finally {
+      setUploading(false);
+      // Reset input
+      e.target.value = "";
+    }
+  }
+
+  const removeImage = (index: number) => {
+    const newPreviews = [...imagePreviews];
+    const newImages = [...formData.images];
+    newPreviews.splice(index, 1);
+    newImages.splice(index, 1);
+    setImagePreviews(newPreviews);
+    setFormData(prev => ({ ...prev, images: newImages }));
+  };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -261,6 +324,46 @@ export default function AdminPortfolio() {
                   />
                 </div>
 
+                <div className="space-y-4">
+                  <Label>Project Images</Label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {imagePreviews.map((preview, index) => (
+                      <div key={index} className="relative aspect-video rounded-lg overflow-hidden border bg-gray-50">
+                        <img
+                          src={preview}
+                          alt={`Preview ${index}`}
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute top-1 right-1 bg-destructive text-destructive-foreground p-1 rounded-full hover:bg-destructive/90 transition-colors"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                    <Label
+                      htmlFor="image-upload"
+                      className="cursor-pointer border-2 border-dashed rounded-lg aspect-video flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors"
+                    >
+                      <Upload className="h-6 w-6 text-muted-foreground mb-1" />
+                      <span className="text-xs text-muted-foreground">
+                        {uploading ? "Uploading..." : "Add Image"}
+                      </span>
+                      <input
+                        id="image-upload"
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        multiple
+                        onChange={handleFileUpload}
+                        disabled={uploading}
+                      />
+                    </Label>
+                  </div>
+                </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="tags">Tags (comma separated)</Label>
                   <Input
@@ -355,11 +458,10 @@ export default function AdminPortfolio() {
                   </p>
                   <div className="flex items-center justify-between">
                     <span
-                      className={`text-xs px-2 py-1 rounded-full ${
-                        item.published
-                          ? "bg-green-100 text-green-700"
-                          : "bg-muted text-muted-foreground"
-                      }`}
+                      className={`text-xs px-2 py-1 rounded-full ${item.published
+                        ? "bg-green-100 text-green-700"
+                        : "bg-muted text-muted-foreground"
+                        }`}
                     >
                       {item.published ? "Published" : "Draft"}
                     </span>

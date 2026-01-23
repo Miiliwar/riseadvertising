@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import logo from "@/assets/logo.png";
+import { Logo } from "@/components/layout/Logo";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -45,8 +46,8 @@ export default function AdminLogin() {
       >
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           {/* Logo */}
-          <div className="text-center mb-8">
-            <img src={logo} alt="RISE Advertising" className="h-16 mx-auto mb-4" />
+          <div className="flex flex-col items-center mb-10">
+            <Logo size="xl" className="mb-6" />
             <h1 className="text-2xl font-bold text-gray-900">Admin Panel</h1>
             <p className="text-muted-foreground">Sign in to manage your content</p>
           </div>
