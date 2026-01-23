@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -23,10 +24,11 @@ export function Header() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="flex items-center">
-              <span className="text-primary text-3xl font-black">.</span>
-              <span className="text-2xl font-black tracking-tight">RISE</span>
-            </div>
+            <img 
+              src={logo} 
+              alt=".RISE Advertising - The Branding Empire" 
+              className="h-10 lg:h-12 w-auto object-contain"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -50,11 +52,11 @@ export function Header() {
           {/* CTA Buttons */}
           <div className="hidden lg:flex lg:items-center lg:gap-4">
             <a
-              href="tel:+2348000000000"
+              href="tel:+251936704476"
               className="flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
             >
               <Phone className="h-4 w-4" />
-              <span>+234 800 000 0000</span>
+              <span>+251 936 704 476</span>
             </a>
             <Button asChild>
               <Link to="/contact">Get Quote</Link>
@@ -97,11 +99,11 @@ export function Header() {
               ))}
               <div className="pt-4 mt-2 border-t border-border">
                 <a
-                  href="tel:+2348000000000"
+                  href="tel:+251936704476"
                   className="flex items-center gap-2 px-4 py-3 text-base font-semibold"
                 >
                   <Phone className="h-5 w-5 text-primary" />
-                  <span>+234 800 000 0000</span>
+                  <span>+251 936 704 476</span>
                 </a>
                 <Button asChild className="w-full mt-2">
                   <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
