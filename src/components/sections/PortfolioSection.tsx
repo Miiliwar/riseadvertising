@@ -4,55 +4,63 @@ import { motion } from "framer-motion";
 import { ArrowRight, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const categories = ["All", "Banners", "Backdrops", "Stickers", "Signage", "Events"];
+// Import portfolio images
+import brandingItems from "@/assets/portfolio/branding-items.jpg";
+import keychains from "@/assets/portfolio/keychains.jpg";
+import lightbox from "@/assets/portfolio/lightbox.jpg";
+import teardropFlags from "@/assets/portfolio/teardrop-flags.jpg";
+import signage3d from "@/assets/portfolio/3d-signage.jpg";
+import backlightFoam from "@/assets/portfolio/backlight-foam.jpg";
+
+const categories = ["All", "Banners", "Signage", "Promotional", "Branding", "Events"];
 
 const portfolioItems = [
   {
     id: 1,
-    title: "Lagos Business Summit 2024",
-    client: "LBS Group",
-    category: "Backdrops",
-    image: "/placeholder.svg",
+    title: "All Branding Items Collection",
+    client: "RISE Advertising",
+    category: "Branding",
+    image: brandingItems,
     featured: true,
   },
   {
     id: 2,
-    title: "Premium Rollup Collection",
-    client: "TechCorp Nigeria",
-    category: "Banners",
-    image: "/placeholder.svg",
+    title: "Metal Keychains - Odaa Roobaa Hospital",
+    client: "Odaa Roobaa Hospital",
+    category: "Promotional",
+    image: keychains,
     featured: false,
   },
   {
     id: 3,
-    title: "Product Label Design",
-    client: "Fresh Foods Ltd",
-    category: "Stickers",
-    image: "/placeholder.svg",
-    featured: false,
-  },
-  {
-    id: 4,
-    title: "Office Signage Package",
-    client: "Alpha Bank",
+    title: "Circle Lightbox - Hamiltan Travel Agency",
+    client: "Hamiltan Travel Agency",
     category: "Signage",
-    image: "/placeholder.svg",
+    image: lightbox,
     featured: true,
   },
   {
-    id: 5,
-    title: "Exhibition Booth Design",
-    client: "GreenTech Solutions",
-    category: "Events",
-    image: "/placeholder.svg",
+    id: 4,
+    title: "Teardrop Promotional Flag",
+    client: "Mamo Fish",
+    category: "Banners",
+    image: teardropFlags,
     featured: false,
   },
   {
-    id: 6,
-    title: "Vehicle Wrap Campaign",
-    client: "FastDelivery NG",
+    id: 5,
+    title: "3D Lightbox Signage",
+    client: "Various Clients",
     category: "Signage",
-    image: "/placeholder.svg",
+    image: signage3d,
+    featured: true,
+  },
+  {
+    id: 6,
+    title: "Backlight 3D Foam Signage",
+    client: "Sadam Law Office",
+    category: "Signage",
+    image: backlightFoam,
     featured: false,
   },
 ];
@@ -120,9 +128,10 @@ export function PortfolioSection() {
                 className="portfolio-item group block aspect-[4/3] relative rounded-xl overflow-hidden"
               >
                 {/* Image */}
-                <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                  style={{ backgroundImage: `url(${item.image})` }}
+                <img 
+                  src={item.image}
+                  alt={item.title}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 
                 {/* Gradient Overlay */}

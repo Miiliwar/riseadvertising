@@ -5,89 +5,90 @@ import { CTASection } from "@/components/sections/CTASection";
 import { cn } from "@/lib/utils";
 import { Eye, X } from "lucide-react";
 
-const categories = ["All", "Banners", "Backdrops", "Stickers", "Signage", "Events"];
+// Import portfolio images
+import brandingItems from "@/assets/portfolio/branding-items.jpg";
+import keychains from "@/assets/portfolio/keychains.jpg";
+import lightbox from "@/assets/portfolio/lightbox.jpg";
+import teardropFlags from "@/assets/portfolio/teardrop-flags.jpg";
+import signage3d from "@/assets/portfolio/3d-signage.jpg";
+import backlightFoam from "@/assets/portfolio/backlight-foam.jpg";
+import lightbox3d from "@/assets/portfolio/3d-lightbox.jpg";
+import letters3d from "@/assets/portfolio/3d-letters.jpg";
+
+const categories = ["All", "Banners", "Signage", "Promotional", "Branding", "Events"];
 
 const portfolioItems = [
   {
     id: 1,
-    title: "Lagos Business Summit 2024",
-    client: "LBS Group",
-    category: "Backdrops",
-    description: "Full event branding including stage backdrop, rollup banners, and directional signage.",
-    images: ["/placeholder.svg"],
+    title: "All Branding Items Collection",
+    client: "RISE Advertising",
+    category: "Branding",
+    description: "Complete branding package including rollup banners, teardrop flags, promotional tents, vehicle wraps, t-shirts, caps, mugs, keychains, and more.",
+    images: [brandingItems],
     featured: true,
   },
   {
     id: 2,
-    title: "Premium Rollup Collection",
-    client: "TechCorp Nigeria",
-    category: "Banners",
-    description: "Set of 20 premium rollup banners for nationwide product launch campaign.",
-    images: ["/placeholder.svg"],
+    title: "Metal Keychains - Odaa Roobaa Hospital",
+    client: "Odaa Roobaa Hospital",
+    category: "Promotional",
+    description: "Custom metal keychains with full-color logo printing for hospital branding and promotional giveaways.",
+    images: [keychains],
     featured: false,
   },
   {
     id: 3,
-    title: "Product Label Design",
-    client: "Fresh Foods Ltd",
-    category: "Stickers",
-    description: "Complete product labeling solution for new product line launch.",
-    images: ["/placeholder.svg"],
-    featured: false,
-  },
-  {
-    id: 4,
-    title: "Office Signage Package",
-    client: "Alpha Bank",
+    title: "Circle Lightbox - Hamiltan Travel Agency",
+    client: "Hamiltan Travel Agency",
     category: "Signage",
-    description: "Interior and exterior signage for new branch locations across Lagos.",
-    images: ["/placeholder.svg"],
+    description: "Illuminated circle lightbox signage for travel agency storefront, featuring backlit LED technology.",
+    images: [lightbox],
     featured: true,
   },
   {
-    id: 5,
-    title: "Exhibition Booth Design",
-    client: "GreenTech Solutions",
-    category: "Events",
-    description: "Complete 6x3m exhibition booth with custom lighting and displays.",
-    images: ["/placeholder.svg"],
+    id: 4,
+    title: "Teardrop Promotional Flag",
+    client: "Mamo Fish",
+    category: "Banners",
+    description: "Double-sided teardrop promotional flags for outdoor advertising and brand visibility.",
+    images: [teardropFlags],
     featured: false,
   },
   {
-    id: 6,
-    title: "Vehicle Wrap Campaign",
-    client: "FastDelivery NG",
+    id: 5,
+    title: "3D Lightbox Signage Collection",
+    client: "Various Clients",
     category: "Signage",
-    description: "Fleet branding for 50 delivery vehicles with full wrap design.",
-    images: ["/placeholder.svg"],
+    description: "Premium 3D lightbox signage featuring neon lights, LED backlighting, and custom letter designs.",
+    images: [signage3d],
+    featured: true,
+  },
+  {
+    id: 6,
+    title: "Backlight 3D Foam Signage",
+    client: "Sadam Hussien Law Office",
+    category: "Signage",
+    description: "Professional backlit 3D foam signage with warm LED illumination for law office branding.",
+    images: [backlightFoam],
     featured: false,
   },
   {
     id: 7,
-    title: "Annual Gala Backdrop",
-    client: "Heritage Foundation",
-    category: "Backdrops",
-    description: "Premium fabric backdrop with gold foil accents for charity gala.",
-    images: ["/placeholder.svg"],
+    title: "3D Lightbox - Gold Beans Coffee",
+    client: "Gold Beans Coffee & Roastery",
+    category: "Signage",
+    description: "Stunning 3D lightbox signage with LED strip lighting for coffee shop exterior branding.",
+    images: [lightbox3d],
     featured: true,
   },
   {
     id: 8,
-    title: "Retail Window Display",
-    client: "Fashion House",
+    title: "3D Letter Signage - Restaurant",
+    client: "Restaurant",
     category: "Signage",
-    description: "Seasonal window graphics for flagship store.",
-    images: ["/placeholder.svg"],
+    description: "Custom 3D letter signage with front-lit LED illumination for restaurant exterior.",
+    images: [letters3d],
     featured: false,
-  },
-  {
-    id: 9,
-    title: "Tech Conference Branding",
-    client: "StartupNG",
-    category: "Events",
-    description: "Complete event branding package including stage, booths, and banners.",
-    images: ["/placeholder.svg"],
-    featured: true,
   },
 ];
 
@@ -111,7 +112,7 @@ export default function PortfolioPage() {
           >
             <h1 className="hero-title mb-6">Our Portfolio</h1>
             <p className="hero-subtitle text-white/80">
-              Explore our latest projects and see how we've helped brands across Nigeria make an impact.
+              Explore our latest projects and see how we've helped brands across Ethiopia make an impact.
             </p>
           </motion.div>
         </div>
@@ -158,9 +159,10 @@ export default function PortfolioPage() {
                   className="portfolio-item group block w-full text-left aspect-[4/3] relative rounded-xl overflow-hidden"
                 >
                   {/* Image */}
-                  <div 
-                    className="absolute inset-0 bg-cover bg-center bg-secondary transition-transform duration-500 group-hover:scale-110"
-                    style={{ backgroundImage: `url(${item.images[0]})` }}
+                  <img 
+                    src={item.images[0]}
+                    alt={item.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   
                   {/* Gradient Overlay */}

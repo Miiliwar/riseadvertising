@@ -5,6 +5,14 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/sections/CTASection";
 
+// Import service images
+import brandingItems from "@/assets/portfolio/branding-items.jpg";
+import teardropFlags from "@/assets/portfolio/teardrop-flags.jpg";
+import signage3d from "@/assets/portfolio/3d-signage.jpg";
+import keychains from "@/assets/portfolio/keychains.jpg";
+import lightbox from "@/assets/portfolio/lightbox.jpg";
+import backlightFoam from "@/assets/portfolio/backlight-foam.jpg";
+
 const allServices = [
   {
     id: 1,
@@ -12,7 +20,8 @@ const allServices = [
     slug: "rollup-banners",
     shortDescription: "Premium retractable banners perfect for events, exhibitions, and promotional displays.",
     longDescription: "Our rollup banners are crafted from high-quality materials that ensure durability and vibrant colors. Perfect for trade shows, conferences, retail displays, and office spaces. Easy to set up and transport, these banners make a powerful statement wherever you go.",
-    priceRange: "₦25,000 - ₦85,000",
+    priceRange: "Starting from ETB 2,500",
+    image: teardropFlags,
     features: [
       "Premium aluminum construction",
       "High-resolution print (1440dpi)",
@@ -30,7 +39,8 @@ const allServices = [
     slug: "pvc-banners",
     shortDescription: "Durable outdoor and indoor banners with vibrant, weather-resistant prints.",
     longDescription: "Our PVC banners are designed for maximum visibility and durability. Made from premium 440gsm PVC material, they're perfect for outdoor advertising, events, construction sites, and storefronts. Weather-resistant and UV-stable for long-lasting color.",
-    priceRange: "₦3,000 - ₦5,000/sqm",
+    priceRange: "Starting from ETB 300/sqm",
+    image: brandingItems,
     features: [
       "440gsm premium PVC material",
       "Full-color printing",
@@ -44,71 +54,75 @@ const allServices = [
   },
   {
     id: 3,
-    title: "Backdrops",
+    title: "3D Signage & Lightbox",
     slug: "backdrops",
-    shortDescription: "Large-format backdrop solutions for events, photo booths, and stage designs.",
-    longDescription: "Create stunning visual impact with our professional backdrop solutions. From media walls to event stages, our backdrops are designed to make your brand memorable. Available in various formats including pop-up, tension fabric, and custom builds.",
-    priceRange: "₦45,000 - ₦350,000",
+    shortDescription: "Professional 3D signage, lightbox, and illuminated letter solutions for businesses.",
+    longDescription: "Create stunning visual impact with our professional 3D signage and lightbox solutions. From backlit circle lightboxes to 3D foam letters with LED illumination, our signage solutions are designed to make your brand memorable day and night.",
+    priceRange: "Starting from ETB 4,500",
+    image: signage3d,
     features: [
-      "Pop-up and tension fabric systems",
-      "Seamless large-format printing",
-      "Quick assembly (under 10 minutes)",
-      "Lightweight and portable",
-      "Reusable with interchangeable graphics",
-      "Custom sizes and shapes",
+      "3D foam and acrylic letters",
+      "LED backlighting options",
+      "Circle and custom shape lightboxes",
+      "Weather-resistant for outdoor use",
+      "Energy-efficient LED technology",
+      "Custom designs and sizes",
     ],
-    sizes: ["2.3m x 2.3m", "3m x 2.3m", "4m x 2.3m", "Custom sizes"],
-    turnaround: "3-5 business days",
+    sizes: ["Custom sizes available"],
+    turnaround: "3-7 business days",
   },
   {
     id: 4,
-    title: "Sticker Printing",
+    title: "Promotional Items",
     slug: "sticker-printing",
-    shortDescription: "Custom stickers and labels for branding, packaging, and promotional materials.",
-    longDescription: "From product labels to promotional stickers, we offer premium sticker printing for all your needs. Available in various materials including vinyl, paper, and transparent options. Die-cut, kiss-cut, or sheet format available.",
-    priceRange: "₦500 - ₦2,500/sheet",
+    shortDescription: "Custom keychains, mugs, caps, t-shirts, and branded merchandise.",
+    longDescription: "Boost your brand visibility with our range of promotional items. From custom metal keychains to branded mugs, caps, and t-shirts, we offer high-quality merchandise that makes your brand memorable.",
+    priceRange: "Starting from ETB 50/piece",
+    image: keychains,
     features: [
-      "Multiple material options",
-      "Die-cut and kiss-cut available",
-      "Waterproof options",
-      "High-tack and removable adhesives",
-      "Full-color printing",
-      "Minimum order: 50 sheets",
+      "Metal and acrylic keychains",
+      "Ceramic and steel mugs",
+      "Custom printed t-shirts",
+      "Branded caps and hats",
+      "Full-color logo printing",
+      "Bulk order discounts",
     ],
-    sizes: ["A4 sheets", "A3 sheets", "Custom die-cut sizes"],
-    turnaround: "24-48 hours",
+    sizes: ["Various sizes available"],
+    turnaround: "2-5 business days",
   },
   {
     id: 5,
-    title: "Pop-up Stands",
+    title: "Teardrop & Feather Flags",
     slug: "pop-up-stands",
-    shortDescription: "Portable exhibition displays that set up in minutes for maximum impact.",
-    longDescription: "Make an impact at trade shows and events with our professional pop-up stands. Featuring premium fabric or PVC graphics on sturdy aluminum frames, these displays are designed for frequent use and easy transportation.",
-    priceRange: "₦85,000 - ₦450,000",
+    shortDescription: "Eye-catching promotional flags that stand out at events and storefronts.",
+    longDescription: "Make an impact with our teardrop and feather flags. These portable displays are perfect for events, exhibitions, retail environments, and outdoor advertising. Available with various base options for different surfaces.",
+    priceRange: "Starting from ETB 3,500",
+    image: teardropFlags,
     features: [
-      "Premium aluminum frame",
-      "Magnetic connector system",
-      "Fabric or PVC graphics",
-      "LED lighting options",
-      "Includes wheeled case",
-      "5-year frame warranty",
+      "Double-sided printing available",
+      "Durable polyester fabric",
+      "Rotating pole for wind resistance",
+      "Multiple base options",
+      "Includes carrying bag",
+      "Various height options",
     ],
-    sizes: ["3x1 (2.3m wide)", "3x2 (3.4m wide)", "3x3 (4.5m wide)", "Curved options"],
-    turnaround: "5-7 business days",
+    sizes: ["2m", "3m", "4m", "5m heights"],
+    turnaround: "2-3 business days",
   },
   {
     id: 6,
-    title: "Custom Prints",
+    title: "Custom Branding Solutions",
     slug: "custom-prints",
-    shortDescription: "Bespoke printing solutions tailored to your unique requirements.",
-    longDescription: "Have a unique print requirement? Our custom printing service handles everything from vehicle wraps to building signage, floor graphics to window displays. Tell us your vision, and we'll make it happen.",
+    shortDescription: "Complete branding packages tailored to your unique business needs.",
+    longDescription: "From vehicle wraps to complete event branding, our custom solutions cover all your advertising needs. We work with you from concept to completion, ensuring your brand makes the impact it deserves.",
     priceRange: "Contact for Quote",
+    image: brandingItems,
     features: [
       "Vehicle wraps and graphics",
-      "Building and wall signage",
-      "Floor graphics",
-      "Window displays",
-      "Specialty materials",
+      "Event tents and gazebos",
+      "Complete event branding",
+      "Shop front signage",
+      "Corporate branding packages",
       "Project consultation included",
     ],
     sizes: ["Custom sizes"],
@@ -151,12 +165,14 @@ export default function ServicesPage() {
                   to={`/services/${service.slug}`}
                   className="service-card group block h-full"
                 >
-                  {/* Image placeholder */}
-                  <div className="aspect-[4/3] bg-secondary relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-4xl font-black text-primary/30">.R</span>
-                    </div>
+                  {/* Image */}
+                  <div className="aspect-[4/3] relative overflow-hidden">
+                    <img 
+                      src={service.image}
+                      alt={service.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   </div>
 
                   <div className="p-6">
@@ -229,7 +245,7 @@ export function ServiceDetailPage() {
             </p>
             <div className="flex flex-wrap items-center gap-4">
               <div className="px-4 py-2 bg-white/10 rounded-lg">
-                <span className="text-sm text-white/60">Starting from</span>
+                <span className="text-sm text-white/60">Price</span>
                 <div className="text-xl font-bold">{service.priceRange}</div>
               </div>
               <div className="px-4 py-2 bg-white/10 rounded-lg">
@@ -252,6 +268,15 @@ export function ServiceDetailPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
+                {/* Service Image */}
+                <div className="aspect-video rounded-2xl overflow-hidden mb-8">
+                  <img 
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
                 <h2 className="text-2xl font-bold mb-4">About This Service</h2>
                 <p className="text-lg text-muted-foreground mb-8">
                   {service.longDescription}
@@ -299,7 +324,7 @@ export function ServiceDetailPage() {
                     <Link to="/contact">Request Quote</Link>
                   </Button>
                   <Button variant="outline" className="w-full" size="lg" asChild>
-                    <a href="tel:+2348000000000">
+                    <a href="tel:+251936704476">
                       <Phone className="h-4 w-4" />
                       Call Us
                     </a>
@@ -309,8 +334,8 @@ export function ServiceDetailPage() {
                 <div className="pt-6 border-t border-border">
                   <div className="flex items-center gap-3 text-sm text-muted-foreground">
                     <Mail className="h-4 w-4 text-primary" />
-                    <a href="mailto:info@riseadvertising.ng" className="hover:text-primary">
-                      info@riseadvertising.ng
+                    <a href="mailto:riseadvertising11@gmail.com" className="hover:text-primary">
+                      riseadvertising11@gmail.com
                     </a>
                   </div>
                 </div>

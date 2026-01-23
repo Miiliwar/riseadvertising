@@ -35,6 +35,10 @@ const services = [
   "Custom Prints",
   "Vehicle Wraps",
   "Signage",
+  "3D Lightbox",
+  "Keychains",
+  "T-shirts",
+  "Mugs & Caps",
 ];
 
 const sources = [
@@ -117,7 +121,7 @@ export default function ContactPage() {
                   Submit Another Request
                 </Button>
                 <Button variant="outline" asChild>
-                  <a href="https://wa.me/2348000000000" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/251936704476" target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="h-4 w-4" />
                     Chat on WhatsApp
                   </a>
@@ -152,18 +156,23 @@ export default function ContactPage() {
       <section className="bg-primary py-6">
         <div className="page-container">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-primary-foreground">
-            <a href="tel:+2348000000000" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <a href="tel:+251936704476" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <Phone className="h-5 w-5" />
-              <span>+234 800 000 0000</span>
+              <span>+251 936 704 476</span>
             </a>
-            <a href="mailto:info@riseadvertising.ng" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <a href="mailto:riseadvertising11@gmail.com" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <Mail className="h-5 w-5" />
-              <span>info@riseadvertising.ng</span>
+              <span>riseadvertising11@gmail.com</span>
             </a>
-            <div className="flex items-center gap-3">
+            <a 
+              href="https://maps.google.com/maps?q=8.951208,38.696209&ll=8.951208,38.696209&z=16"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+            >
               <MapPin className="h-5 w-5" />
-              <span>Victoria Island, Lagos</span>
-            </div>
+              <span>ZAM Mall, Lebu, Addis Ababa</span>
+            </a>
             <div className="flex items-center gap-3">
               <Clock className="h-5 w-5" />
               <span>Mon-Sat: 8AM - 6PM</span>
@@ -194,7 +203,7 @@ export default function ContactPage() {
                         <FormItem>
                           <FormLabel>Full Name *</FormLabel>
                           <FormControl>
-                            <Input placeholder="John Doe" {...field} className="form-input-rise" />
+                            <Input placeholder="Your Name" {...field} className="form-input-rise" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -223,7 +232,7 @@ export default function ContactPage() {
                         <FormItem>
                           <FormLabel>Email Address *</FormLabel>
                           <FormControl>
-                            <Input type="email" placeholder="john@example.com" {...field} className="form-input-rise" />
+                            <Input type="email" placeholder="email@example.com" {...field} className="form-input-rise" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -236,7 +245,7 @@ export default function ContactPage() {
                         <FormItem>
                           <FormLabel>Phone Number *</FormLabel>
                           <FormControl>
-                            <Input placeholder="+234 800 000 0000" {...field} className="form-input-rise" />
+                            <Input placeholder="+251 9XX XXX XXX" {...field} className="form-input-rise" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -336,7 +345,7 @@ export default function ContactPage() {
                         <FormItem>
                           <FormLabel>Delivery Location *</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g., Victoria Island, Lagos" {...field} className="form-input-rise" />
+                            <Input placeholder="e.g., Bole, Addis Ababa" {...field} className="form-input-rise" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -424,13 +433,13 @@ export default function ContactPage() {
                 </p>
                 <div className="space-y-3">
                   <Button variant="outline" className="w-full justify-start" asChild>
-                    <a href="tel:+2348000000000">
+                    <a href="tel:+251936704476">
                       <Phone className="h-4 w-4" />
-                      Call: +234 800 000 0000
+                      Call: +251 936 704 476
                     </a>
                   </Button>
                   <Button variant="outline" className="w-full justify-start" asChild>
-                    <a href="https://wa.me/2348000000000" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/251936704476" target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="h-4 w-4" />
                       WhatsApp Us
                     </a>
@@ -470,14 +479,32 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Map placeholder */}
-      <section className="h-[400px] bg-secondary relative">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center">
-            <MapPin className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h3 className="text-xl font-bold">Visit Our Office</h3>
-            <p className="text-muted-foreground">123 Victoria Island, Lagos, Nigeria</p>
-          </div>
+      {/* Google Map Embed */}
+      <section className="h-[400px] relative">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1969.8!2d38.696209!3d8.951208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwNTcnMDQuMyJOIDM4wrA0MSc0Ni40IkU!5e0!3m2!1sen!2set!4v1706000000000!5m2!1sen!2set"
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="RISE Advertising Location - ZAM Mall, Lebu, Addis Ababa"
+          className="grayscale hover:grayscale-0 transition-all duration-500"
+        />
+        <div className="absolute bottom-4 left-4 bg-background/95 backdrop-blur-sm p-4 rounded-xl shadow-lg max-w-xs">
+          <h3 className="font-bold text-lg mb-1">Visit Our Office</h3>
+          <p className="text-sm text-muted-foreground">
+            ZAM Mall 2nd Floor, Lebu, Addis Ababa, Ethiopia
+          </p>
+          <a 
+            href="https://maps.google.com/maps?q=8.951208,38.696209&ll=8.951208,38.696209&z=16"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-primary font-semibold hover:underline mt-2 inline-block"
+          >
+            Get Directions →
+          </a>
         </div>
       </section>
     </Layout>
