@@ -90,12 +90,40 @@ export default function ContactPage() {
 
   const onSubmit = async (data: QuoteFormData) => {
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Quote request:", data);
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast.success("Quote request submitted successfully!");
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      
+      const { error } = await supabase.from("quote_requests").insert({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        company: data.company || null,
+        services: data.services,
+        quantity: data.quantity || null,
+        width: data.width || null,
+        height: data.height || null,
+        delivery_location: data.location,
+        deadline: data.deadline || null,
+        message: data.message,
+        source: data.source || null,
+        status: "new",
+      });
+
+      if (error) {
+        console.error("Error submitting quote:", error);
+        toast.error("Failed to submit quote. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      toast.success("Quote request submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting quote:", error);
+      toast.error("Failed to submit quote. Please try again.");
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {

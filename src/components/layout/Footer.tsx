@@ -47,14 +47,14 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-foreground text-background">
+    <footer className="bg-neutral-900 dark:bg-neutral-950">
       {/* Newsletter Section */}
-      <div className="border-b border-background/10">
+      <div className="border-b border-white/10">
         <div className="page-container py-12">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div>
-              <h3 className="text-2xl font-bold">Stay Updated</h3>
-              <p className="text-background/70 mt-1">
+              <h3 className="text-2xl font-bold text-white">Stay Updated</h3>
+              <p className="text-white/70 mt-1">
                 Subscribe to our newsletter for the latest offers and updates.
               </p>
             </div>
@@ -62,7 +62,7 @@ export function Footer() {
               <Input
                 type="email"
                 placeholder="Enter your email"
-                className="bg-background/10 border-background/20 text-background placeholder:text-background/50 min-w-[280px]"
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-w-[280px]"
               />
               <Button variant="default" className="whitespace-nowrap">
                 Subscribe
@@ -80,7 +80,7 @@ export function Footer() {
             <Link to="/" className="flex items-center">
               <Logo size="lg" variant="footer" />
             </Link>
-            <p className="mt-4 text-background/70 max-w-sm">
+            <p className="mt-4 text-white/70 max-w-sm">
               Ethiopia's premier advertising and print solutions provider. We bring your brand to life with high-quality prints, banners, and signage.
             </p>
             <p className="mt-2 text-sm text-primary font-semibold">
@@ -89,21 +89,21 @@ export function Footer() {
             <div className="mt-6 space-y-3">
               <a
                 href="tel:+251936704476"
-                className="flex items-center gap-3 text-background/80 hover:text-primary transition-colors"
+                className="flex items-center gap-3 text-white/80 hover:text-primary transition-colors"
               >
                 <Phone className="h-5 w-5 text-primary" />
                 <span>+251 936 704 476</span>
               </a>
               <a
                 href="tel:+251992921401"
-                className="flex items-center gap-3 text-background/80 hover:text-primary transition-colors"
+                className="flex items-center gap-3 text-white/80 hover:text-primary transition-colors"
               >
                 <Phone className="h-5 w-5 text-primary" />
                 <span>+251 992 921 401</span>
               </a>
               <a
                 href="mailto:riseadvertising11@gmail.com"
-                className="flex items-center gap-3 text-background/80 hover:text-primary transition-colors"
+                className="flex items-center gap-3 text-white/80 hover:text-primary transition-colors"
               >
                 <Mail className="h-5 w-5 text-primary" />
                 <span>riseadvertising11@gmail.com</span>
@@ -112,7 +112,7 @@ export function Footer() {
                 href="https://www.google.com/maps/place/RISE+ADVERTISING+AND+PRINTING/@8.9510213,38.7177277,17z/data=!3m1!1e3"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-start gap-3 text-background/80 hover:text-primary transition-colors"
+                className="flex items-start gap-3 text-white/80 hover:text-primary transition-colors"
               >
                 <MapPin className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                 <span>ZAM Mall 2nd Floor, Lebu, Addis Ababa, Ethiopia</span>
@@ -122,13 +122,13 @@ export function Footer() {
 
           {/* Services Column */}
           <div>
-            <h4 className="text-lg font-bold mb-4">Services</h4>
+            <h4 className="text-lg font-bold mb-4 text-white">Services</h4>
             <ul className="space-y-2.5">
               {footerLinks.services.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-background/70 hover:text-primary transition-colors"
+                    className="text-white/70 hover:text-primary transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -139,13 +139,13 @@ export function Footer() {
 
           {/* Company Column */}
           <div>
-            <h4 className="text-lg font-bold mb-4">Company</h4>
+            <h4 className="text-lg font-bold mb-4 text-white">Company</h4>
             <ul className="space-y-2.5">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-background/70 hover:text-primary transition-colors"
+                    className="text-white/70 hover:text-primary transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -156,13 +156,13 @@ export function Footer() {
 
           {/* Legal Column */}
           <div>
-            <h4 className="text-lg font-bold mb-4">Legal</h4>
+            <h4 className="text-lg font-bold mb-4 text-white">Legal</h4>
             <ul className="space-y-2.5">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-background/70 hover:text-primary transition-colors"
+                    className="text-white/70 hover:text-primary transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -174,10 +174,10 @@ export function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-background/10">
+      <div className="border-t border-white/10">
         <div className="page-container py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <p className="text-background/60 text-sm">
+            <p className="text-white/60 text-sm">
               © {new Date().getFullYear()} RISE Advertising. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
@@ -189,7 +189,7 @@ export function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-background/10 hover:bg-primary transition-colors"
+                    className="p-2 rounded-full bg-white/10 text-white hover:bg-primary transition-colors"
                     aria-label={social.name}
                   >
                     <IconComponent className="h-5 w-5" />

@@ -7,95 +7,97 @@ interface LogoProps {
 }
 
 export function Logo({ className, variant = "full", size = "md" }: LogoProps) {
-    const sizes = {
-        sm: "h-8",
-        md: "h-12",
-        lg: "h-16",
-        xl: "h-24",
+    // Font sizes for different logo sizes
+    const dotSizes = {
+        sm: "text-lg",
+        md: "text-2xl",
+        lg: "text-3xl",
+        xl: "text-5xl",
     };
 
-    const iconSizes = {
-        sm: "h-6 w-6",
-        md: "h-10 w-10",
-        lg: "h-14 w-14",
-        xl: "h-20 w-20",
+    const rSizes = {
+        sm: "text-2xl",
+        md: "text-4xl",
+        lg: "text-5xl",
+        xl: "text-7xl",
     };
 
-    const LogoIcon = () => (
-        <svg
-            viewBox="0 0 100 100"
-            className={cn(iconSizes[size])}
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            {/* Red Dot */}
-            <circle cx="20" cy="75" r="8" className="fill-primary" />
+    const iseSizes = {
+        sm: "text-xl",
+        md: "text-3xl",
+        lg: "text-4xl",
+        xl: "text-6xl",
+    };
 
-            {/* Stylized R */}
-            <path
-                d="M35 15C35 15 45 15 60 15C75 15 85 25 85 40C85 55 75 65 60 65H55V90"
-                stroke="currentColor"
-                strokeWidth="12"
-                strokeLinecap="round"
-                className="text-foreground dark:text-white"
-            />
-            <path
-                d="M55 45C55 45 65 45 75 60C85 75 90 90 90 90"
-                stroke="currentColor"
-                strokeWidth="12"
-                strokeLinecap="round"
-                className="text-foreground dark:text-white"
-            />
-            <path
-                d="M35 15V90"
-                stroke="currentColor"
-                strokeWidth="12"
-                strokeLinecap="round"
-                className="text-foreground dark:text-white"
-            />
+    const advertisingSizes = {
+        sm: "text-[0.6rem] tracking-[0.15em]",
+        md: "text-xs tracking-[0.2em]",
+        lg: "text-sm tracking-[0.25em]",
+        xl: "text-lg tracking-[0.3em]",
+    };
 
-            {/* Curved flourish on top of R */}
-            <path
-                d="M35 15C35 15 45 5 60 5"
-                stroke="currentColor"
-                strokeWidth="10"
-                strokeLinecap="round"
-                className="text-foreground dark:text-white"
-            />
-        </svg>
-    );
+    const taglineSizes = {
+        sm: "text-[0.4rem]",
+        md: "text-[0.5rem]",
+        lg: "text-[0.6rem]",
+        xl: "text-xs",
+    };
 
+    // Icon only version - just the stylized R with dot
     if (variant === "icon") {
-        return <LogoIcon />;
+        return (
+            <div className={cn("flex items-baseline", className)}>
+                <span className={cn("font-black text-primary leading-none", dotSizes[size])}>.</span>
+                <span className={cn(
+                    "font-serif font-bold italic leading-none text-foreground",
+                    rSizes[size]
+                )}>
+                    R
+                </span>
+            </div>
+        );
     }
 
+    // Footer variant - inverted colors for dark background
+    const isFooter = variant === "footer";
+    const textColor = isFooter ? "text-white" : "text-foreground";
+
     return (
-        <div className={cn("flex items-center gap-3", className)}>
-            <LogoIcon />
-            <div className="flex flex-col leading-none">
-                <div className="flex items-center gap-1">
-                    <span className={cn(
-                        "font-black tracking-tighter text-primary",
-                        size === "sm" ? "text-xl" : size === "md" ? "text-3xl" : size === "lg" ? "text-4xl" : "text-6xl"
-                    )}>
-                        RISE
-                    </span>
-                </div>
+        <div className={cn("flex flex-col leading-none", className)}>
+            {/* .RISE text */}
+            <div className="flex items-baseline">
+                <span className={cn("font-black text-primary leading-none", dotSizes[size])}>.</span>
                 <span className={cn(
-                    "font-bold tracking-[0.2em] text-foreground dark:text-white/90",
-                    size === "sm" ? "text-[0.5rem]" : size === "md" ? "text-[0.6rem]" : size === "lg" ? "text-[0.8rem]" : "text-sm"
+                    "font-serif font-bold italic leading-none",
+                    textColor,
+                    rSizes[size]
                 )}>
-                    ADVERTISING
+                    R
                 </span>
-                {variant === "full" && (
-                    <span className={cn(
-                        "font-bold tracking-[0.1em] text-primary whitespace-nowrap",
-                        size === "sm" ? "text-[0.4rem]" : size === "md" ? "text-[0.5rem]" : size === "lg" ? "text-[0.6rem]" : "text-[0.8rem]"
-                    )}>
-                        THE BRANDING EMPIRE
-                    </span>
-                )}
+                <span className={cn(
+                    "font-black text-primary leading-none",
+                    iseSizes[size]
+                )}>
+                    ISE
+                </span>
             </div>
+            {/* ADVERTISING */}
+            <span className={cn(
+                "font-black uppercase leading-tight",
+                textColor,
+                advertisingSizes[size]
+            )}>
+                ADVERTISING
+            </span>
+            {/* THE BRANDING EMPIRE tagline - only for full variant */}
+            {variant === "full" && (
+                <span className={cn(
+                    "font-semibold tracking-[0.1em] text-primary uppercase whitespace-nowrap leading-tight mt-0.5",
+                    taglineSizes[size]
+                )}>
+                    THE BRANDING EMPIRE
+                </span>
+            )}
         </div>
     );
 }
