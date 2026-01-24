@@ -3,6 +3,13 @@ import { Layout } from "@/components/layout/Layout";
 import { CTASection } from "@/components/sections/CTASection";
 import { CheckCircle2, Users, Target, Heart, Award, Clock } from "lucide-react";
 
+// Images
+import ourStoryImage from "@/assets/about/our-story.jpg";
+import teamMember1 from "@/assets/about/team-member-1.jpg";
+import teamMember2 from "@/assets/about/team-member-2.jpg";
+import teamMember3 from "@/assets/about/team-member-3.png";
+import teamMember4 from "@/assets/about/team-member-4.png";
+
 const stats = [
   { label: "Years in Business", value: "10+" },
   { label: "Happy Clients", value: "500+" },
@@ -119,14 +126,11 @@ export default function AboutPage() {
               className="relative"
             >
               <div className="aspect-square bg-secondary rounded-2xl overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <span className="text-8xl font-black text-primary">.</span>
-                    <div className="text-4xl font-black">RISE</div>
-                    <div className="text-muted-foreground mt-2">Since 2014</div>
-                  </div>
-                </div>
+                <img 
+                  src={ourStoryImage} 
+                  alt="RISE Advertising - The Perfect Place for your Branding" 
+                  className="w-full h-full object-cover"
+                />
               </div>
             </motion.div>
           </div>
@@ -239,15 +243,15 @@ export default function AboutPage() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { name: "Oluwaseun Adeyemi", role: "Founder & CEO" },
-              { name: "Chidinma Okonkwo", role: "Creative Director" },
-              { name: "Ibrahim Yusuf", role: "Production Manager" },
-              { name: "Aisha Bello", role: "Customer Success Lead" },
+              { name: "Team Member", role: "Founder & CEO", image: teamMember1 },
+              { name: "Team Members", role: "Production Team", image: teamMember2 },
+              { name: "Team Member", role: "Creative Director", image: teamMember3 },
+              { name: "Team Member", role: "Operations Manager", image: teamMember4 },
             ].map((member, index) => (
               <motion.div
-                key={member.name}
+                key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -255,7 +259,11 @@ export default function AboutPage() {
                 className="text-center"
               >
                 <div className="aspect-square bg-secondary rounded-xl mb-4 overflow-hidden">
-                  <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-500" />
+                  <img 
+                    src={member.image} 
+                    alt={member.name} 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <h3 className="font-bold">{member.name}</h3>
                 <p className="text-sm text-muted-foreground">{member.role}</p>
