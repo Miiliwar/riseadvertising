@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Phone, Moon, Sun, User, LogIn } from "lucide-react";
+import { Menu, X, Phone, Moon, Sun, User, LogIn, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
@@ -51,10 +51,10 @@ export function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
       <nav className="page-container" aria-label="Global">
-        <div className="flex items-center justify-between h-24 lg:h-32">
+        <div className="flex items-center justify-between h-20 md:h-24 lg:h-32">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <Logo size="lg" />
+            <Logo size="lg" className="h-10 md:h-12 lg:h-16 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -75,36 +75,39 @@ export function Header() {
             ))}
           </div>
 
-          {/* CTA Buttons */}
-          <div className="hidden lg:flex items-center gap-3">
-            <a
-              href="tel:+251936704476"
-              className="flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-full hover:bg-secondary/80 transition-colors"
-            >
-              <Phone className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold">+251 936 704 476</span>
-            </a>
-
+          {/* Header Actions (Visible on Mobile and Desktop) */}
+          <div className="flex items-center gap-2 md:gap-3">
             {/* Theme Toggle */}
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="rounded-full"
+              className="rounded-full h-9 w-9 md:h-10 md:w-10"
             >
-              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <Sun className="h-4 w-4 md:h-5 md:w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-4 w-4 md:h-5 md:w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               <span className="sr-only">Toggle theme</span>
+            </Button>
+
+            {/* Cart Button (Placeholder) */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full h-9 w-9 md:h-10 md:w-10 relative"
+            >
+              <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full" />
+              <span className="sr-only">Cart</span>
             </Button>
 
             {/* Login/User Button */}
             {!loading && (
-              <>
+              <div className="flex items-center">
                 {user ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="icon" className="rounded-full">
-                        <User className="h-5 w-5" />
+                      <Button variant="ghost" size="icon" className="rounded-full h-9 w-9 md:h-10 md:w-10">
+                        <User className="h-4 w-4 md:h-5 md:w-5" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
@@ -120,36 +123,37 @@ export function Header() {
                   </DropdownMenu>
                 ) : (
                   <Button
-                    variant="outline"
-                    size="sm"
-                    className="rounded-full px-4"
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-full h-9 w-9 md:h-10 md:w-10"
                     onClick={() => navigate("/admin/login")}
                   >
-                    <LogIn className="h-4 w-4 mr-2" />
-                    Login
+                    <LogIn className="h-4 w-4 md:h-5 md:w-5" />
+                    <span className="sr-only">Login</span>
                   </Button>
                 )}
-              </>
+              </div>
             )}
 
-            <Button asChild className="rounded-full px-6">
-              <Link to="/contact">Get a Quote</Link>
+            {/* Desktop-only Quote Button */}
+            <Button asChild className="hidden sm:flex rounded-full px-4 md:px-6 h-9 md:h-10">
+              <Link to="/contact">Get Quote</Link>
             </Button>
-          </div>
 
-          {/* Mobile menu button */}
-          <button
-            type="button"
-            className="lg:hidden p-2 -m-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <span className="sr-only">Toggle menu</span>
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
+            {/* Mobile menu button */}
+            <button
+              type="button"
+              className="lg:hidden p-2 -mr-2 flex items-center justify-center rounded-lg hover:bg-secondary transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <span className="sr-only">Toggle menu</span>
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -180,70 +184,10 @@ export function Header() {
                   <span>+251 936 704 476</span>
                 </a>
 
-                {/* Mobile Login/User Button */}
-                {!loading && (
-                  <>
-                    {user ? (
-                      <div className="space-y-2 mt-2">
-                        {(isAdmin || isEditor) && (
-                          <Button
-                            variant="outline"
-                            className="w-full justify-start"
-                            onClick={() => {
-                              navigate("/admin");
-                              setMobileMenuOpen(false);
-                            }}
-                          >
-                            <User className="h-4 w-4 mr-2" />
-                            Admin Dashboard
-                          </Button>
-                        )}
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start"
-                          onClick={() => {
-                            handleSignOut();
-                            setMobileMenuOpen(false);
-                          }}
-                        >
-                          Sign Out
-                        </Button>
-                      </div>
-                    ) : (
-                      <Button
-                        variant="outline"
-                        className="w-full mt-2"
-                        onClick={() => {
-                          navigate("/admin/login");
-                          setMobileMenuOpen(false);
-                        }}
-                      >
-                        <LogIn className="h-4 w-4 mr-2" />
-                        Login / Sign Up
-                      </Button>
-                    )}
-                  </>
-                )}
-
                 <Button asChild className="w-full mt-2">
                   <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
                     Get Quote
                   </Link>
-                </Button>
-
-                {/* Mobile Theme Toggle */}
-                <Button
-                  variant="outline"
-                  className="w-full mt-2 rounded-lg flex items-center justify-between px-4"
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                >
-                  <span className="text-sm font-semibold">
-                    {theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
-                  </span>
-                  <div className="flex items-center">
-                    <Sun className="h-5 w-5 transition-all dark:hidden" />
-                    <Moon className="h-5 w-5 transition-all hidden dark:block" />
-                  </div>
                 </Button>
               </div>
             </div>

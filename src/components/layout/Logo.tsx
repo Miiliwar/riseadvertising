@@ -7,40 +7,40 @@ interface LogoProps {
 }
 
 export function Logo({ className, variant = "full", size = "md" }: LogoProps) {
-    // Font sizes for different logo sizes
+    // Font sizes for different logo sizes (Responsive)
     const dotSizes = {
-        sm: "text-lg",
-        md: "text-2xl",
-        lg: "text-3xl",
-        xl: "text-5xl",
+        sm: "text-lg md:text-xl",
+        md: "text-xl md:text-2xl",
+        lg: "text-2xl md:text-3xl",
+        xl: "text-4xl md:text-5xl",
     };
 
     const rSizes = {
-        sm: "text-2xl",
-        md: "text-4xl",
-        lg: "text-5xl",
-        xl: "text-7xl",
+        sm: "text-2xl md:text-3xl",
+        md: "text-3xl md:text-4xl",
+        lg: "text-4xl md:text-5xl",
+        xl: "text-6xl md:text-7xl",
     };
 
     const iseSizes = {
-        sm: "text-xl",
-        md: "text-3xl",
-        lg: "text-4xl",
-        xl: "text-6xl",
+        sm: "text-xl md:text-2xl",
+        md: "text-2xl md:text-3xl",
+        lg: "text-3xl md:text-4xl",
+        xl: "text-5xl md:text-6xl",
     };
 
     const advertisingSizes = {
-        sm: "text-[0.6rem] tracking-[0.15em]",
-        md: "text-xs tracking-[0.2em]",
-        lg: "text-sm tracking-[0.25em]",
-        xl: "text-lg tracking-[0.3em]",
+        sm: "text-[0.5rem] md:text-[0.6rem] tracking-[0.1em] md:tracking-[0.15em]",
+        md: "text-[0.6rem] md:text-xs tracking-[0.15em] md:tracking-[0.2em]",
+        lg: "text-xs md:text-sm tracking-[0.2em] md:tracking-[0.25em]",
+        xl: "text-sm md:text-lg tracking-[0.25em] md:tracking-[0.3em]",
     };
 
     const taglineSizes = {
-        sm: "text-[0.4rem]",
-        md: "text-[0.5rem]",
-        lg: "text-[0.6rem]",
-        xl: "text-xs",
+        sm: "text-[0.3rem] md:text-[0.4rem]",
+        md: "text-[0.4rem] md:text-[0.5rem]",
+        lg: "text-[0.5rem] md:text-[0.6rem]",
+        xl: "text-[0.6rem] md:text-xs",
     };
 
     // Icon only version - just the stylized R with dot

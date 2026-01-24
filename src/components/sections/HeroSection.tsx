@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[90vh] flex items-center bg-hero-pattern overflow-hidden">
+    <section className="relative min-h-[90vh] flex items-center bg-hero-pattern overflow-hidden pt-20">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 right-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
@@ -13,7 +13,7 @@ export function HeroSection() {
       </div>
 
       {/* Grid pattern overlay */}
-      <div 
+      <div
         className="absolute inset-0 opacity-5"
         style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
@@ -22,14 +22,14 @@ export function HeroSection() {
         }}
       />
 
-      <div className="page-container relative z-10 py-20">
+      <div className="page-container relative z-10 py-12 lg:py-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-white"
+            className="text-white text-center lg:text-left"
           >
             {/* Badge */}
             <motion.div
@@ -42,26 +42,26 @@ export function HeroSection() {
               <span className="text-sm font-medium">Ethiopia's #1 Print Solutions</span>
             </motion.div>
 
-            <h1 className="hero-title mb-6">
+            <h1 className="hero-title mb-6 text-3xl md:text-5xl lg:text-6xl xl:text-7xl">
               Premium Print &{" "}
               <span className="text-primary">Advertising</span>{" "}
               Solutions
             </h1>
 
-            <p className="hero-subtitle text-white/80 mb-8 max-w-xl">
-              From rollup banners to large-format prints, we deliver exceptional quality 
+            <p className="hero-subtitle text-white/80 mb-8 max-w-xl mx-auto lg:mx-0 text-base md:text-lg lg:text-xl">
+              From rollup banners to large-format prints, we deliver exceptional quality
               that makes your brand stand out. Fast turnaround, competitive prices.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4">
-              <Button variant="hero" size="xl" asChild>
+            <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+              <Button variant="hero" size="xl" asChild className="w-full sm:w-auto">
                 <Link to="/contact">
                   Get Free Quote
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
-              <Button variant="heroOutline" size="xl" asChild>
+              <Button variant="heroOutline" size="xl" asChild className="w-full sm:w-auto">
                 <Link to="/portfolio">View Our Work</Link>
               </Button>
             </div>
@@ -71,14 +71,14 @@ export function HeroSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="mt-12 flex flex-wrap items-center gap-8"
+              className="mt-12 flex flex-wrap items-center justify-center lg:justify-start gap-6 lg:gap-8"
             >
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-2">
                   {[1, 2, 3, 4].map((i) => (
                     <div
                       key={i}
-                      className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-300 to-gray-500 border-2 border-white/20"
+                      className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-gray-300 to-gray-500 border-2 border-white/20"
                     />
                   ))}
                 </div>
@@ -105,11 +105,11 @@ export function HeroSection() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative hidden lg:block"
+            className="relative mt-8 lg:mt-0"
           >
-            <div className="relative aspect-square">
-              {/* Main video */}
-              <div className="absolute inset-8 rounded-3xl bg-gradient-to-br from-gray-700 to-gray-900 shadow-2xl overflow-hidden">
+            <div className="relative aspect-video lg:aspect-square max-w-2xl mx-auto">
+              {/* Main video container */}
+              <div className="absolute inset-0 lg:inset-8 rounded-2xl lg:rounded-3xl bg-gradient-to-br from-gray-700 to-gray-900 shadow-2xl overflow-hidden border border-white/10">
                 <video
                   autoPlay
                   loop
@@ -119,22 +119,22 @@ export function HeroSection() {
                 >
                   <source src="/videos/hero-video.mp4" type="video/mp4" />
                 </video>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               </div>
 
-              {/* Floating cards */}
+              {/* Floating indicators */}
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-0 right-0 bg-white rounded-2xl p-4 shadow-xl"
+                className="absolute -top-2 -right-2 lg:top-0 lg:right-0 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm rounded-2xl p-3 lg:p-4 shadow-xl border border-white/20 z-20"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Star className="h-6 w-6 text-primary fill-primary" />
+                <div className="flex items-center gap-2 lg:gap-3">
+                  <div className="w-8 h-8 lg:w-12 lg:h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <Star className="h-4 w-4 lg:h-6 lg:h-6 text-primary fill-primary" />
                   </div>
                   <div>
-                    <div className="font-bold text-foreground">4.9 Rating</div>
-                    <div className="text-xs text-muted-foreground">500+ Reviews</div>
+                    <div className="font-bold text-xs lg:text-base text-foreground">4.9 Rating</div>
+                    <div className="text-[10px] lg:text-xs text-muted-foreground whitespace-nowrap">500+ Reviews</div>
                   </div>
                 </div>
               </motion.div>
@@ -142,10 +142,12 @@ export function HeroSection() {
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute bottom-10 left-0 bg-white rounded-2xl p-4 shadow-xl"
+                className="absolute -bottom-2 -left-2 lg:bottom-10 lg:left-0 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm rounded-2xl p-3 lg:p-4 shadow-xl border border-white/20 z-20"
               >
-                {/* <div className="text-sm font-bold text-foreground">🚀 Express Delivery</div> */}
-                {/* <div className="text-xs text-muted-foreground">Same-day available</div> */}
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                  <span className="text-[10px] lg:text-xs font-bold text-foreground whitespace-nowrap">Active Solutions</span>
+                </div>
               </motion.div>
             </div>
           </motion.div>
