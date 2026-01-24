@@ -81,25 +81,25 @@ export default function AdminDashboard() {
           <p className="text-muted-foreground">Welcome to your admin panel</p>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Stats Grid - Forces grid-cols-2 immediately on mobile */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {statCards.map((stat, index) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-card text-card-foreground rounded-2xl p-6 shadow-sm border border-border"
+              className="bg-card text-card-foreground rounded-2xl p-4 md:p-6 shadow-sm border border-border"
             >
-              <div className="flex items-start justify-between">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">{stat.label}</p>
-                  <p className="text-3xl font-bold mt-1 text-foreground">
+                  <p className="text-xs md:text-sm text-muted-foreground">{stat.label}</p>
+                  <p className="text-2xl md:text-3xl font-bold mt-1 text-foreground">
                     {loading ? "..." : stat.value}
                   </p>
                 </div>
-                <div className={`p-3 rounded-xl ${stat.color}`}>
-                  <stat.icon className="h-6 w-6 text-white" />
+                <div className={`p-2 md:p-3 rounded-xl ${stat.color} self-end md:self-auto`}>
+                  <stat.icon className="h-5 w-5 md:h-6 md:w-6 text-white" />
                 </div>
               </div>
             </motion.div>

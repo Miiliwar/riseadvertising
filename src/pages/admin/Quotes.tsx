@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Eye, Download, Search } from "lucide-react";
+import { Eye, Download, Search, Info } from "lucide-react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,24 +118,36 @@ export default function AdminQuotes() {
   function exportCSV() {
     const filtered = filteredQuotes;
     const headers = [
+      "ID",
       "Name",
       "Company",
       "Email",
       "Phone",
       "Services",
+      "Quantity",
+      "Dimensions",
+      "Location",
+      "Deadline",
       "Message",
+      "Source",
       "Status",
       "Date",
     ];
     const rows = filtered.map((q) => [
+      q.id,
       q.name,
       q.company || "",
       q.email,
       q.phone,
       q.services?.join("; ") || "",
+      q.quantity || "",
+      `${q.width || ""} x ${q.height || ""}`,
+      q.delivery_location || "",
+      q.deadline || "",
       q.message || "",
+      q.source || "",
       q.status || "",
-      new Date(q.created_at).toLocaleDateString(),
+      new Date(q.created_at).toLocaleString(),
     ]);
 
     const csv = [headers.join(","), ...rows.map((r) => r.map((c) => `"${c}"`).join(","))].join(
@@ -310,107 +322,122 @@ export default function AdminQuotes() {
           </div>
         </div>
 
-        {/* Details Dialog */}
+        {/* Details Dialog - Enhanced Layout */}
         <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Quote Request Details</DialogTitle>
+              <DialogTitle className="flex items-center gap-2">
+                Quote #{selectedQuote?.id.slice(0, 8)}
+                <span className={`text-xs px-2 py-1 rounded-full font-normal ${getStatusStyle(selectedQuote?.status || 'new')}`}>
+                  {selectedQuote?.status?.toUpperCase() || 'NEW'}
+                </span>
+              </DialogTitle>
+              <p className="text-xs text-muted-foreground">
+                Submitted on {selectedQuote && new Date(selectedQuote.created_at).toLocaleString()}
+              </p>
             </DialogHeader>
             {selectedQuote && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Name</p>
-                    <p className="font-medium">{selectedQuote.name}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Company</p>
-                    <p className="font-medium">{selectedQuote.company || "-"}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Email</p>
-                    <a
-                      href={`mailto:${selectedQuote.email}`}
-                      className="font-medium text-primary hover:underline"
-                    >
-                      {selectedQuote.email}
-                    </a>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Phone</p>
-                    <a
-                      href={`tel:${selectedQuote.phone}`}
-                      className="font-medium text-primary hover:underline"
-                    >
-                      {selectedQuote.phone}
-                    </a>
+              <div className="space-y-8 mt-4">
+                {/* Section: Customer Info */}
+                <div className="space-y-4">
+                  <h4 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase flex items-center gap-2 border-b pb-2">
+                    <Info className="h-4 w-4" /> Customer Information
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <p className="text-xs text-muted-foreground">Full Name</p>
+                      <p className="font-medium text-lg">{selectedQuote.name}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs text-muted-foreground">Company</p>
+                      <p className="font-medium">{selectedQuote.company || "N/A"}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs text-muted-foreground">Email</p>
+                      <a href={`mailto:${selectedQuote.email}`} className="text-primary hover:underline font-medium break-all">
+                        {selectedQuote.email}
+                      </a>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs text-muted-foreground">Phone</p>
+                      <a href={`tel:${selectedQuote.phone}`} className="text-primary hover:underline font-medium">
+                        {selectedQuote.phone}
+                      </a>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs text-muted-foreground">Source</p>
+                      <p className="font-medium">{selectedQuote.source || "N/A"}</p>
+                    </div>
                   </div>
                 </div>
 
-                <div>
-                  <p className="text-sm text-muted-foreground mb-2">Services Requested</p>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedQuote.services?.map((s, i) => (
-                      <span
-                        key={i}
-                        className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm"
-                      >
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                {/* Section: Project Details */}
+                <div className="space-y-4">
+                  <h4 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase flex items-center gap-2 border-b pb-2">
+                    <Briefcase className="h-4 w-4" /> Project Requirements
+                  </h4>
 
-                {(selectedQuote.width || selectedQuote.height || selectedQuote.quantity) && (
-                  <div className="grid grid-cols-3 gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Quantity</p>
-                      <p className="font-medium">{selectedQuote.quantity || "-"}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Width</p>
-                      <p className="font-medium">{selectedQuote.width || "-"}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Height</p>
-                      <p className="font-medium">{selectedQuote.height || "-"}</p>
+                  <div className="space-y-2">
+                    <p className="text-xs text-muted-foreground">Services Requested</p>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedQuote.services?.map((s, i) => (
+                        <span key={i} className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                          {s}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                )}
 
-                {selectedQuote.message && (
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Message</p>
-                    <p className="bg-gray-50 p-3 rounded-lg">{selectedQuote.message}</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-xs text-muted-foreground">Quantity</p>
+                      <p className="font-bold text-lg">{selectedQuote.quantity || "-"}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Width</p>
+                      <p className="font-bold text-lg">{selectedQuote.width || "-"}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Height</p>
+                      <p className="font-bold text-lg">{selectedQuote.height || "-"}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Deadline</p>
+                      <p className="font-bold text-lg text-red-500">
+                        {selectedQuote.deadline ? new Date(selectedQuote.deadline).toLocaleDateString() : "-"}
+                      </p>
+                    </div>
                   </div>
-                )}
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Delivery Location</p>
-                    <p className="font-medium">{selectedQuote.delivery_location || "-"}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Deadline</p>
-                    <p className="font-medium">
-                      {selectedQuote.deadline
-                        ? new Date(selectedQuote.deadline).toLocaleDateString()
-                        : "-"}
+                  <div className="space-y-2">
+                    <p className="text-xs text-muted-foreground">Delivery Location</p>
+                    <p className="font-medium bg-gray-50 p-2 rounded border border-gray-100">
+                      {selectedQuote.delivery_location || "N/A"}
                     </p>
                   </div>
+
+                  <div className="space-y-2">
+                    <p className="text-xs text-muted-foreground">Message / Instructions</p>
+                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 text-sm whitespace-pre-wrap leading-relaxed">
+                      {selectedQuote.message}
+                    </div>
+                  </div>
                 </div>
 
-                <div>
-                  <p className="text-sm text-muted-foreground mb-2">Internal Notes</p>
+                {/* Section: Internal Notes */}
+                <div className="space-y-4 pt-4 border-t">
+                  <h4 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">Internal Notes</h4>
                   <Textarea
                     value={internalNotes}
                     onChange={(e) => setInternalNotes(e.target.value)}
-                    placeholder="Add notes about this quote..."
-                    rows={3}
+                    placeholder="Add private notes about this quote..."
+                    className="min-h-[100px]"
                   />
-                  <Button onClick={saveNotes} size="sm" className="mt-2">
-                    Save Notes
-                  </Button>
+                  <div className="flex justify-end">
+                    <Button onClick={saveNotes}>
+                      Save Notes
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
