@@ -16,13 +16,39 @@ export default function AdminLogin() {
   const [fullName, setFullName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, isAdmin, isEditor, user } = useAuth();
+  const { signIn, signUp, signOut, isAdmin, isEditor, user } = useAuth();
   const navigate = useNavigate();
 
   // If already logged in, redirect appropriately
-  if (user) {
+  // If already logged in, redirect appropriately
+  if (user && !loading) {
     if (isAdmin || isEditor) {
       navigate("/admin");
+    } else {
+      // User is logged in but no role
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-neutral-900 via-neutral-800 to-black flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full max-w-md bg-white dark:bg-neutral-900 rounded-2xl shadow-2xl p-8 text-center"
+          >
+            <div className="flex flex-col items-center mb-6">
+              <Logo size="lg" className="mb-4" />
+              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                <Lock className="h-8 w-8 text-yellow-600" />
+              </div>
+              <h2 className="text-xl font-bold mb-2">Access Restricted</h2>
+              <p className="text-muted-foreground mb-6">
+                You are logged in as <strong>{user.email}</strong>, but this account does not have admin privileges.
+              </p>
+              <Button onClick={() => signOut()} variant="outline" className="w-full">
+                Sign Out
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      );
     }
   }
 
@@ -36,7 +62,8 @@ export default function AdminLogin() {
         toast.error(error.message);
       } else {
         toast.success("Login successful!");
-        // Navigation will happen via auth state change
+        // Force reload to ensure session is picked up
+        window.location.href = "/admin";
       }
     } catch (error) {
       toast.error("An error occurred during login");
