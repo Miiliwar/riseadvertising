@@ -77,7 +77,7 @@ export default function AdminDashboard() {
     <AdminLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
           <p className="text-muted-foreground">Welcome to your admin panel</p>
         </div>
 
@@ -89,12 +89,12 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-2xl p-6 shadow-sm"
+              className="bg-card text-card-foreground rounded-2xl p-6 shadow-sm border border-border"
             >
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">{stat.label}</p>
-                  <p className="text-3xl font-bold mt-1">
+                  <p className="text-3xl font-bold mt-1 text-foreground">
                     {loading ? "..." : stat.value}
                   </p>
                 </div>
@@ -107,31 +107,31 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm">
-          <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
+        <div className="bg-card text-card-foreground rounded-2xl p-6 shadow-sm border border-border">
+          <h2 className="text-xl font-bold mb-4 text-foreground">Quick Actions</h2>
           <div className="grid sm:grid-cols-3 gap-4">
             <a
               href="/admin/services"
-              className="p-4 border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors"
+              className="p-4 border border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors group"
             >
-              <Briefcase className="h-8 w-8 text-primary mb-2" />
-              <h3 className="font-semibold">Manage Services</h3>
+              <Briefcase className="h-8 w-8 text-primary mb-2 group-hover:scale-110 transition-transform" />
+              <h3 className="font-semibold text-foreground">Manage Services</h3>
               <p className="text-sm text-muted-foreground">Add or edit services</p>
             </a>
             <a
               href="/admin/portfolio"
-              className="p-4 border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors"
+              className="p-4 border border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors group"
             >
-              <Images className="h-8 w-8 text-primary mb-2" />
-              <h3 className="font-semibold">Manage Portfolio</h3>
+              <Images className="h-8 w-8 text-primary mb-2 group-hover:scale-110 transition-transform" />
+              <h3 className="font-semibold text-foreground">Manage Portfolio</h3>
               <p className="text-sm text-muted-foreground">Add or edit portfolio items</p>
             </a>
             <a
               href="/admin/quotes"
-              className="p-4 border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors"
+              className="p-4 border border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors group"
             >
-              <MessageSquare className="h-8 w-8 text-primary mb-2" />
-              <h3 className="font-semibold">View Quotes</h3>
+              <MessageSquare className="h-8 w-8 text-primary mb-2 group-hover:scale-110 transition-transform" />
+              <h3 className="font-semibold text-foreground">View Quotes</h3>
               <p className="text-sm text-muted-foreground">
                 {stats.newQuotes} new quote requests
               </p>

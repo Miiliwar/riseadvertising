@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, Edit, Trash2, Eye, EyeOff, Upload, Image } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, Upload, Image, X } from "lucide-react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -105,13 +105,11 @@ export default function AdminServices() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       toast.error('Please select an image file');
       return;
     }
 
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast.error('Image size should be less than 5MB');
       return;
@@ -203,7 +201,7 @@ export default function AdminServices() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Services</h1>
+            <h1 className="text-3xl font-bold text-foreground">Services</h1>
             <p className="text-muted-foreground">Manage your service offerings</p>
           </div>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -213,7 +211,7 @@ export default function AdminServices() {
                 Add Service
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-card text-card-foreground">
               <DialogHeader>
                 <DialogTitle>
                   {editingService ? "Edit Service" : "Add New Service"}
@@ -230,6 +228,7 @@ export default function AdminServices() {
                         setFormData({ ...formData, title: e.target.value })
                       }
                       required
+                      className="bg-background text-foreground"
                     />
                   </div>
                   <div className="space-y-2">
@@ -241,6 +240,7 @@ export default function AdminServices() {
                         setFormData({ ...formData, slug: e.target.value })
                       }
                       required
+                      className="bg-background text-foreground"
                     />
                   </div>
                 </div>
@@ -254,6 +254,7 @@ export default function AdminServices() {
                       setFormData({ ...formData, short_description: e.target.value })
                     }
                     rows={2}
+                    className="bg-background text-foreground"
                   />
                 </div>
 
@@ -266,6 +267,7 @@ export default function AdminServices() {
                       setFormData({ ...formData, long_description: e.target.value })
                     }
                     rows={4}
+                    className="bg-background text-foreground"
                   />
                 </div>
 
@@ -279,6 +281,7 @@ export default function AdminServices() {
                         setFormData({ ...formData, price_range: e.target.value })
                       }
                       placeholder="From ETB 2,500"
+                      className="bg-background text-foreground"
                     />
                   </div>
                   <div className="space-y-2">
@@ -290,6 +293,7 @@ export default function AdminServices() {
                         setFormData({ ...formData, icon_name: e.target.value })
                       }
                       placeholder="Flag, Image, etc."
+                      className="bg-background text-foreground"
                     />
                   </div>
                 </div>
@@ -298,7 +302,7 @@ export default function AdminServices() {
                   <Label>Service Image</Label>
                   <div className="flex flex-col gap-4">
                     {imagePreview ? (
-                      <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-gray-100 border">
+                      <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-muted border">
                         <img
                           src={imagePreview}
                           alt="Preview"
@@ -318,7 +322,7 @@ export default function AdminServices() {
                         </Button>
                       </div>
                     ) : (
-                      <div className="border-2 border-dashed rounded-xl p-8 text-center bg-gray-50 hover:bg-gray-100 transition-colors">
+                      <div className="border-2 border-dashed rounded-xl p-8 text-center bg-muted hover:bg-muted/80 transition-colors">
                         <Image className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
                         <p className="text-sm text-muted-foreground mb-4">
                           Upload a service image (Max 5MB)
@@ -351,6 +355,7 @@ export default function AdminServices() {
                           setImagePreview(e.target.value);
                         }}
                         placeholder="https://..."
+                        className="bg-background text-foreground"
                       />
                     </div>
                   </div>
@@ -383,93 +388,97 @@ export default function AdminServices() {
           </Dialog>
         </div>
 
-        {/* Services Table */}
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b">
-              <tr>
-                <th className="text-left p-4 font-semibold">Title</th>
-                <th className="text-left p-4 font-semibold hidden md:table-cell">Price</th>
-                <th className="text-left p-4 font-semibold">Status</th>
-                <th className="text-right p-4 font-semibold">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={4} className="p-8 text-center text-muted-foreground">
-                    Loading...
-                  </td>
-                </tr>
-              ) : services.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="p-8 text-center text-muted-foreground">
-                    No services found. Create your first service!
-                  </td>
-                </tr>
-              ) : (
-                services.map((service, index) => (
-                  <motion.tr
-                    key={service.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: index * 0.05 }}
-                    className="border-b last:border-0 hover:bg-gray-50"
-                  >
-                    <td className="p-4">
-                      <div>
-                        <p className="font-medium">{service.title}</p>
-                        <p className="text-sm text-muted-foreground truncate max-w-xs">
-                          {service.short_description}
-                        </p>
-                      </div>
-                    </td>
-                    <td className="p-4 hidden md:table-cell">
-                      <span className="text-sm">{service.price_range || "-"}</span>
-                    </td>
-                    <td className="p-4">
-                      <button
-                        onClick={() => togglePublished(service)}
-                        className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${service.published
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-600"
-                          }`}
+        {/* Services Grid (Card Layout) */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {loading ? (
+            <div className="col-span-full text-center py-12 text-muted-foreground">
+              Loading...
+            </div>
+          ) : services.length === 0 ? (
+            <div className="col-span-full text-center py-12 text-muted-foreground">
+              No services found. Create your first service!
+            </div>
+          ) : (
+            services.map((service, index) => (
+              <motion.div
+                key={service.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className="bg-card text-card-foreground rounded-2xl shadow-sm overflow-hidden"
+              >
+                <div className="aspect-video bg-muted relative">
+                  {service.image_url ? (
+                    <img
+                      src={service.image_url}
+                      alt={service.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                      <Image className="h-10 w-10 opacity-20" />
+                    </div>
+                  )}
+                  <div className="absolute top-2 right-2">
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium backdrop-blur-sm ${service.published
+                          ? "bg-green-100/90 text-green-800"
+                          : "bg-gray-100/90 text-gray-800"
+                        }`}
+                    >
+                      {service.published ? "Published" : "Draft"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-5">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <h3 className="font-bold text-lg leading-tight">{service.title}</h3>
+                      <p className="text-sm text-primary font-medium mt-1">{service.price_range}</p>
+                    </div>
+                    {service.icon_name && (
+                      <span className="text-xs bg-muted px-2 py-1 rounded text-muted-foreground">
+                        {service.icon_name}
+                      </span>
+                    )}
+                  </div>
+
+                  <p className="text-sm text-muted-foreground line-clamp-2 mb-4 h-10">
+                    {service.short_description}
+                  </p>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-border">
+                    <button
+                      onClick={() => togglePublished(service)}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
+                    >
+                      {service.published ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                      {service.published ? "Unpublish" : "Publish"}
+                    </button>
+
+                    <div className="flex gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => openEditDialog(service)}
                       >
-                        {service.published ? (
-                          <>
-                            <Eye className="h-3 w-3" /> Published
-                          </>
-                        ) : (
-                          <>
-                            <EyeOff className="h-3 w-3" /> Draft
-                          </>
-                        )}
-                      </button>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => openEditDialog(service)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDelete(service.id)}
-                          className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </td>
-                  </motion.tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(service.id)}
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))
+          )}
         </div>
       </div>
     </AdminLayout>
