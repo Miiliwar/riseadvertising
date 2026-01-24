@@ -96,39 +96,37 @@ export function Header() {
 
 
             {/* Login/User Button */}
-            {!loading && (
-              <div className="flex items-center">
-                {user ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="rounded-full h-9 w-9 md:h-10 md:w-10">
-                        <User className="h-4 w-4 md:h-5 md:w-5" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      {(isAdmin || isEditor) && (
-                        <DropdownMenuItem onClick={() => navigate("/admin")}>
-                          Admin Dashboard
-                        </DropdownMenuItem>
-                      )}
-                      <DropdownMenuItem onClick={handleSignOut}>
-                        Sign Out
+            <div className="flex items-center">
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="rounded-full h-9 w-9 md:h-10 md:w-10">
+                      <User className="h-4 w-4 md:h-5 md:w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    {(isAdmin || isEditor) && (
+                      <DropdownMenuItem onClick={() => navigate("/admin")}>
+                        Admin Dashboard
                       </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="rounded-full h-9 w-9 md:h-10 md:w-10"
-                    onClick={() => navigate("/admin/login")}
-                  >
-                    <LogIn className="h-4 w-4 md:h-5 md:w-5" />
-                    <span className="sr-only">Login</span>
-                  </Button>
-                )}
-              </div>
-            )}
+                    )}
+                    <DropdownMenuItem onClick={handleSignOut}>
+                      Sign Out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full h-9 w-9 md:h-10 md:w-10"
+                  onClick={() => navigate("/admin/login")}
+                >
+                  <LogIn className="h-4 w-4 md:h-5 md:w-5" />
+                  <span className="sr-only">Login</span>
+                </Button>
+              )}
+            </div>
 
             {/* Desktop-only Quote Button */}
             <Button asChild className="hidden sm:flex rounded-full px-4 md:px-6 h-9 md:h-10">
