@@ -116,6 +116,31 @@ export default function ContactPage() {
         return;
       }
 
+      // Send email notification (fire and forget - don't block on failure)
+      try {
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+        await fetch(`${supabaseUrl}/functions/v1/send-quote-notification`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            company: data.company,
+            services: data.services,
+            message: data.message,
+            quantity: data.quantity,
+            width: data.width,
+            height: data.height,
+            delivery_location: data.location,
+            deadline: data.deadline,
+          }),
+        });
+      } catch (emailError) {
+        console.error("Email notification failed:", emailError);
+        // Don't show error to user - quote was still saved
+      }
+
       setIsSubmitting(false);
       setIsSubmitted(true);
       toast.success("Quote request submitted successfully!");
