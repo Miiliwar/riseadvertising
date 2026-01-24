@@ -89,16 +89,6 @@ export function Header() {
               <span className="sr-only">Toggle theme</span>
             </Button>
 
-            {/* Cart Button (Placeholder) */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full h-9 w-9 md:h-10 md:w-10 relative"
-            >
-              <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full" />
-              <span className="sr-only">Cart</span>
-            </Button>
 
             {/* Login/User Button */}
             {!loading && (
