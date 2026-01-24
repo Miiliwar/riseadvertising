@@ -107,47 +107,47 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="relative mt-8 lg:mt-0"
           >
-            <div className="relative aspect-video lg:aspect-square max-w-2xl mx-auto">
-              {/* Main video container */}
-              <div className="absolute inset-0 lg:inset-8 rounded-2xl lg:rounded-3xl bg-gradient-to-br from-gray-700 to-gray-900 shadow-2xl overflow-hidden border border-white/10">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
-                >
-                  <source src="/videos/hero-video.mp4" type="video/mp4" />
-                </video>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              </div>
-
-              {/* Floating indicators */}
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-2 -right-2 lg:top-0 lg:right-0 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm rounded-2xl p-3 lg:p-4 shadow-xl border border-white/20 z-20"
+            {/* Video Container */}
+            <div className="relative aspect-video lg:aspect-square max-w-2xl mx-auto rounded-2xl lg:rounded-3xl bg-gradient-to-br from-gray-700 to-gray-900 shadow-2xl overflow-hidden border border-white/10 mb-6">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover"
               >
-                <div className="flex items-center gap-2 lg:gap-3">
-                  <div className="w-8 h-8 lg:w-12 lg:h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Star className="h-4 w-4 lg:h-6 lg:h-6 text-primary fill-primary" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-xs lg:text-base text-foreground">4.9 Rating</div>
-                    <div className="text-[10px] lg:text-xs text-muted-foreground whitespace-nowrap">500+ Reviews</div>
-                  </div>
+                <source src="/videos/hero-video.mp4" type="video/mp4" />
+              </video>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            </div>
+
+            {/* Cards Container - Now outside video */}
+            <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10 flex items-center gap-3"
+              >
+                <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+                  <Star className="h-5 w-5 text-primary fill-primary" />
+                </div>
+                <div>
+                  <div className="font-bold text-white text-base">4.9 Rating</div>
+                  <div className="text-xs text-white/60">500+ Reviews</div>
                 </div>
               </motion.div>
 
               <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute -bottom-2 -left-2 lg:bottom-10 lg:left-0 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm rounded-2xl p-3 lg:p-4 shadow-xl border border-white/20 z-20"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10 flex items-center gap-3"
               >
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-[10px] lg:text-xs font-bold text-foreground whitespace-nowrap">Active Solutions</span>
+                <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center shrink-0">
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
                 </div>
+                <span className="font-bold text-white text-base">Active Solutions</span>
               </motion.div>
             </div>
           </motion.div>
