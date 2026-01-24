@@ -49,9 +49,9 @@ export function Logo({ className, variant = "full", size = "md" }: LogoProps) {
             <div className={cn("flex items-baseline", className)}>
                 <span className={cn("font-black text-primary leading-none", dotSizes[size])}>.</span>
                 <span className={cn(
-                    "font-serif font-bold italic leading-none text-foreground",
+                    "leading-none text-foreground",
                     rSizes[size]
-                )}>
+                )} style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontStyle: "italic" }}>
                     R
                 </span>
             </div>
@@ -68,10 +68,10 @@ export function Logo({ className, variant = "full", size = "md" }: LogoProps) {
             <div className="flex items-baseline">
                 <span className={cn("font-black text-primary leading-none", dotSizes[size])}>.</span>
                 <span className={cn(
-                    "font-serif font-bold italic leading-none",
+                    "leading-none",
                     textColor,
                     rSizes[size]
-                )}>
+                )} style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontStyle: "italic" }}>
                     R
                 </span>
                 <span className={cn(
