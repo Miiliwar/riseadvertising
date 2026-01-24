@@ -53,8 +53,13 @@ export function Header() {
       <nav className="page-container" aria-label="Global">
         <div className="flex items-center justify-between h-20 md:h-24 lg:h-32">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <Logo size="lg" className="h-10 md:h-12 lg:h-16 w-auto" />
+          <Link to="/" className="flex items-center gap-2">
+            <div className="lg:hidden">
+              <Logo size="md" />
+            </div>
+            <div className="hidden lg:block">
+              <Logo size="lg" />
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -76,7 +81,7 @@ export function Header() {
           </div>
 
           {/* Header Actions (Visible on Mobile and Desktop) */}
-          <div className="flex items-center gap-2 md:gap-3">
+          <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
             {/* Theme Toggle */}
             <Button
               variant="ghost"

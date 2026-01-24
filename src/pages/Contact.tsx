@@ -92,7 +92,7 @@ export default function ContactPage() {
     setIsSubmitting(true);
     try {
       const { supabase } = await import("@/integrations/supabase/client");
-      
+
       const { error } = await supabase.from("quote_requests").insert({
         name: data.name,
         email: data.email,
@@ -543,9 +543,9 @@ export default function ContactPage() {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           title="RISE Advertising Location - ZAM Mall, Lebu, Addis Ababa"
-          className="grayscale hover:grayscale-0 transition-all duration-500"
+          className="w-full h-full border-0"
         />
-        <div className="absolute top-11 right-4 bg-background/95 backdrop-blur-sm p-4 rounded-xl shadow-lg max-w-xs">
+        <div className="hidden md:block absolute top-11 right-4 bg-background/95 backdrop-blur-sm p-4 rounded-xl shadow-lg max-w-xs">
           <h3 className="font-bold text-lg mb-1">Visit Our Office</h3>
           <p className="text-sm text-muted-foreground">
             ZAM Mall 2nd Floor, Lebu, Addis Ababa, Ethiopia
