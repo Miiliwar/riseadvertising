@@ -74,17 +74,14 @@ export function Footer() {
 
       {/* Main Footer Content */}
       <div className="page-container py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-y-12 gap-x-8">
           {/* Brand Column */}
-          <div className="lg:col-span-2">
+          <div className="col-span-2">
             <Link to="/" className="flex items-center">
               <Logo size="lg" variant="footer" />
             </Link>
             <p className="mt-4 text-white/70 max-w-sm">
               Ethiopia's premier advertising and print solutions provider. We bring your brand to life with high-quality prints, banners, and signage.
-            </p>
-            <p className="mt-2 text-sm text-primary font-semibold">
-              THE BRANDING EMPIRE
             </p>
             <div className="mt-6 space-y-3">
               <a
@@ -92,21 +89,14 @@ export function Footer() {
                 className="flex items-center gap-3 text-white/80 hover:text-primary transition-colors"
               >
                 <Phone className="h-5 w-5 text-primary" />
-                <span>+251 936 704 476</span>
-              </a>
-              <a
-                href="tel:+251992921401"
-                className="flex items-center gap-3 text-white/80 hover:text-primary transition-colors"
-              >
-                <Phone className="h-5 w-5 text-primary" />
-                <span>+251 992 921 401</span>
+                <span className="text-sm">+251 936 704 476</span>
               </a>
               <a
                 href="mailto:riseadvertising11@gmail.com"
                 className="flex items-center gap-3 text-white/80 hover:text-primary transition-colors"
               >
                 <Mail className="h-5 w-5 text-primary" />
-                <span>riseadvertising11@gmail.com</span>
+                <span className="text-sm">riseadvertising11@gmail.com</span>
               </a>
               <a
                 href="https://www.google.com/maps/place/RISE+ADVERTISING+AND+PRINTING/@8.9510213,38.7177277,17z/data=!3m1!1e3"
@@ -115,20 +105,20 @@ export function Footer() {
                 className="flex items-start gap-3 text-white/80 hover:text-primary transition-colors"
               >
                 <MapPin className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                <span>ZAM Mall 2nd Floor, Lebu, Addis Ababa, Ethiopia</span>
+                <span className="text-sm line-clamp-2">ZAM Mall 2nd Floor, Lebu, Addis Ababa, Ethiopia</span>
               </a>
             </div>
           </div>
 
           {/* Services Column */}
-          <div>
-            <h4 className="text-lg font-bold mb-4 text-white">Services</h4>
+          <div className="col-span-1">
+            <h4 className="text-base font-bold mb-4 text-white uppercase tracking-wider">Services</h4>
             <ul className="space-y-2.5">
               {footerLinks.services.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-white/70 hover:text-primary transition-colors"
+                    className="text-white/60 hover:text-primary transition-colors text-sm"
                   >
                     {link.name}
                   </Link>
@@ -138,14 +128,14 @@ export function Footer() {
           </div>
 
           {/* Company Column */}
-          <div>
-            <h4 className="text-lg font-bold mb-4 text-white">Company</h4>
+          <div className="col-span-1">
+            <h4 className="text-base font-bold mb-4 text-white uppercase tracking-wider">Company</h4>
             <ul className="space-y-2.5">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-white/70 hover:text-primary transition-colors"
+                    className="text-white/60 hover:text-primary transition-colors text-sm"
                   >
                     {link.name}
                   </Link>
@@ -155,14 +145,14 @@ export function Footer() {
           </div>
 
           {/* Legal Column */}
-          <div>
-            <h4 className="text-lg font-bold mb-4 text-white">Legal</h4>
-            <ul className="space-y-2.5">
+          <div className="col-span-2 lg:col-span-1">
+            <h4 className="text-base font-bold mb-4 text-white uppercase tracking-wider">Legal</h4>
+            <ul className="flex flex-wrap lg:flex-col gap-y-2.5 gap-x-6">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-white/70 hover:text-primary transition-colors"
+                    className="text-white/60 hover:text-primary transition-colors text-sm"
                   >
                     {link.name}
                   </Link>
@@ -175,9 +165,9 @@ export function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-white/10">
-        <div className="page-container py-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <p className="text-white/60 text-sm">
+        <div className="page-container py-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <p className="text-white/40 text-xs">
               © {new Date().getFullYear()} RISE Advertising. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
@@ -189,7 +179,7 @@ export function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-white/10 text-white hover:bg-primary transition-colors"
+                    className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-white/60 hover:bg-primary hover:text-white transition-all"
                     aria-label={social.name}
                   >
                     <IconComponent className="h-5 w-5" />
