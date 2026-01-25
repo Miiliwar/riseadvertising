@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
@@ -16,15 +16,15 @@ export default function AdminLogin() {
   const [fullName, setFullName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, isAdmin, isEditor, user } = useAuth();
+  const { signIn, signUp, isAdmin, isEditor, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   // If already logged in, redirect appropriately
-  if (user) {
-    if (isAdmin || isEditor) {
-      navigate("/admin");
+  useEffect(() => {
+    if (!authLoading && user && (isAdmin || isEditor)) {
+      navigate("/admin", { replace: true });
     }
-  }
+  }, [user, isAdmin, isEditor, authLoading, navigate]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
