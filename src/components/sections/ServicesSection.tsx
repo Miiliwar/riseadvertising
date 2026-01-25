@@ -1,113 +1,126 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Image, Printer, Flag, Sticker, Grid3X3, Palette } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+// Service images - you can replace these with actual images
+import lightbox from "@/assets/portfolio/lightbox.jpg";
+import signage3d from "@/assets/portfolio/3d-signage.jpg";
+import teardropFlags from "@/assets/portfolio/teardrop-flags.jpg";
+import brandingItems from "@/assets/portfolio/branding-items.jpg";
 
 const services = [
   {
     id: 1,
-    title: "Rollup Banners",
-    description: "Premium retractable banners perfect for events, exhibitions, and promotional displays.",
-    icon: Flag,
-    slug: "rollup-banners",
-    price: "From ₦25,000",
+    title: "Signage & LED / Neon Signs",
+    description: "High-impact 3D lettering, lightboxes, and custom neon signs that attract attention 24/7.",
+    image: signage3d,
+    slug: "signage",
   },
   {
     id: 2,
-    title: "PVC Banners",
-    description: "Durable outdoor and indoor banners with vibrant, weather-resistant prints.",
-    icon: Image,
-    slug: "pvc-banners",
-    price: "From ₦3,000/sqm",
+    title: "Printing & Large Format",
+    description: "High-resolution flex banners, billboards, and vinyl stickers for maximum outdoor visibility.",
+    image: brandingItems,
+    slug: "printing",
   },
   {
     id: 3,
-    title: "Backdrops",
-    description: "Large-format backdrop solutions for events, photo booths, and stage designs.",
-    icon: Grid3X3,
-    slug: "backdrops",
-    price: "From ₦45,000",
+    title: "Promotional & Branding Items",
+    description: "Roll-up banners, flags, teardrop stands, corporate gifts, and complete branding packages.",
+    image: teardropFlags,
+    slug: "promotional",
   },
   {
     id: 4,
-    title: "Sticker Printing",
-    description: "Custom stickers and labels for branding, packaging, and promotional materials.",
-    icon: Sticker,
-    slug: "sticker-printing",
-    price: "From ₦500/sheet",
-  },
-  {
-    id: 5,
-    title: "Pop-up Stands",
-    description: "Portable exhibition displays that set up in minutes for maximum impact.",
-    icon: Printer,
-    slug: "pop-up-stands",
-    price: "From ₦85,000",
-  },
-  {
-    id: 6,
-    title: "Custom Prints",
-    description: "Bespoke printing solutions tailored to your unique requirements.",
-    icon: Palette,
-    slug: "custom-prints",
-    price: "Get Quote",
+    title: "Apparel & Corporate Gifts",
+    description: "T-shirt printing, caps, pens, notebooks, mugs, and customized promotional items.",
+    image: lightbox,
+    slug: "apparel",
   },
 ];
 
 export function ServicesSection() {
   return (
-    <section className="py-20 lg:py-28 bg-secondary/30">
+    <section className="py-20 lg:py-28">
       <div className="page-container">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mb-16"
         >
-          <div className="red-accent-bar mx-auto mb-6" />
-          <h2 className="section-title mb-4">Our Services</h2>
-          <p className="section-subtitle mx-auto">
-            From concept to completion, we offer comprehensive print and advertising solutions 
-            to help your business stand out.
+          <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+            CORE SERVICES
           </p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase">
+            Our Core Branding &<br />Printing Services
+          </h2>
         </motion.div>
 
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, index) => (
-            <motion.div
-              key={service.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Link
-                to={`/services/${service.slug}`}
-                className="service-card group block p-6 h-full"
+        {/* Services Layout */}
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
+          {/* Left: Service List with Images */}
+          <div className="space-y-8">
+            {services.map((service, index) => (
+              <motion.div
+                key={service.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="flex gap-6 items-start"
               >
-                {/* Icon */}
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                  <service.icon className="h-7 w-7 text-primary group-hover:text-primary-foreground transition-colors" />
+                {/* Service Image */}
+                <div className="w-32 h-32 md:w-40 md:h-40 flex-shrink-0 rounded-lg overflow-hidden bg-secondary">
+                  <img 
+                    src={service.image} 
+                    alt={service.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-
-                {/* Content */}
-                <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-                  {service.title}
-                </h3>
-                <p className="text-muted-foreground mb-4">{service.description}</p>
-
-                {/* Footer */}
-                <div className="flex items-center justify-between pt-4 border-t border-border">
-                  <span className="text-sm font-semibold text-primary">{service.price}</span>
-                  <span className="flex items-center gap-1 text-sm font-medium text-muted-foreground group-hover:text-primary transition-colors">
-                    Learn More
-                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </span>
+                
+                {/* Service Content */}
+                <div className="flex-1">
+                  <h3 className="text-lg md:text-xl font-bold text-primary mb-2">
+                    {service.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm mb-3">
+                    {service.description}
+                  </p>
+                  <Button 
+                    size="sm" 
+                    className="rounded-none"
+                    asChild
+                  >
+                    <Link to={`/services/${service.slug}`}>
+                      Learn More
+                    </Link>
+                  </Button>
                 </div>
-              </Link>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Right: Featured Image */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            {/* Red accent bar */}
+            <div className="absolute -top-4 right-0 w-1/2 h-2 bg-primary" />
+            
+            <div className="bg-primary rounded-lg overflow-hidden">
+              <img 
+                src={teardropFlags}
+                alt="RISE Advertising - Branding Solutions"
+                className="w-full h-auto"
+              />
+            </div>
+          </motion.div>
         </div>
 
         {/* View All CTA */}
@@ -115,7 +128,7 @@ export function ServicesSection() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mt-12"
+          className="text-center mt-16"
         >
           <Link
             to="/services"

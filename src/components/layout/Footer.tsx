@@ -6,13 +6,19 @@ import logo from "@/assets/logo.png";
 import { Logo } from "./Logo";
 
 const footerLinks = {
+  products: [
+    { name: "Lightbox Signage", href: "/services/lightbox" },
+    { name: "3D Lettering", href: "/services/3d-lettering" },
+    { name: "LED & Neon Signs", href: "/services/led-signs" },
+    { name: "Roll-Up Banners", href: "/services/rollup-banners" },
+    { name: "Flex Banners", href: "/services/flex-banners" },
+    { name: "Stickers & Vinyl", href: "/services/stickers" },
+  ],
   services: [
-    { name: "Rollup Banners", href: "/services/rollup-banners" },
-    { name: "PVC Banners", href: "/services/pvc-banners" },
-    { name: "Backdrops", href: "/services/backdrops" },
-    { name: "Sticker Printing", href: "/services/sticker-printing" },
-    { name: "Pop-up Stands", href: "/services/pop-up-stands" },
-    { name: "Custom Prints", href: "/services/custom-prints" },
+    { name: "Graphic Design", href: "/services/design" },
+    { name: "Fabrication", href: "/services/fabrication" },
+    { name: "Installation", href: "/services/installation" },
+    { name: "Maintenance", href: "/services/maintenance" },
   ],
   company: [
     { name: "About Us", href: "/about" },
@@ -74,7 +80,7 @@ export function Footer() {
 
       {/* Main Footer Content */}
       <div className="page-container py-16">
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-y-12 gap-x-8">
+        <div className="grid grid-cols-2 lg:grid-cols-6 gap-y-12 gap-x-8">
           {/* Brand Column */}
           <div className="col-span-2">
             <Link to="/" className="flex items-center">
@@ -108,6 +114,23 @@ export function Footer() {
                 <span className="text-sm line-clamp-2">ZAM Mall 2nd Floor, Lebu, Addis Ababa, Ethiopia</span>
               </a>
             </div>
+          </div>
+
+          {/* Products Column */}
+          <div className="col-span-1">
+            <h4 className="text-base font-bold mb-4 text-white uppercase tracking-wider">Products</h4>
+            <ul className="space-y-2.5">
+              {footerLinks.products.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    to={link.href}
+                    className="text-white/60 hover:text-primary transition-colors text-sm"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Services Column */}
