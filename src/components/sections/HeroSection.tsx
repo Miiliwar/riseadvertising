@@ -7,11 +7,11 @@ import brandingShowcase from "@/assets/branding-showcase.jpg";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[85vh] flex flex-col pt-[80px]">
+    <section className="relative min-h-[85vh] flex flex-col pt-[64px]">
       {/* Main Hero */}
       <div className="flex-1 bg-background flex items-center">
-        <div className="page-container py-6 lg:py-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="page-container py-4 lg:py-6">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
             {/* Text Content */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -19,7 +19,7 @@ export function HeroSection() {
               transition={{ duration: 0.6 }}
               className="text-center lg:text-left"
             >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight mb-6 uppercase">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight mb-4 uppercase">
                 Signage, Printing &{" "}
                 <span className="text-primary">Branding Solutions</span>
               </h1>
