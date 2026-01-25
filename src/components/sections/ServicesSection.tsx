@@ -95,7 +95,7 @@ export function ServicesSection() {
                     asChild
                   >
                     <Link to={`/services/${service.slug}`}>
-                      Learn More
+                      View Details
                     </Link>
                   </Button>
                 </div>
