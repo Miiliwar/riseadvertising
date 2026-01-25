@@ -24,7 +24,7 @@ export function HeroSection() {
                 <span className="text-primary">Branding Solutions</span>
               </h1>
 
-              <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0">
+              <p className="text-base md:text-lg text-muted-foreground mb-6 max-w-xl mx-auto lg:mx-0">
                 Helping businesses stand out with quality signage, printing, and creative branding.
               </p>
 
