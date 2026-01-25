@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import logoFull from "@/assets/logo-full.png";
 
 interface LogoProps {
     className?: string;
@@ -7,97 +8,28 @@ interface LogoProps {
 }
 
 export function Logo({ className, variant = "full", size = "md" }: LogoProps) {
-    // Font sizes for different logo sizes (Responsive)
-    const dotSizes = {
-        sm: "text-lg md:text-xl",
-        md: "text-xl md:text-2xl",
-        lg: "text-2xl md:text-3xl",
-        xl: "text-4xl md:text-5xl",
+    // Height sizes for different logo sizes
+    const heights = {
+        sm: "h-8 md:h-10",
+        md: "h-10 md:h-12",
+        lg: "h-12 md:h-14",
+        xl: "h-16 md:h-20",
     };
 
-    const rSizes = {
-        sm: "text-2xl md:text-3xl",
-        md: "text-3xl md:text-4xl",
-        lg: "text-4xl md:text-5xl",
-        xl: "text-6xl md:text-7xl",
-    };
-
-    const iseSizes = {
-        sm: "text-xl md:text-2xl",
-        md: "text-2xl md:text-3xl",
-        lg: "text-3xl md:text-4xl",
-        xl: "text-5xl md:text-6xl",
-    };
-
-    const advertisingSizes = {
-        sm: "text-[0.5rem] md:text-[0.6rem] tracking-[0.1em] md:tracking-[0.15em]",
-        md: "text-[0.6rem] md:text-xs tracking-[0.15em] md:tracking-[0.2em]",
-        lg: "text-xs md:text-sm tracking-[0.2em] md:tracking-[0.25em]",
-        xl: "text-sm md:text-lg tracking-[0.25em] md:tracking-[0.3em]",
-    };
-
-    const taglineSizes = {
-        sm: "text-[0.3rem] md:text-[0.4rem]",
-        md: "text-[0.4rem] md:text-[0.5rem]",
-        lg: "text-[0.5rem] md:text-[0.6rem]",
-        xl: "text-[0.6rem] md:text-xs",
-    };
-
-    // Icon only version - just the stylized R with dot
-    if (variant === "icon") {
-        return (
-            <div className={cn("flex items-baseline", className)}>
-                <span className={cn("font-black text-primary leading-none", dotSizes[size])}>.</span>
-                <span className={cn(
-                    "leading-none text-foreground",
-                    rSizes[size]
-                )} style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontStyle: "italic" }}>
-                    R
-                </span>
-            </div>
-        );
-    }
-
-    // Footer variant - inverted colors for dark background
+    // For footer variant on dark background, invert the black parts to white
     const isFooter = variant === "footer";
-    const textColor = isFooter ? "text-white" : "text-foreground";
 
     return (
-        <div className={cn("flex flex-col leading-none", className)}>
-            {/* .RISE text */}
-            <div className="flex items-baseline">
-                <span className={cn("font-black text-primary leading-none", dotSizes[size])}>.</span>
-                <span className={cn(
-                    "leading-none",
-                    textColor,
-                    rSizes[size]
-                )} style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontStyle: "italic" }}>
-                    R
-                </span>
-                <span className={cn(
-                    "font-black text-primary leading-none",
-                    iseSizes[size]
-                )}>
-                    ISE
-                </span>
-            </div>
-            {/* ADVERTISING */}
-            <span className={cn(
-                "font-black uppercase leading-tight",
-                textColor,
-                advertisingSizes[size]
-            )}>
-                ADVERTISING
-            </span>
-            {/* THE BRANDING EMPIRE tagline - only for full variant */}
-            {variant === "full" && (
-                <span className={cn(
-                    "font-semibold tracking-[0.1em] text-primary uppercase whitespace-nowrap leading-tight mt-0.5",
-                    taglineSizes[size]
-                )}>
-                    THE BRANDING EMPIRE
-                </span>
-            )}
+        <div className={cn("flex items-center", className)}>
+            <img 
+                src={logoFull} 
+                alt="RISE Advertising - The Branding Empire" 
+                className={cn(
+                    heights[size],
+                    "w-auto object-contain",
+                    isFooter && "brightness-0 invert"
+                )}
+            />
         </div>
     );
 }
