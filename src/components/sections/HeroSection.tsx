@@ -7,10 +7,10 @@ import brandingShowcase from "@/assets/branding-showcase.jpg";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[85vh] flex flex-col pt-[100px]">
+    <section className="relative min-h-[85vh] flex flex-col pt-[80px]">
       {/* Main Hero */}
       <div className="flex-1 bg-background flex items-center">
-        <div className="page-container py-12 lg:py-20">
+        <div className="page-container py-6 lg:py-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Text Content */}
             <motion.div
