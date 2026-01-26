@@ -54,10 +54,9 @@ export default function AdminLogin() {
       if (error) {
         toast.error(error.message);
       } else {
-        toast.success("Account created successfully! You can now sign in.");
-        // Clear form and switch to sign in
-        setFullName("");
-        setPassword("");
+        toast.success("Account created successfully! Welcome to RISE Advertising.");
+        // Redirect to home page after successful signup
+        navigate("/", { replace: true });
       }
     } catch (error) {
       toast.error("An error occurred during signup");

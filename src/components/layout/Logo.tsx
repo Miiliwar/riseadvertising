@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils";
+import logoHeader from "@/assets/logo-header.png";
 import logoFull from "@/assets/logo-full.png";
 
 interface LogoProps {
     className?: string;
-    variant?: "full" | "icon" | "footer";
+    variant?: "full" | "icon" | "footer" | "header";
     size?: "sm" | "md" | "lg" | "xl";
 }
 
@@ -18,11 +19,15 @@ export function Logo({ className, variant = "full", size = "md" }: LogoProps) {
 
     // For footer variant on dark background, invert the black parts to white
     const isFooter = variant === "footer";
+    const isHeader = variant === "header";
+
+    // Use header logo for header variant, full logo for others
+    const logoSrc = isHeader ? logoHeader : logoFull;
 
     return (
         <div className={cn("flex items-center", className)}>
             <img 
-                src={logoFull} 
+                src={logoSrc} 
                 alt="RISE Advertising - The Branding Empire" 
                 className={cn(
                     heights[size],

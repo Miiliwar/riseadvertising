@@ -71,10 +71,10 @@ export function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <div className="lg:hidden">
-              <Logo size="md" />
+              <Logo size="md" variant="header" />
             </div>
             <div className="hidden lg:block">
-              <Logo size="lg" />
+              <Logo size="lg" variant="header" />
             </div>
           </Link>
 
