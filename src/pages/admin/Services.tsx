@@ -215,35 +215,25 @@ export default function AdminServices() {
               <p className="text-muted-foreground">Select a category to manage or add new services.</p>
             </div>
 
-            <AnimatePresence>
-              {activeFilter !== "All" && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                >
-                  <Button onClick={() => {
-                    setEditingService(null);
-                    setFormData({
-                      title: "",
-                      slug: "",
-                      short_description: "",
-                      long_description: "",
-                      price_range: "",
-                      icon_name: "",
-                      image_url: "",
-                      published: true,
-                      tags: activeFilter,
-                    });
-                    setImagePreview(null);
-                    setActiveDialog("service");
-                  }} size="lg" className="rounded-none h-12 px-8 font-black uppercase tracking-widest shadow-premium">
-                    <Plus className="h-5 w-5 mr-2" />
-                    Add New to {activeFilter.split('.')[0]}
-                  </Button>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <Button onClick={() => {
+              setEditingService(null);
+              setFormData({
+                title: "",
+                slug: "",
+                short_description: "",
+                long_description: "",
+                price_range: "",
+                icon_name: "",
+                image_url: "",
+                published: true,
+                tags: activeFilter !== "All" ? activeFilter : "",
+              });
+              setImagePreview(null);
+              setActiveDialog("service");
+            }} size="lg" className="rounded-none h-12 px-8 font-black uppercase tracking-widest shadow-premium bg-primary hover:bg-primary/90">
+              <Plus className="h-5 w-5 mr-2" />
+              {activeFilter !== "All" ? `Add New to ${activeFilter.split('.')[0]}` : "Add New Service"}
+            </Button>
           </div>
 
           <div className="flex flex-nowrap overflow-x-auto pb-4 gap-2 no-scrollbar border-t pt-8">

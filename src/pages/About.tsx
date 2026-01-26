@@ -9,6 +9,7 @@ import teamMember1 from "@/assets/about/team-member-1.jpg";
 import teamMember2 from "@/assets/about/team-member-2.jpg";
 import teamMember3 from "@/assets/about/team-member-3.png";
 import teamMember4 from "@/assets/about/team-member-4.png";
+import riseTextureIcon from "@/assets/rise-texture-icon.png";
 
 const teamMember = teamMember1;
 
@@ -67,7 +68,22 @@ export default function AboutPage() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-primary py-20 lg:py-28">
+      <section className="bg-primary py-20 lg:py-28 relative overflow-hidden">
+        {/* Decorative Texture Icons */}
+        <div className="absolute inset-0 pointer-events-none">
+          <img
+            src={riseTextureIcon}
+            alt=""
+            className="absolute right-0 top-0 w-96 h-96 opacity-10 animate-spin-slow"
+            style={{ animationDuration: '80s' }}
+          />
+          <img
+            src={riseTextureIcon}
+            alt=""
+            className="absolute left-0 bottom-0 w-80 h-80 opacity-10 animate-spin-slow"
+            style={{ animationDuration: '100s', animationDirection: 'reverse' }}
+          />
+        </div>
         <div className="page-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

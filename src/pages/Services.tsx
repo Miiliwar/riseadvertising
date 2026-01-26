@@ -156,7 +156,7 @@ export default function ServicesPage() {
                 <div className="text-center py-24 bg-muted/10 rounded-[3rem] border-2 border-dashed border-muted-foreground/10">
                   <Info className="h-16 w-16 mx-auto text-muted-foreground/20 mb-6" />
                   <h3 className="text-xl font-bold uppercase tracking-tight text-muted-foreground">Collection Empty</h3>
-                  <p className="text-sm text-muted-foreground/60 max-w-sm mx-auto mt-2">We are currently updating our portfolio for this category. Please check back shortly.</p>
+                  <p className="text-sm text-muted-foreground/60 max-w-sm mx-auto mt-2">We are currently updating our collection for this category. Please check back shortly.</p>
                   <Button variant="outline" onClick={() => setActiveCategory("All")} className="mt-8 rounded-none border-2 h-12 px-8 font-bold uppercase">
                     Back to All Services
                   </Button>

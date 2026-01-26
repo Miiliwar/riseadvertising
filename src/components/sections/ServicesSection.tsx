@@ -110,14 +110,14 @@ export function ServicesSection() {
                 className="flex gap-6 items-start"
               >
                 {/* Service Image */}
-                <div className="w-28 h-28 md:w-36 md:h-36 flex-shrink-0 rounded-lg overflow-hidden bg-secondary shadow-lg">
-                  <img 
-                    src={getServiceImage(service)} 
+                <div className="w-40 h-40 md:w-48 md:h-48 flex-shrink-0 rounded-lg overflow-hidden bg-secondary shadow-lg">
+                  <img
+                    src={getServiceImage(service)}
                     alt={service.title}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                
+
                 {/* Service Content */}
                 <div className="flex-1 pt-2">
                   <h3 className="text-lg md:text-xl font-bold text-primary mb-2">
@@ -126,8 +126,8 @@ export function ServicesSection() {
                   <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
                     {service.short_description}
                   </p>
-                  <Button 
-                    size="sm" 
+                  <Button
+                    size="sm"
                     className="rounded-none bg-primary hover:bg-primary/90"
                     asChild
                   >
@@ -149,10 +149,10 @@ export function ServicesSection() {
           >
             {/* Red accent bar at top */}
             <div className="absolute -top-4 right-0 w-1/2 h-2 bg-primary" />
-            
+
             {/* Featured image with red background container */}
             <div className="bg-primary p-4 md:p-6 rounded-lg overflow-hidden">
-              <img 
+              <img
                 src={brandingShowcase}
                 alt="RISE Advertising - Complete Branding Solutions"
                 className="w-full h-auto rounded shadow-xl"

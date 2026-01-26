@@ -109,7 +109,7 @@ export default function PortfolioPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center text-white max-w-3xl mx-auto"
           >
-            <h1 className="hero-title mb-6">Our Portfolio</h1>
+            <h1 className="hero-title mb-6">Our Work</h1>
             <p className="hero-subtitle text-white/80">
               Explore our latest projects and see how we've helped brands across Ethiopia make an impact.
             </p>

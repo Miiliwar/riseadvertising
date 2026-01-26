@@ -4,12 +4,28 @@ import { ArrowRight, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import brandingShowcase from "@/assets/branding-showcase.jpg";
+import riseTextureIcon from "@/assets/rise-texture-icon.png";
 
 export function HeroSection() {
   return (
     <section className="relative min-h-[85vh] flex flex-col pt-[64px]">
       {/* Main Hero */}
-      <div className="flex-1 bg-background flex items-center">
+      <div className="flex-1 bg-background flex items-center relative overflow-hidden">
+        {/* Decorative Texture Icons */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <img
+            src={riseTextureIcon}
+            alt=""
+            className="absolute -right-32 top-1/4 w-96 h-96 opacity-5 animate-spin-slow"
+            style={{ animationDuration: '60s' }}
+          />
+          <img
+            src={riseTextureIcon}
+            alt=""
+            className="absolute -left-32 bottom-1/4 w-80 h-80 opacity-5 animate-spin-slow"
+            style={{ animationDuration: '80s', animationDirection: 'reverse' }}
+          />
+        </div>
         <div className="page-container py-4 lg:py-6">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             {/* Text Content */}

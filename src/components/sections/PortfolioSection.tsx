@@ -83,7 +83,7 @@ export function PortfolioSection() {
           className="text-center mb-12"
         >
           <div className="red-accent-bar mx-auto mb-6" />
-          <h2 className="section-title mb-4">Our Portfolio</h2>
+          <h2 className="section-title mb-4">Our Work</h2>
           <p className="section-subtitle mx-auto">
             Explore our latest projects and see how we've helped brands make an impact.
           </p>
@@ -173,7 +173,7 @@ export function PortfolioSection() {
             to="/portfolio"
             className="inline-flex items-center gap-2 text-lg font-semibold text-primary hover:gap-3 transition-all"
           >
-            View Full Portfolio
+            View All Our Work
             <ArrowRight className="h-5 w-5" />
           </Link>
         </motion.div>

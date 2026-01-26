@@ -264,20 +264,25 @@ export default function AdminPortfolio() {
               <p className="text-muted-foreground">Select a category to manage or add new works.</p>
             </div>
 
-            <AnimatePresence>
-              {activeFilter !== "All" && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                >
-                  <Button onClick={openNewDialog} size="lg" className="rounded-none h-12 px-8 font-black uppercase tracking-widest shadow-premium">
-                    <Plus className="h-5 w-5 mr-2" />
-                    Add New to {activeFilter}
-                  </Button>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <Button onClick={() => {
+              setEditingItem(null);
+              setFormData({
+                title: "",
+                slug: "",
+                client: "",
+                project_date: "",
+                description: "",
+                images: [],
+                tags: activeFilter !== "All" ? activeFilter : "",
+                featured: false,
+                published: true,
+              });
+              setImagePreviews([]);
+              setDialogOpen(true);
+            }} size="lg" className="rounded-none h-12 px-8 font-black uppercase tracking-widest shadow-premium bg-primary hover:bg-primary/90">
+              <Plus className="h-5 w-5 mr-2" />
+              {activeFilter !== "All" ? `Add New to ${activeFilter}` : "Add New Work"}
+            </Button>
           </div>
 
           <div className="flex flex-nowrap overflow-x-auto pb-4 gap-2 no-scrollbar border-t pt-8">
