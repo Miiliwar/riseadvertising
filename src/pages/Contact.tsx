@@ -174,7 +174,7 @@ export default function ContactPage() {
                   Submit Another Request
                 </Button>
                 <Button variant="outline" asChild>
-                  <a href="https://wa.me/251936704476" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/251936704476" target="_self" rel="noopener noreferrer">
                     <MessageCircle className="h-4 w-4" />
                     Chat on WhatsApp
                   </a>
@@ -197,7 +197,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center text-white max-w-3xl mx-auto"
           >
-            <h1 className="hero-title mb-6">Get a Free Quote</h1>
+            <h1 className="hero-title mb-6">Request a Quote</h1>
             <p className="hero-subtitle text-white/80">
               Tell us about your project and we'll provide a detailed quote within 24 hours.
             </p>
@@ -219,7 +219,7 @@ export default function ContactPage() {
             </a>
             <a
               href="https://www.google.com/maps/place/RISE+ADVERTISING+AND+PRINTING/@8.9510213,38.7177277,17z"
-              target="_blank"
+              target="_self"
               rel="noopener noreferrer"
               className="flex items-center gap-3 hover:opacity-80 transition-opacity"
             >
@@ -492,7 +492,7 @@ export default function ContactPage() {
                     </a>
                   </Button>
                   <Button variant="outline" className="w-full justify-start" asChild>
-                    <a href="https://wa.me/251936704476" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/251936704476" target="_self" rel="noopener noreferrer">
                       <MessageCircle className="h-4 w-4" />
                       WhatsApp Us
                     </a>
@@ -552,7 +552,7 @@ export default function ContactPage() {
           </p>
           <a
             href="https://www.google.com/maps/place/RISE+ADVERTISING+AND+PRINTING/@8.9510213,38.7177277,17z/data=!3m1!1e3"
-            target="_blank"
+            target="_self"
             rel="noopener noreferrer"
             className="text-sm text-primary font-semibold hover:underline mt-2 inline-block"
           >

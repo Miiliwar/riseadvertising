@@ -117,7 +117,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               onClick={handleSignOut}
             >
               <LogOut className="h-4 w-4 mr-2" />
-              Sign Out
+              Log Out
             </Button>
           </div>
         </div>
@@ -137,7 +137,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             <div className="flex items-center gap-4 ml-auto">
               <Link
                 to="/"
-                target="_blank"
+                target="_self"
                 className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
               >
                 View Website <ChevronRight className="h-3 w-3" />

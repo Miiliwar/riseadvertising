@@ -25,6 +25,7 @@ import AdminServices from "./pages/admin/Services";
 import AdminPortfolio from "./pages/admin/Portfolio";
 import AdminQuotes from "./pages/admin/Quotes";
 import AdminSettings from "./pages/admin/Settings";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <AuthProvider>
             <Routes>
               {/* Public Routes */}

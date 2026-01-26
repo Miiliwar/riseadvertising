@@ -128,12 +128,12 @@ export function PortfolioSection() {
                 className="portfolio-item group block aspect-[4/3] relative rounded-xl overflow-hidden"
               >
                 {/* Image */}
-                <img 
+                <img
                   src={item.image}
                   alt={item.title}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                
+
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Briefcase, Images, MessageSquare, TrendingUp } from "lucide-react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
@@ -110,32 +111,32 @@ export default function AdminDashboard() {
         <div className="bg-card text-card-foreground rounded-2xl p-6 shadow-sm border border-border">
           <h2 className="text-xl font-bold mb-4 text-foreground">Quick Actions</h2>
           <div className="grid sm:grid-cols-3 gap-4">
-            <a
-              href="/admin/services"
-              className="p-4 border border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors group"
+            <Link
+              to="/admin/services"
+              className="p-4 border border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors group block"
             >
               <Briefcase className="h-8 w-8 text-primary mb-2 group-hover:scale-110 transition-transform" />
               <h3 className="font-semibold text-foreground">Manage Services</h3>
               <p className="text-sm text-muted-foreground">Add or edit services</p>
-            </a>
-            <a
-              href="/admin/portfolio"
-              className="p-4 border border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors group"
+            </Link>
+            <Link
+              to="/admin/portfolio"
+              className="p-4 border border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors group block"
             >
               <Images className="h-8 w-8 text-primary mb-2 group-hover:scale-110 transition-transform" />
               <h3 className="font-semibold text-foreground">Manage Portfolio</h3>
               <p className="text-sm text-muted-foreground">Add or edit portfolio items</p>
-            </a>
-            <a
-              href="/admin/quotes"
-              className="p-4 border border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors group"
+            </Link>
+            <Link
+              to="/admin/quotes"
+              className="p-4 border border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors group block"
             >
               <MessageSquare className="h-8 w-8 text-primary mb-2 group-hover:scale-110 transition-transform" />
               <h3 className="font-semibold text-foreground">View Quotes</h3>
               <p className="text-sm text-muted-foreground">
                 {stats.newQuotes} new quote requests
               </p>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

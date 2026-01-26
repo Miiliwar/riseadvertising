@@ -10,6 +10,8 @@ import teamMember2 from "@/assets/about/team-member-2.jpg";
 import teamMember3 from "@/assets/about/team-member-3.png";
 import teamMember4 from "@/assets/about/team-member-4.png";
 
+const teamMember = teamMember1;
+
 const stats = [
   { label: "Years in Business", value: "10+" },
   { label: "Happy Clients", value: "500+" },
@@ -77,7 +79,11 @@ export default function AboutPage() {
             </h1>
             <p className="text-lg md:text-xl text-primary-foreground/80">
               A professional printing, signage, branding, and advertising company committed to delivering high-quality visual communication solutions.
-            </p>
+            </p><br />
+            <p>We specialize in transforming ideas into powerful brand identities through creative design,
+              precision production, and reliable service delivery. From concept to completion, we provide
+              end-to-end branding solutions that help businesses grow, stand out, and succeed in
+              competitive markets.</p>
           </motion.div>
         </div>
       </section>
@@ -134,9 +140,9 @@ export default function AboutPage() {
               className="relative"
             >
               <div className="aspect-square bg-secondary rounded-2xl overflow-hidden relative">
-                <img 
-                  src={ourStoryImage} 
-                  alt="RISE Advertising - The Perfect Place for your Branding" 
+                <img
+                  src={ourStoryImage}
+                  alt="RISE Advertising - The Perfect Place for your Branding"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -187,7 +193,8 @@ export default function AboutPage() {
             >
               <h3 className="text-2xl font-black mb-4">Our Vision</h3>
               <p className="text-primary-foreground/90">
-                To become a leading branding, printing, and signage company recognized for quality, innovation, and excellence in service delivery.
+                To become a leading branding, printing, and signage company recognized for quality,
+                innovation, and excellence in service delivery.
               </p>
             </motion.div>
 
@@ -200,7 +207,9 @@ export default function AboutPage() {
             >
               <h3 className="text-2xl font-black mb-4">Our Mission</h3>
               <p className="text-background/90">
-                To empower businesses and organizations through powerful branding, professional printing, and high-quality signage solutions that create strong market presence and lasting brand impact.
+                To empower businesses and organizations through powerful branding, professional printing,
+                and high-quality signage solutions that create strong market presence and lasting brand
+                impact.
               </p>
             </motion.div>
           </div>
@@ -336,10 +345,10 @@ export default function AboutPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { name: "Team Member", role: "Founder & CEO", image: teamMember1 },
-              { name: "Production Team", role: "Manufacturing", image: teamMember2 },
-              { name: "Team Member", role: "Creative Director", image: teamMember3 },
-              { name: "Team Member", role: "Operations Manager", image: teamMember4 },
+              { name: "Team Member", role: "Founder & CEO", image: teamMember },
+              { name: "Production Team", role: "Manufacturing", image: teamMember },
+              { name: "Team Member", role: "Creative Director", image: teamMember },
+              { name: "Team Member", role: "Operations Manager", image: teamMember },
             ].map((member, index) => (
               <motion.div
                 key={index}
@@ -350,9 +359,9 @@ export default function AboutPage() {
                 className="text-center"
               >
                 <div className="aspect-square bg-secondary rounded-xl mb-4 overflow-hidden">
-                  <img 
-                    src={member.image} 
-                    alt={member.name} 
+                  <img
+                    src={member.image}
+                    alt={member.name}
                     className="w-full h-full object-cover"
                   />
                 </div>

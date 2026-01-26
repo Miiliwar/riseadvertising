@@ -106,7 +106,7 @@ export function Footer() {
               </a>
               <a
                 href="https://www.google.com/maps/place/RISE+ADVERTISING+AND+PRINTING/@8.9510213,38.7177277,17z/data=!3m1!1e3"
-                target="_blank"
+                target="_self"
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 text-white/80 hover:text-primary transition-colors"
               >
@@ -200,7 +200,7 @@ export function Footer() {
                   <a
                     key={social.name}
                     href={social.href}
-                    target="_blank"
+                    target="_self"
                     rel="noopener noreferrer"
                     className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-white/60 hover:bg-primary hover:text-white transition-all"
                     aria-label={social.name}

@@ -118,10 +118,10 @@ export default function FAQPage() {
 
   const filteredFaqs = searchQuery
     ? allFaqs.filter(
-        (faq) =>
-          faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      (faq) =>
+        faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : null;
 
   return (
@@ -235,7 +235,7 @@ export default function FAQPage() {
             </a>
             <a
               href="https://wa.me/2348000000000"
-              target="_blank"
+              target="_self"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
             >
