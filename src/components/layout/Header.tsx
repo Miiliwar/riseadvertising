@@ -50,11 +50,17 @@ export function Header() {
             </a>
           </div>
           <div className="hidden md:flex items-center gap-3">
-            <a href="https://facebook.com/riseadvertising1" target="_self" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+            <a href="https://m.me/riseadvertising1" target="_self" rel="noopener noreferrer" className="hover:text-primary transition-colors">
               <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z" /></svg>
             </a>
-            <a href="https://instagram.com/riseadvertising1" target="_self" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+            <a href="https://ig.me/riseadvertising11" target="_self" rel="noopener noreferrer" className="hover:text-primary transition-colors">
               <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
+            </a>
+            <a href="https://tiktok.com/@riseadvertising1" target="_self" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" /></svg>
+            </a>
+            <a href="https://t.me/riseadvertising1" target="_self" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.961 7.224c.131.021.34.005.441.446a2.68 2.68 0 0 1 .08.571s-.011.02-.303 1.944c-1.353 8.356-1.742 10.686-2.146 11.026-.819.688-2.584-.525-2.859-.724-2.844-2.072-3.868-2.607-4.22-2.888-.47-.375-.125-.97.234-1.472.102-.142 5.86-5.834 6.136-6.42a.267.267 0 0 0-.083-.223c-.161-.137-3.926 2.39-5.115 3.197-.565.383-1.077.568-1.53.551-.57-.02-1.637-.306-2.455-.572-.988-.323-1.776-.531-1.706-1.121.036-.312.428-.636 1.171-.967 4.542-2.105 7.625-3.523 9.25-4.27 4.609-2.115 5.567-2.484 6.204-2.397.142.02.457.068.707.091z" /></svg>
             </a>
             <a href="https://youtube.com/@riseadvertising" target="_self" rel="noopener noreferrer" className="hover:text-primary transition-colors">
               <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" /></svg>
@@ -147,7 +153,7 @@ export function Header() {
 
               {/* Desktop-only Quote Button */}
               <Button asChild className="hidden sm:flex rounded-none px-4 md:px-6 h-9 md:h-10 bg-black text-white hover:bg-black/80">
-                <Link to="/contact">Request a Quote</Link>
+                <Link to="/request-quote">Request a Quote</Link>
               </Button>
 
               {/* Mobile menu button */}
@@ -195,7 +201,7 @@ export function Header() {
                   </a>
 
                   <Button asChild className="w-full mt-2 bg-black text-white hover:bg-black/80 rounded-none">
-                    <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
+                    <Link to="/request-quote" onClick={() => setMobileMenuOpen(false)}>
                       Request a Quote
                     </Link>
                   </Button>

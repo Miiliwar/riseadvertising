@@ -383,7 +383,7 @@ export function ServiceDetailPage() {
 
                 <div className="space-y-4 mb-12">
                   <Button className="w-full h-16 rounded-none bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest text-xs shadow-xl" asChild>
-                    <Link to="/contact">Request Official Estimate</Link>
+                    <Link to="/request-quote">Request Official Estimate</Link>
                   </Button>
                   <Button variant="outline" className="w-full h-16 rounded-none border-2 border-white/10 hover:bg-white/5 text-white font-black uppercase tracking-widest text-xs" asChild>
                     <a href="tel:+251936704476">

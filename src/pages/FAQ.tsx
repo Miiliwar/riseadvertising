@@ -16,11 +16,11 @@ const faqCategories = [
       },
       {
         question: "Where are you located?",
-        answer: "Our main office and production facility is located in Victoria Island, Lagos. We deliver nationwide across all 36 states of Nigeria.",
+        answer: "Our main office and production facility is located in ZAM Mall, Addis Ababa, Ethiopia. We deliver nationwide.",
       },
       {
         question: "What are your operating hours?",
-        answer: "We're open Monday to Friday from 8:00 AM to 6:00 PM, and Saturday from 9:00 AM to 4:00 PM. We're closed on Sundays and public holidays.",
+        answer: "We're open Monday to Saturday from 8:30 AM to 6:30 PM. We're closed on Sundays and public holidays.",
       },
     ],
   },
@@ -29,7 +29,7 @@ const faqCategories = [
     faqs: [
       {
         question: "How do I request a quote?",
-        answer: "You can request a free quote through our website contact form, by calling us directly at +234 800 000 0000, or via WhatsApp. Provide details about your project including quantity, size, and any design requirements.",
+        answer: "You can request a free quote through our website contact form, by calling us directly at +251 936 704 476, or via WhatsApp. Provide details about your project including quantity, size, and any design requirements.",
       },
       {
         question: "What is your minimum order quantity?",
@@ -54,7 +54,7 @@ const faqCategories = [
       },
       {
         question: "Do you offer same-day delivery?",
-        answer: "Yes, we offer same-day delivery within Lagos for orders approved before 12 PM. Express delivery fees apply based on location.",
+        answer: "Yes, we offer same-day delivery within Addis Ababa for orders approved early in the day. Express delivery fees apply based on location.",
       },
       {
         question: "Do you deliver outside Lagos?",
@@ -234,7 +234,7 @@ export default function FAQPage() {
               Contact Us
             </a>
             <a
-              href="https://wa.me/2348000000000"
+              href="https://wa.me/251936704476"
               target="_self"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"

@@ -4,14 +4,10 @@ import { CTASection } from "@/components/sections/CTASection";
 import { CheckCircle2, Award, Clock, Heart, Target, Wrench, Truck, Settings } from "lucide-react";
 
 // Images
-import ourStoryImage from "@/assets/about/our-story.jpg";
-import teamMember1 from "@/assets/about/team-member-1.jpg";
-import teamMember2 from "@/assets/about/team-member-2.jpg";
-import teamMember3 from "@/assets/about/team-member-3.png";
-import teamMember4 from "@/assets/about/team-member-4.png";
+import brandingShowcase from "@/assets/branding-showcase.jpg";
 import riseTextureIcon from "@/assets/rise-texture-icon.png";
 
-const teamMember = teamMember1;
+const riseTexture = riseTextureIcon;
 
 const stats = [
   { label: "Years in Business", value: "10+" },
@@ -69,21 +65,6 @@ export default function AboutPage() {
     <Layout>
       {/* Hero */}
       <section className="bg-primary py-20 lg:py-28 relative overflow-hidden">
-        {/* Decorative Texture Icons */}
-        <div className="absolute inset-0 pointer-events-none">
-          <img
-            src={riseTextureIcon}
-            alt=""
-            className="absolute right-0 top-0 w-96 h-96 opacity-10 animate-spin-slow"
-            style={{ animationDuration: '80s' }}
-          />
-          <img
-            src={riseTextureIcon}
-            alt=""
-            className="absolute left-0 bottom-0 w-80 h-80 opacity-10 animate-spin-slow"
-            style={{ animationDuration: '100s', animationDirection: 'reverse' }}
-          />
-        </div>
         <div className="page-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -93,10 +74,10 @@ export default function AboutPage() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 uppercase">
               About Rise Printing & Advertising
             </h1>
-            <p className="text-lg md:text-xl text-primary-foreground/80">
-              A professional printing, signage, branding, and advertising company committed to delivering high-quality visual communication solutions.
+            <p className="text-lg md:text-xl text-white mb-10 font-medium">
+              Whether you need signage, printing, branding, or promotional materials — we are ready to support your business growth.
             </p><br />
-            <p>We specialize in transforming ideas into powerful brand identities through creative design,
+            <p className="text-primary-foreground font-medium">We specialize in transforming ideas into powerful brand identities through creative design,
               precision production, and reliable service delivery. From concept to completion, we provide
               end-to-end branding solutions that help businesses grow, stand out, and succeed in
               competitive markets.</p>
@@ -157,8 +138,8 @@ export default function AboutPage() {
             >
               <div className="aspect-square bg-secondary rounded-2xl overflow-hidden relative">
                 <img
-                  src={ourStoryImage}
-                  alt="RISE Advertising - The Perfect Place for your Branding"
+                  src={brandingShowcase}
+                  alt="RISE Advertising - Branding Showcase"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -361,10 +342,10 @@ export default function AboutPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { name: "Team Member", role: "Founder & CEO", image: teamMember },
-              { name: "Production Team", role: "Manufacturing", image: teamMember },
-              { name: "Team Member", role: "Creative Director", image: teamMember },
-              { name: "Team Member", role: "Operations Manager", image: teamMember },
+              { name: "Team Member", role: "Founder & CEO" },
+              { name: "Production Team", role: "Manufacturing" },
+              { name: "Team Member", role: "Creative Director" },
+              { name: "Team Member", role: "Operations Manager" },
             ].map((member, index) => (
               <motion.div
                 key={index}
@@ -374,12 +355,10 @@ export default function AboutPage() {
                 transition={{ delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="aspect-square bg-secondary rounded-xl mb-4 overflow-hidden">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="aspect-square bg-secondary rounded-xl mb-4 flex items-center justify-center border-2 border-dashed border-primary/20">
+                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                    <CheckCircle2 className="h-8 w-8 text-primary opacity-40" />
+                  </div>
                 </div>
                 <h3 className="font-bold">{member.name}</h3>
                 <p className="text-sm text-muted-foreground">{member.role}</p>

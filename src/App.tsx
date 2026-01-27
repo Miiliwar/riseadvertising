@@ -15,6 +15,8 @@ import FAQPage from "./pages/FAQ";
 import TermsPage from "./pages/Terms";
 import PrivacyPage from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
+import RequestQuotePage from "./pages/RequestQuote";
+
 
 // Admin pages
 import AdminLogin from "./pages/admin/Login";
@@ -46,6 +48,7 @@ const App = () => (
               <Route path="/portfolio" element={<PortfolioPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/request-quote" element={<RequestQuotePage />} />
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/terms" element={<TermsPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
