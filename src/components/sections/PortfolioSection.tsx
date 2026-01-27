@@ -124,7 +124,7 @@ export function PortfolioSection() {
               layout
             >
               <Link
-                to={`/portfolio/${item.id}`}
+                to="/portfolio"
                 className="portfolio-item group block aspect-[4/3] relative rounded-xl overflow-hidden"
               >
                 {/* Image */}

@@ -24,8 +24,8 @@ export default function PrivacyPage() {
           <div className="prose prose-lg max-w-none">
             <h2>1. Introduction</h2>
             <p>
-              RISE Advertising ("we," "our," or "us") is committed to protecting your 
-              privacy. This Privacy Policy explains how we collect, use, disclose, and 
+              RISE Advertising ("we," "our," or "us") is committed to protecting your
+              privacy. This Privacy Policy explains how we collect, use, disclose, and
               safeguard your information when you use our services or visit our website.
             </p>
 
@@ -70,16 +70,16 @@ export default function PrivacyPage() {
 
             <h2>5. Data Security</h2>
             <p>
-              We implement appropriate technical and organizational measures to protect 
-              your personal information against unauthorized access, alteration, disclosure, 
-              or destruction. However, no method of transmission over the Internet is 
+              We implement appropriate technical and organizational measures to protect
+              your personal information against unauthorized access, alteration, disclosure,
+              or destruction. However, no method of transmission over the Internet is
               100% secure.
             </p>
 
             <h2>6. Data Retention</h2>
             <p>
-              We retain your personal information for as long as necessary to fulfill the 
-              purposes outlined in this policy, unless a longer retention period is required 
+              We retain your personal information for as long as necessary to fulfill the
+              purposes outlined in this policy, unless a longer retention period is required
               by law. Order records are kept for 7 years for tax and legal purposes.
             </p>
 
@@ -96,41 +96,41 @@ export default function PrivacyPage() {
 
             <h2>8. Cookies</h2>
             <p>
-              Our website uses cookies to enhance your browsing experience. Cookies are 
-              small files stored on your device that help us analyze web traffic and 
-              customize content. You can choose to disable cookies through your browser 
+              Our website uses cookies to enhance your browsing experience. Cookies are
+              small files stored on your device that help us analyze web traffic and
+              customize content. You can choose to disable cookies through your browser
               settings.
             </p>
 
             <h2>9. Third-Party Links</h2>
             <p>
-              Our website may contain links to third-party websites. We are not responsible 
-              for the privacy practices of these external sites. We encourage you to review 
+              Our website may contain links to third-party websites. We are not responsible
+              for the privacy practices of these external sites. We encourage you to review
               their privacy policies.
             </p>
 
             <h2>10. Children's Privacy</h2>
             <p>
-              Our services are not intended for individuals under 18 years of age. We do 
+              Our services are not intended for individuals under 18 years of age. We do
               not knowingly collect personal information from children.
             </p>
 
             <h2>11. Changes to This Policy</h2>
             <p>
-              We may update this Privacy Policy from time to time. We will notify you of 
-              any changes by posting the new policy on this page and updating the "Last 
+              We may update this Privacy Policy from time to time. We will notify you of
+              any changes by posting the new policy on this page and updating the "Last
               updated" date.
             </p>
 
             <h2>12. Contact Us</h2>
             <p>
-              If you have questions about this Privacy Policy or wish to exercise your 
+              If you have questions about this Privacy Policy or wish to exercise your
               rights, please contact us at:
             </p>
             <ul>
-              <li>Email: privacy@riseadvertising.ng</li>
-              <li>Phone: +234 800 000 0000</li>
-              <li>Address: 123 Victoria Island, Lagos, Nigeria</li>
+              <li>Email: riseadvertising11@gmail.com</li>
+              <li>Phone: +251 936 704 476</li>
+              <li>Address: ZAM Mall, Addis Ababa, Ethiopia</li>
             </ul>
           </div>
         </div>

@@ -107,14 +107,14 @@ export function ServicesSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="flex gap-6 items-start"
+                className="group flex flex-col sm:flex-row gap-6 items-start"
               >
                 {/* Service Image */}
-                <div className="w-40 h-40 md:w-48 md:h-48 flex-shrink-0 rounded-lg overflow-hidden bg-secondary shadow-lg">
+                <div className="w-full sm:w-56 md:w-64 lg:w-72 aspect-[4/3] flex-shrink-0 rounded-xl overflow-hidden bg-secondary shadow-lg border-4 border-white relative">
                   <img
                     src={getServiceImage(service)}
                     alt={service.title}
-                    className="w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
 
@@ -132,7 +132,7 @@ export function ServicesSection() {
                     asChild
                   >
                     <Link to={`/services/${service.slug}`}>
-                      View detaila
+                      View Details
                     </Link>
                   </Button>
                 </div>

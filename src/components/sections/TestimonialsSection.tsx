@@ -1,33 +1,30 @@
 import { motion } from "framer-motion";
-import { Star, Quote } from "lucide-react";
+import { Star, Quote, User } from "lucide-react";
 
 const testimonials = [
   {
     id: 1,
-    name: "Adewale Johnson",
-    company: "TechHub Lagos",
+    name: "Abebe Kebede",
+    company: "Zemen Tech",
     role: "Marketing Director",
     content: "RISE Advertising delivered exceptional quality rollup banners for our tech conference. The colors were vibrant and the turnaround time was impressive. Highly recommended!",
     rating: 5,
-    avatar: "/placeholder.svg",
   },
   {
     id: 2,
-    name: "Chioma Okafor",
-    company: "Fresh Foods Nigeria",
+    name: "Tigist Haile",
+    company: "Ethio Coffee",
     role: "Brand Manager",
-    content: "We've been working with RISE for over 2 years now. Their attention to detail and professional service keeps us coming back. Best print shop in Lagos!",
+    content: "We've been working with RISE for over 2 years now. Their attention to detail and professional service keeps us coming back. Best print shop in Addis Ababa!",
     rating: 5,
-    avatar: "/placeholder.svg",
   },
   {
     id: 3,
-    name: "Ibrahim Musa",
-    company: "Events Pro NG",
+    name: "Dawit Girma",
+    company: "Unity Events",
     role: "CEO",
     content: "From backdrops to pop-up stands, RISE handles all our event branding needs. Fast delivery and excellent quality every single time.",
     rating: 5,
-    avatar: "/placeholder.svg",
   },
 ];
 
@@ -45,7 +42,7 @@ export function TestimonialsSection() {
           <div className="w-16 h-1.5 bg-primary rounded-full mx-auto mb-6" />
           <h2 className="section-title mb-4">What Our Clients Say</h2>
           <p className="text-lg md:text-xl text-background/70 max-w-2xl mx-auto">
-            Don't just take our word for it. Here's what businesses across Nigeria say about working with us.
+            Don't just take our word for it. Here's what businesses across Ethiopia say about working with us.
           </p>
         </motion.div>
 
@@ -77,12 +74,8 @@ export function TestimonialsSection() {
 
               {/* Author */}
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 overflow-hidden">
-                  <img 
-                    src={testimonial.avatar} 
-                    alt={testimonial.name}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                  <User className="h-6 w-6 text-primary" />
                 </div>
                 <div>
                   <div className="font-bold">{testimonial.name}</div>

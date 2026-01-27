@@ -15,7 +15,7 @@ const features = [
   {
     icon: Truck,
     title: "Nationwide Delivery",
-    description: "We deliver across Nigeria. Lagos same-day, other states in 2-3 days.",
+    description: "We deliver across Ethiopia. Addis Ababa same-day, other regions in 2-3 days.",
   },
   {
     icon: Shield,
@@ -25,7 +25,7 @@ const features = [
   {
     icon: Award,
     title: "10+ Years Experience",
-    description: "A decade of excellence serving businesses across Nigeria.",
+    description: "A decade of excellence serving businesses across Ethiopia.",
   },
   {
     icon: HeartHandshake,
@@ -50,7 +50,7 @@ export function FeaturesSection() {
               Why Choose <span className="text-primary">.RISE</span>?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-lg">
-              For over a decade, we've been Nigeria's trusted partner for premium print 
+              For over a decade, we've been Ethiopia's trusted partner for premium print
               and advertising solutions. Here's what sets us apart.
             </p>
 

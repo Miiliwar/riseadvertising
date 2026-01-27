@@ -57,7 +57,7 @@ const faqCategories = [
         answer: "Yes, we offer same-day delivery within Addis Ababa for orders approved early in the day. Express delivery fees apply based on location.",
       },
       {
-        question: "Do you deliver outside Lagos?",
+        question: "Do you deliver outside Addis Ababa?",
         answer: "Absolutely! We deliver nationwide. Shipping typically takes 2-5 business days depending on the destination. Shipping costs are calculated based on package size and delivery location.",
       },
       {
