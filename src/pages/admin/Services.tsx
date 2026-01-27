@@ -56,24 +56,16 @@ interface Service {
   tags: string[] | null;
 }
 
-const SERVICE_CATEGORIES = [
-  { id: "A", title: "A. Signage & Neon & LED Signs" },
-  { id: "B", title: "B. Large Format & UV Printing" },
-  { id: "C", title: "C. Promotional Items & Gift & Giveaways" },
-  { id: "D", title: "D. Corporate Branding & Identity" },
-  { id: "E", title: "E. Vehicle Graphics & Branding" },
-  { id: "F", title: "F. Digital Printing & Stationery" },
-  { id: "G", title: "G. Creative Graphic Design" },
-  { id: "H", title: "H. Exhibition & Event Branding" },
-  { id: "I", title: "I. Indoor & Office Branding" },
-  { id: "J", title: "J. Outdoor Advertising Solutions" },
-  { id: "K", title: "K. Apparel & Textile Printing" },
-  { id: "L", title: "L. Custom fabrication & 3D lettering" },
-  { id: "M", title: "M. Maintenance & Installation Services" },
-];
+interface ServiceCategory {
+  id: string;
+  letter: string;
+  title: string;
+  description: string | null;
+}
 
 export default function AdminServices() {
   const [services, setServices] = useState<Service[]>([]);
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeDialog, setActiveDialog] = useState<"service" | null>(null);
   const [editingService, setEditingService] = useState<Service | null>(null);
@@ -95,8 +87,29 @@ export default function AdminServices() {
   });
 
   useEffect(() => {
-    fetchServices();
+    fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const [servicesRes, categoriesRes] = await Promise.all([
+        supabase.from("services").select("*").order("sort_order", { ascending: true }),
+        supabase.from("service_categories").select("*").order("sort_order", { ascending: true })
+      ]);
+
+      if (servicesRes.error) throw servicesRes.error;
+      if (categoriesRes.error) throw categoriesRes.error;
+
+      setServices(servicesRes.data || []);
+      setCategories(categoriesRes.data || []);
+    } catch (error: any) {
+      console.error("Error fetching data:", error);
+      toast.error("Database connection failure");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchServices = async () => {
     try {
@@ -115,6 +128,9 @@ export default function AdminServices() {
       setLoading(false);
     }
   };
+
+  // Format category for display and filtering
+  const getCategoryTag = (cat: ServiceCategory) => `${cat.letter}. ${cat.title}`;
 
   const openEditDialog = (service: Service) => {
     setEditingService(service);
@@ -195,7 +211,7 @@ export default function AdminServices() {
         toast.success("Service registered");
       }
       setActiveDialog(null);
-      fetchServices();
+      fetchData();
     } catch (error: any) {
       toast.error("Operation failed");
     }
@@ -248,20 +264,23 @@ export default function AdminServices() {
             >
               All Services
             </button>
-            {SERVICE_CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveFilter(cat.title)}
-                className={cn(
-                  "whitespace-nowrap px-6 py-2.5 rounded-none font-bold text-xs uppercase tracking-widest transition-all border-2",
-                  activeFilter === cat.title
-                    ? "bg-primary border-primary text-primary-foreground shadow-lg scale-105"
-                    : "bg-background border-muted-foreground/10 text-muted-foreground hover:border-primary/50"
-                )}
-              >
-                {cat.title}
-              </button>
-            ))}
+            {categories.map((cat) => {
+              const categoryTag = getCategoryTag(cat);
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveFilter(categoryTag)}
+                  className={cn(
+                    "whitespace-nowrap px-6 py-2.5 rounded-none font-bold text-xs uppercase tracking-widest transition-all border-2",
+                    activeFilter === categoryTag
+                      ? "bg-primary border-primary text-primary-foreground shadow-lg scale-105"
+                      : "bg-background border-muted-foreground/10 text-muted-foreground hover:border-primary/50"
+                  )}
+                >
+                  {categoryTag}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -312,7 +331,7 @@ export default function AdminServices() {
                         </span>
                         <div className={cn(
                           "px-2 py-1 rounded text-[9px] font-black shadow-lg inline-flex items-center gap-1 uppercase w-fit",
-                          service.published ? "bg-white text-primary" : "bg-zinc-800 text-zinc-400"
+                          service.published ? "bg-background text-primary" : "bg-muted text-muted-foreground"
                         )}>
                           {service.published ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
                           {service.published ? "Live" : "Ghost"}
@@ -336,7 +355,7 @@ export default function AdminServices() {
                       <button
                         onClick={async () => {
                           await supabase.from("services").update({ published: !service.published }).eq("id", service.id);
-                          fetchServices();
+                          fetchData();
                         }}
                         className="text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
                       >
@@ -359,7 +378,7 @@ export default function AdminServices() {
                           onClick={async () => {
                             if (confirm("Delete this catalog entry?")) {
                               await supabase.from("services").delete().eq("id", service.id);
-                              fetchServices();
+                              fetchData();
                             }
                           }}
                         >
@@ -474,11 +493,14 @@ export default function AdminServices() {
                     <SelectValue placeholder="Assign Category" />
                   </SelectTrigger>
                   <SelectContent className="glassmorphism border-none">
-                    {SERVICE_CATEGORIES.map(cat => (
-                      <SelectItem key={cat.id} value={cat.title} className="font-bold hover:bg-primary/10">
-                        {cat.title}
-                      </SelectItem>
-                    ))}
+                    {categories.map(cat => {
+                      const categoryTag = getCategoryTag(cat);
+                      return (
+                        <SelectItem key={cat.id} value={categoryTag} className="font-bold hover:bg-primary/10">
+                          {categoryTag}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
               </div>
@@ -508,7 +530,7 @@ export default function AdminServices() {
 
                     <div className="flex-1 space-y-3">
                       <Label htmlFor="file-asset" className="cursor-pointer">
-                        <div className="flex items-center justify-center gap-2 h-11 bg-zinc-900 hover:bg-black text-white font-black text-[10px] uppercase tracking-widest transition-all">
+                        <div className="flex items-center justify-center gap-2 h-11 bg-foreground hover:bg-foreground/90 text-background font-black text-[10px] uppercase tracking-widest transition-all">
                           {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
                           {uploading ? "Uploading..." : "Import Local Asset"}
                         </div>
