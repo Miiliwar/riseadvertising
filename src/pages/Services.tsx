@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronUp, ArrowRight, Loader2, Info, Phone, Mail, Check, AlertCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, Info, Phone, Mail, Check, AlertCircle, Search, X } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { CTASection } from "@/components/sections/CTASection";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { CategoryCard } from "@/components/services/CategoryCard";
+import { ProductCard } from "@/components/services/ProductCard";
 
 interface Service {
   id: string;
@@ -21,63 +22,130 @@ interface Service {
   tags: string[] | null;
 }
 
-// Static Category Definitions (A-M)
-// We now filter based on the tag matching the full title
-const SERVICE_CATEGORIES = [
-  { id: "A", title: "A. Signage & Neon & LED Signs" },
-  { id: "B", title: "B. Large Format & UV Printing" },
-  { id: "C", title: "C. Promotional Items & Gift & Giveaways" },
-  { id: "D", title: "D. Corporate Branding & Identity" },
-  { id: "E", title: "E. Vehicle Graphics & Branding" },
-  { id: "F", title: "F. Digital Printing & Stationery" },
-  { id: "G", title: "G. Creative Graphic Design" },
-  { id: "H", title: "H. Exhibition & Event Branding" },
-  { id: "I", title: "I. Indoor & Office Branding" },
-  { id: "J", title: "J. Outdoor Advertising Solutions" },
-  { id: "K", title: "K. Apparel & Textile Printing" },
-  { id: "L", title: "L. Custom fabrication & 3D lettering" },
-  { id: "M", title: "M. Maintenance & Installation Services" },
-];
+interface ServiceCategory {
+  id: string;
+  letter: string;
+  title: string;
+  description: string | null;
+  image_url: string | null;
+  sort_order: number | null;
+  published: boolean | null;
+}
 
 export default function ServicesPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [loading, setLoading] = useState(true);
-  // Initialize active category from navigation state if available
-  const [activeCategory, setActiveCategory] = useState(
-    (location.state as any)?.category || "All"
-  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+
+  // Get selected category from URL state
+  const selectedCategory = (location.state as any)?.category || null;
 
   useEffect(() => {
-    async function fetchServices() {
+    async function fetchData() {
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from("services")
-          .select("*")
-          .eq("published", true)
-          .order("sort_order", { ascending: true });
 
-        if (error) throw error;
-        setServices(data || []);
+        // Fetch categories and services in parallel
+        const [categoriesRes, servicesRes] = await Promise.all([
+          supabase
+            .from("service_categories")
+            .select("*")
+            .eq("published", true)
+            .order("sort_order", { ascending: true }),
+          supabase
+            .from("services")
+            .select("*")
+            .eq("published", true)
+            .order("sort_order", { ascending: true })
+        ]);
+
+        if (categoriesRes.error) throw categoriesRes.error;
+        if (servicesRes.error) throw servicesRes.error;
+
+        setCategories(categoriesRes.data || []);
+        setServices(servicesRes.data || []);
       } catch (error) {
-        console.error("Error fetching services:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchServices();
+    fetchData();
   }, []);
 
-  const filteredServices = activeCategory === "All"
-    ? services
-    : services.filter(s => s.tags?.includes(activeCategory));
+  // Get category image - use custom image or first product image
+  const getCategoryImage = (category: ServiceCategory) => {
+    if (category.image_url) {
+      return category.image_url;
+    }
+    // Fallback to first product in category
+    const categoryTag = `${category.letter}. ${category.title}`;
+    const categoryProducts = services.filter(s => s.tags?.includes(categoryTag));
+    if (categoryProducts.length > 0 && categoryProducts[0].image_url) {
+      return categoryProducts[0].image_url;
+    }
+    return "/placeholder.svg";
+  };
+
+  // Get category tag for filtering
+  const getCategoryTag = (category: ServiceCategory) => {
+    return `${category.letter}. ${category.title}`;
+  };
+
+  // Filter products by selected category
+  const filteredProducts = selectedCategory
+    ? services.filter(s => s.tags?.includes(selectedCategory))
+    : [];
+
+  // Search across all products
+  const searchResults = searchQuery.trim()
+    ? services.filter(s =>
+      s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.short_description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+    )
+    : [];
+
+  // Filter categories by search query (when not searching products)
+  const filteredCategories = !isSearching
+    ? categories.filter(cat =>
+      cat.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cat.description?.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    : categories;
+
+  const handleCategoryClick = (category: ServiceCategory) => {
+    const categoryTag = getCategoryTag(category);
+    navigate("/services", { state: { category: categoryTag } });
+  };
+
+  const handleBackToCategories = () => {
+    setSearchQuery("");
+    setIsSearching(false);
+    navigate("/services", { state: { category: null } });
+  };
+
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
+    setIsSearching(value.trim().length > 0);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+    setIsSearching(false);
+  };
+
+  const currentCategory = categories.find(cat => getCategoryTag(cat) === selectedCategory);
 
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-hero-pattern py-20 lg:py-28 relative overflow-hidden text-center text-white">
+      <section className="bg-hero-pattern py-16 lg:py-24 relative overflow-hidden text-center text-white">
         <div className="absolute inset-0 bg-primary/10 backdrop-blur-[2px]" />
         <div className="page-container relative z-10">
           <motion.div
@@ -85,134 +153,180 @@ export default function ServicesPage() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-3xl mx-auto"
           >
-            <h1 className="hero-title mb-6 uppercase">Our Branding & Printing Catalog</h1>
-            <p className="hero-subtitle text-white/90">
-              High-impact solutions tailored to help your business stand out.
+            <h1 className="text-4xl lg:text-6xl font-black uppercase tracking-tight mb-4">
+              Signage, Printing & Branding Solutions
+            </h1>
+            <p className="text-lg lg:text-xl text-white/90 italic mb-8">
+              Design, Print & Brand Your Business with Confidence
             </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button asChild size="lg" className="rounded-none font-bold uppercase h-14 px-8">
+                <Link to="/contact">Request a Quote</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="rounded-none font-bold uppercase h-14 px-8 border-white/30 text-white hover:bg-white/10">
+                <a href="https://wa.me/251936704476" target="_blank" rel="noopener noreferrer">
+                  WhatsApp Us
+                </a>
+              </Button>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Modern Filter Bar */}
-      <section className="bg-background border-b border-border sticky top-[72px] z-20 backdrop-blur-md bg-white/90 py-8">
+      {/* Search Bar - Always visible */}
+      <section className="bg-background py-8 border-b border-border">
         <div className="page-container">
-          <div className="flex flex-nowrap items-center gap-4 overflow-x-auto no-scrollbar scroll-smooth">
-            <button
-              onClick={() => setActiveCategory("All")}
-              className={cn(
-                "whitespace-nowrap px-8 py-3 rounded-none font-black text-xs uppercase tracking-[0.2em] transition-all border-2",
-                activeCategory === "All"
-                  ? "bg-primary border-primary text-primary-foreground shadow-2xl scale-105"
-                  : "bg-background border-muted-foreground/10 text-muted-foreground hover:border-primary/50"
-              )}
-            >
-              All Works
-            </button>
-
-            <div className="h-8 w-px bg-border mx-2 hidden md:block" />
-
-            {SERVICE_CATEGORIES.map((cat) => (
+          <div className="max-w-2xl mx-auto relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search all products and services..."
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="pl-12 pr-12 h-14 text-lg rounded-xl border-2 border-muted-foreground/20 focus:border-primary"
+            />
+            {searchQuery && (
               <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.title)}
-                className={cn(
-                  "whitespace-nowrap px-6 py-2.5 rounded-none font-bold text-xs uppercase tracking-widest transition-all border-2 shrink-0",
-                  activeCategory === cat.title
-                    ? "bg-primary border-primary text-primary-foreground shadow-xl scale-105 z-10"
-                    : "bg-background border-muted-foreground/10 text-muted-foreground hover:border-primary/50"
-                )}
+                onClick={clearSearch}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               >
-                {cat.title}
+                <X className="h-5 w-5" />
               </button>
-            ))}
+            )}
           </div>
-          <div className="mt-4 text-center">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
-              Currently Viewing: <span className="text-primary italic">{activeCategory === "All" ? "Full Collection" : activeCategory}</span>
+          {isSearching && (
+            <p className="text-center text-sm text-muted-foreground mt-4">
+              Found {searchResults.length} product{searchResults.length !== 1 ? 's' : ''} matching "{searchQuery}"
             </p>
-          </div>
+          )}
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="py-16 lg:py-24 bg-background min-h-[60vh]">
+      {/* Main Content */}
+      <section className="py-12 lg:py-20 bg-background min-h-[60vh]">
         <div className="page-container">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-32 text-muted-foreground">
               <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
-              <p className="font-black uppercase tracking-widest text-xs">Accessing Cloud Registry...</p>
+              <p className="font-bold uppercase tracking-widest text-xs">Loading Services...</p>
             </div>
-          ) : (
+          ) : isSearching ? (
+            /* Search Results View */
             <div>
-              <div className="flex items-center justify-between mb-16 gap-6">
-                <div className="h-[2px] flex-1 bg-gradient-to-r from-transparent via-muted-foreground/20 to-transparent" />
-                <h2 className="text-3xl font-black uppercase tracking-tighter text-foreground whitespace-nowrap">
-                  {activeCategory === "All" ? "Premium Services" : activeCategory.split('.')[0]}
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-2xl lg:text-3xl font-black uppercase tracking-tight">
+                  Search Results
                 </h2>
-                <div className="h-[2px] flex-1 bg-gradient-to-r from-transparent via-muted-foreground/20 to-transparent" />
+                <Button variant="outline" onClick={clearSearch} className="rounded-none">
+                  <X className="h-4 w-4 mr-2" />
+                  Clear Search
+                </Button>
               </div>
 
-              {filteredServices.length === 0 ? (
-                <div className="text-center py-24 bg-muted/10 rounded-[3rem] border-2 border-dashed border-muted-foreground/10">
-                  <Info className="h-16 w-16 mx-auto text-muted-foreground/20 mb-6" />
-                  <h3 className="text-xl font-bold uppercase tracking-tight text-muted-foreground">Collection Empty</h3>
-                  <p className="text-sm text-muted-foreground/60 max-w-sm mx-auto mt-2">We are currently updating our collection for this category. Please check back shortly.</p>
-                  <Button variant="outline" onClick={() => setActiveCategory("All")} className="mt-8 rounded-none border-2 h-12 px-8 font-bold uppercase">
-                    Back to All Services
+              {searchResults.length === 0 ? (
+                <div className="text-center py-20 bg-muted/20 rounded-2xl border-2 border-dashed border-muted-foreground/10">
+                  <Search className="h-16 w-16 mx-auto text-muted-foreground/30 mb-6" />
+                  <h3 className="text-xl font-bold uppercase tracking-tight text-muted-foreground mb-2">
+                    No Results Found
+                  </h3>
+                  <p className="text-sm text-muted-foreground/60 max-w-sm mx-auto">
+                    Try a different search term or browse our categories below.
+                  </p>
+                  <Button variant="outline" onClick={clearSearch} className="mt-8 rounded-none border-2 h-12 px-8 font-bold uppercase">
+                    Browse Categories
                   </Button>
                 </div>
               ) : (
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   <AnimatePresence mode="popLayout">
-                    {filteredServices.map((service, index) => (
-                      <motion.div
-                        key={service.id}
-                        layout
-                        initial={{ opacity: 0, y: 40 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        transition={{ duration: 0.4, delay: index * 0.05 }}
-                      >
-                        <Card className="group h-full overflow-hidden border-none shadow-premium hover:shadow-2xl transition-all duration-500 flex flex-col bg-card">
-                          <div className="aspect-[4/3] relative overflow-hidden bg-muted">
-                            <img
-                              src={service.image_url || "/placeholder.svg"}
-                              alt={service.title}
-                              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-6">
-                              <p className="text-white text-center text-xs font-medium leading-relaxed max-w-[200px]">
-                                {service.short_description}
-                              </p>
-                            </div>
+                    {searchResults.map((product, index) => (
+                      <ProductCard key={product.id} product={product} index={index} />
+                    ))}
+                  </AnimatePresence>
+                </div>
+              )}
+            </div>
+          ) : selectedCategory ? (
+            /* Category Detail View - Show Products */
+            <div>
+              <button
+                onClick={handleBackToCategories}
+                className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8 font-bold uppercase text-xs tracking-widest"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back to All Categories
+              </button>
 
-                            {/* Classification Badge */}
-                            <div className="absolute top-5 left-5 max-w-[80%]">
-                              <span className="bg-primary text-white text-[10px] font-black px-3 py-1.5 rounded-none uppercase tracking-[0.2em] shadow-2xl block truncate">
-                                {service.tags?.[0] ? `Category ${service.tags[0].split('.')[0]}` : "RISE"}
-                              </span>
-                            </div>
-                          </div>
-                          <CardContent className="p-8 flex flex-1 flex-col">
-                            <h3 className="text-xl font-black uppercase tracking-tighter mb-4 group-hover:text-primary transition-colors line-clamp-2">
-                              {service.title}
-                            </h3>
-                            <div className="mt-auto pt-6 border-t border-muted-foreground/10 flex items-center justify-between">
-                              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                                {service.price_range || "Contact for Quote"}
-                              </span>
-                              <Link
-                                to={`/services/${service.slug}`}
-                                state={{ category: service.tags?.[0] || "All" }}
-                                className="flex items-center gap-2 text-primary font-black uppercase text-[10px] tracking-widest group/link"
-                              >
-                                Details
-                                <ArrowRight className="h-3 w-3 transition-transform group-hover/link:translate-x-1" />
-                              </Link>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-12"
+              >
+                <span className="text-primary font-black text-sm uppercase tracking-widest mb-2 block">
+                  Category {currentCategory?.letter}
+                </span>
+                <h2 className="text-3xl lg:text-4xl font-black uppercase tracking-tight mb-4">
+                  {currentCategory?.title || selectedCategory}
+                </h2>
+                <p className="text-muted-foreground text-lg max-w-2xl">
+                  {currentCategory?.description}
+                </p>
+              </motion.div>
+
+              {filteredProducts.length === 0 ? (
+                <div className="text-center py-20 bg-muted/20 rounded-2xl border-2 border-dashed border-muted-foreground/10">
+                  <Info className="h-16 w-16 mx-auto text-muted-foreground/30 mb-6" />
+                  <h3 className="text-xl font-bold uppercase tracking-tight text-muted-foreground mb-2">
+                    No Products Yet
+                  </h3>
+                  <p className="text-sm text-muted-foreground/60 max-w-sm mx-auto">
+                    We're updating our collection for this category. Please check back soon or contact us for more information.
+                  </p>
+                  <Button variant="outline" onClick={handleBackToCategories} className="mt-8 rounded-none border-2 h-12 px-8 font-bold uppercase">
+                    Browse Other Categories
+                  </Button>
+                </div>
+              ) : (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <AnimatePresence mode="popLayout">
+                    {filteredProducts.map((product, index) => (
+                      <ProductCard key={product.id} product={product} index={index} />
+                    ))}
+                  </AnimatePresence>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* Categories Grid View */
+            <div>
+              <div className="text-center mb-12">
+                <h2 className="text-3xl lg:text-4xl font-black uppercase tracking-tight mb-4">
+                  Featured Products / Services
+                </h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  Browse our comprehensive range of branding and printing solutions
+                </p>
+              </div>
+
+              {filteredCategories.length === 0 ? (
+                <div className="text-center py-20">
+                  <p className="text-muted-foreground">No categories match your search.</p>
+                </div>
+              ) : (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <AnimatePresence mode="popLayout">
+                    {filteredCategories.map((category, index) => (
+                      <CategoryCard
+                        key={category.id}
+                        category={{
+                          id: category.letter,
+                          title: `${category.letter}. ${category.title}`,
+                          description: category.description || "",
+                          image: getCategoryImage(category)
+                        }}
+                        onClick={() => handleCategoryClick(category)}
+                        index={index}
+                      />
                     ))}
                   </AnimatePresence>
                 </div>
@@ -269,12 +383,12 @@ export function ServiceDetailPage() {
       <Layout>
         <div className="page-container py-40 text-center">
           <AlertCircle className="h-16 w-16 text-destructive mx-auto mb-6" />
-          <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Registry Entry Not Found</h1>
+          <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Product Not Found</h1>
           <p className="text-muted-foreground mb-12 uppercase tracking-widest text-xs font-bold">
-            The requested service identifier does not exist in our cloud database.
+            The requested product does not exist.
           </p>
-          <Button asChild size="lg" className="rounded-none font-black uppercase h-14 px-10 shadow-premium">
-            <Link to="/services">Return to Catalog</Link>
+          <Button asChild size="lg" className="rounded-none font-black uppercase h-14 px-10">
+            <Link to="/services">Back to Services</Link>
           </Button>
         </div>
       </Layout>
@@ -284,7 +398,7 @@ export function ServiceDetailPage() {
   return (
     <Layout>
       {/* Hero Detail */}
-      <section className="bg-hero-pattern py-24 lg:py-32 relative overflow-hidden">
+      <section className="bg-hero-pattern py-20 lg:py-28 relative overflow-hidden">
         <div className="absolute inset-0 bg-primary/20 backdrop-blur-sm" />
         <div className="page-container relative z-10">
           <motion.div
@@ -294,43 +408,48 @@ export function ServiceDetailPage() {
           >
             <Link
               to="/services"
-              state={{ category: service.tags?.[0] || "All" }}
-              className="inline-flex items-center gap-2 text-white/60 hover:text-primary transition-colors mb-6 font-black uppercase text-[10px] tracking-[0.2em]"
+              state={{ category: service.tags?.[0] || null }}
+              className="inline-flex items-center gap-2 text-white/60 hover:text-primary transition-colors mb-6 font-bold uppercase text-xs tracking-widest"
             >
-              ← Back to {service.tags?.[0] ? service.tags[0].split('.')[0] : "Catalog"}
+              <ArrowLeft className="h-4 w-4" />
+              Back to {service.tags?.[0]?.split('.')[1]?.trim() || "Services"}
             </Link>
-            <h1 className="text-5xl lg:text-7xl font-black uppercase tracking-tighter leading-none mb-8">{service.title}</h1>
-            <p className="text-xl lg:text-2xl text-white/80 font-medium max-w-2xl border-l-4 border-primary pl-8 py-2">
+            <h1 className="text-4xl lg:text-6xl font-black uppercase tracking-tight leading-none mb-6">
+              {service.title}
+            </h1>
+            <p className="text-xl text-white/80 font-medium max-w-2xl">
               {service.short_description}
             </p>
 
-            <div className="flex flex-wrap items-center gap-6 mt-12">
-              <div className="px-8 py-4 bg-white/10 backdrop-blur-md rounded-none border border-white/20">
-                <span className="text-[10px] font-black uppercase tracking-widest text-white/50 block mb-1">Pricing Guide</span>
-                <div className="text-2xl font-black">{service.price_range || "On Request"}</div>
-              </div>
-              <div className="px-8 py-4 bg-primary rounded-none shadow-2xl">
-                <span className="text-[10px] font-black uppercase tracking-widest text-white/50 block mb-1">Lead Time</span>
-                <div className="text-2xl font-black italic">2-5 DAYS</div>
+            <div className="flex flex-wrap items-center gap-4 mt-10">
+              {service.price_range && (
+                <div className="px-6 py-3 bg-white/10 backdrop-blur-md rounded-lg border border-white/20">
+                  <span className="text-xs font-bold uppercase text-white/50 block">Starting From</span>
+                  <div className="text-xl font-black">{service.price_range}</div>
+                </div>
+              )}
+              <div className="px-6 py-3 bg-primary rounded-lg">
+                <span className="text-xs font-bold uppercase text-white/50 block">Lead Time</span>
+                <div className="text-xl font-black">2-5 Days</div>
               </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Presentation Content */}
-      <section className="py-24 bg-background">
+      {/* Content */}
+      <section className="py-16 lg:py-24 bg-background">
         <div className="page-container">
-          <div className="grid lg:grid-cols-5 gap-16">
-            {/* Visual Column */}
+          <div className="grid lg:grid-cols-5 gap-12">
+            {/* Main Content */}
             <div className="lg:col-span-3">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="space-y-12"
+                className="space-y-10"
               >
-                <div className="aspect-[16/10] rounded-[2rem] overflow-hidden shadow-premium bg-muted border-8 border-card">
+                <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-muted border-4 border-card shadow-xl">
                   <img
                     src={service.image_url || "/placeholder.svg"}
                     alt={service.title}
@@ -338,26 +457,28 @@ export function ServiceDetailPage() {
                   />
                 </div>
 
-                <div className="prose prose-xl dark:prose-invert max-w-none">
-                  <h2 className="text-3xl font-black uppercase tracking-tight mb-8 flex items-center gap-4">
-                    <span className="w-12 h-[2px] bg-primary" />
-                    Service Overview
+                <div className="prose prose-lg dark:prose-invert max-w-none">
+                  <h2 className="text-2xl font-black uppercase tracking-tight mb-6 flex items-center gap-3">
+                    <span className="w-10 h-[3px] bg-primary" />
+                    Product Details
                   </h2>
-                  <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap font-medium">
+                  <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
                     {service.long_description || service.short_description}
                   </p>
                 </div>
 
                 {service.features && service.features.length > 0 && (
-                  <div className="bg-muted/30 p-12 rounded-[2rem] border-2 border-dashed border-primary/10">
-                    <h3 className="text-xl font-black uppercase tracking-widest mb-8 text-primary">Technical Specs & Features</h3>
-                    <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="bg-muted/30 p-8 rounded-2xl border border-primary/10">
+                    <h3 className="text-lg font-black uppercase tracking-wider mb-6 text-primary">
+                      Features & Specifications
+                    </h3>
+                    <div className="grid sm:grid-cols-2 gap-4">
                       {service.features.map((feature, i) => (
-                        <div key={i} className="flex items-center gap-4 bg-card p-4 rounded-xl shadow-sm border border-border/50">
+                        <div key={i} className="flex items-center gap-3 bg-card p-3 rounded-lg shadow-sm">
                           <div className="bg-primary/10 p-2 rounded-lg">
                             <Check className="h-4 w-4 text-primary" />
                           </div>
-                          <span className="font-bold text-sm uppercase tracking-tight">{feature}</span>
+                          <span className="font-semibold text-sm">{feature}</span>
                         </div>
                       ))}
                     </div>
@@ -366,41 +487,43 @@ export function ServiceDetailPage() {
               </motion.div>
             </div>
 
-            {/* Request Column */}
+            {/* Sidebar */}
             <div className="lg:col-span-2">
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="bg-zinc-900 text-white p-12 rounded-[3rem] shadow-premium sticky top-28 border-8 border-white/5"
+                className="bg-foreground text-background p-8 rounded-2xl shadow-xl sticky top-28"
               >
-                <div className="mb-10">
-                  <h3 className="text-3xl font-black uppercase tracking-tighter mb-4 italic">Get a Custom Quote</h3>
-                  <p className="text-white/60 text-sm font-medium leading-relaxed">
-                    Provide us with your project dimensions and details to receive a comprehensive estimate within 24 business hours.
+                <div className="mb-8">
+                  <h3 className="text-2xl font-black uppercase tracking-tight mb-3">
+                    Get a Quote
+                  </h3>
+                  <p className="text-white/60 text-sm">
+                    Contact us for custom pricing and specifications.
                   </p>
                 </div>
 
                 <div className="space-y-4 mb-12">
-                  <Button className="w-full h-16 rounded-none bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest text-xs shadow-xl" asChild>
+                  <Button className="w-full h-16 rounded-none bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest text-sm shadow-xl" asChild>
                     <Link to="/request-quote">Request Official Estimate</Link>
                   </Button>
-                  <Button variant="outline" className="w-full h-16 rounded-none border-2 border-white/10 hover:bg-white/5 text-white font-black uppercase tracking-widest text-xs" asChild>
+                  <Button variant="outline" className="w-full h-14 rounded-lg border-white/20 hover:bg-white/5 text-white font-bold uppercase text-sm" asChild>
                     <a href="tel:+251936704476">
-                      <Phone className="h-4 w-4 mr-3" />
-                      Direct Line: 251-936-704-476
+                      <Phone className="h-4 w-4 mr-2" />
+                      Call: 251-936-704-476
                     </a>
                   </Button>
                 </div>
 
-                <div className="pt-8 border-t border-white/5 flex flex-col gap-4">
-                  <div className="flex items-center gap-4 group cursor-pointer">
-                    <div className="bg-white/5 p-3 rounded-xl group-hover:bg-primary transition-colors">
-                      <Mail className="h-5 w-5 text-primary group-hover:text-white" />
+                <div className="pt-6 border-t border-white/10">
+                  <div className="flex items-center gap-3 group cursor-pointer">
+                    <div className="bg-white/10 p-2 rounded-lg group-hover:bg-primary transition-colors">
+                      <Mail className="h-4 w-4 text-primary group-hover:text-white" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-black uppercase text-white/30 block">Send Assets</span>
-                      <a href="mailto:riseadvertising11@gmail.com" className="text-sm font-black uppercase tracking-tight hover:text-primary transition-colors">
+                      <span className="text-xs font-bold uppercase text-white/40 block">Email Us</span>
+                      <a href="mailto:riseadvertising11@gmail.com" className="text-sm font-bold hover:text-primary transition-colors">
                         riseadvertising11@gmail.com
                       </a>
                     </div>
