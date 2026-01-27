@@ -22,6 +22,7 @@ import AdminForgotPassword from "./pages/admin/ForgotPassword";
 import AdminResetPassword from "./pages/admin/ResetPassword";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminServices from "./pages/admin/Services";
+import AdminCategories from "./pages/admin/Categories";
 import AdminPortfolio from "./pages/admin/Portfolio";
 import AdminQuotes from "./pages/admin/Quotes";
 import AdminSettings from "./pages/admin/Settings";
@@ -67,6 +68,14 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <AdminServices />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/categories"
+                element={
+                  <ProtectedRoute>
+                    <AdminCategories />
                   </ProtectedRoute>
                 }
               />

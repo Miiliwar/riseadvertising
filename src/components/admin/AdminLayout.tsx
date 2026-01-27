@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
   Briefcase,
+  FolderOpen,
   Images,
   MessageSquare,
   Settings,
@@ -22,7 +23,8 @@ interface AdminLayoutProps {
 
 const navItems = [
   { path: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { path: "/admin/services", label: "Services", icon: Briefcase },
+  { path: "/admin/categories", label: "Categories", icon: FolderOpen },
+  { path: "/admin/services", label: "Products", icon: Briefcase },
   { path: "/admin/portfolio", label: "Portfolio", icon: Images },
   { path: "/admin/quotes", label: "Quote Requests", icon: MessageSquare },
   { path: "/admin/settings", label: "Settings", icon: Settings },

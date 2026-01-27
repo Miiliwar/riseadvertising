@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, Loader2, Info, Phone, Mail, Check, AlertCircle, Search } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, Info, Phone, Mail, Check, AlertCircle, Search, X } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +9,6 @@ import { CTASection } from "@/components/sections/CTASection";
 import { supabase } from "@/integrations/supabase/client";
 import { CategoryCard } from "@/components/services/CategoryCard";
 import { ProductCard } from "@/components/services/ProductCard";
-import { SERVICE_CATEGORIES, CATEGORY_IMAGES } from "@/components/services/ServiceCategories";
 
 interface Service {
   id: string;
@@ -23,46 +22,79 @@ interface Service {
   tags: string[] | null;
 }
 
+interface ServiceCategory {
+  id: string;
+  letter: string;
+  title: string;
+  description: string | null;
+  image_url: string | null;
+  sort_order: number | null;
+  published: boolean | null;
+}
+
 export default function ServicesPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   
   // Get selected category from URL state
   const selectedCategory = (location.state as any)?.category || null;
 
   useEffect(() => {
-    async function fetchServices() {
+    async function fetchData() {
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from("services")
-          .select("*")
-          .eq("published", true)
-          .order("sort_order", { ascending: true });
+        
+        // Fetch categories and services in parallel
+        const [categoriesRes, servicesRes] = await Promise.all([
+          supabase
+            .from("service_categories")
+            .select("*")
+            .eq("published", true)
+            .order("sort_order", { ascending: true }),
+          supabase
+            .from("services")
+            .select("*")
+            .eq("published", true)
+            .order("sort_order", { ascending: true })
+        ]);
 
-        if (error) throw error;
-        setServices(data || []);
+        if (categoriesRes.error) throw categoriesRes.error;
+        if (servicesRes.error) throw servicesRes.error;
+        
+        setCategories(categoriesRes.data || []);
+        setServices(servicesRes.data || []);
       } catch (error) {
-        console.error("Error fetching services:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchServices();
+    fetchData();
   }, []);
 
-  // Get first image from category's products for category card
-  const getCategoryImage = (categoryTitle: string) => {
-    const categoryProducts = services.filter(s => s.tags?.includes(categoryTitle));
+  // Get category image - use custom image or first product image
+  const getCategoryImage = (category: ServiceCategory) => {
+    if (category.image_url) {
+      return category.image_url;
+    }
+    // Fallback to first product in category
+    const categoryTag = `${category.letter}. ${category.title}`;
+    const categoryProducts = services.filter(s => s.tags?.includes(categoryTag));
     if (categoryProducts.length > 0 && categoryProducts[0].image_url) {
       return categoryProducts[0].image_url;
     }
-    const categoryId = categoryTitle.split('.')[0]?.trim();
-    return CATEGORY_IMAGES[categoryId] || "/placeholder.svg";
+    return "/placeholder.svg";
+  };
+
+  // Get category tag for filtering
+  const getCategoryTag = (category: ServiceCategory) => {
+    return `${category.letter}. ${category.title}`;
   };
 
   // Filter products by selected category
@@ -70,21 +102,45 @@ export default function ServicesPage() {
     ? services.filter(s => s.tags?.includes(selectedCategory))
     : [];
 
-  // Filter by search query (for category view)
-  const filteredCategories = SERVICE_CATEGORIES.filter(cat =>
-    cat.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    cat.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Search across all products
+  const searchResults = searchQuery.trim()
+    ? services.filter(s => 
+        s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        s.short_description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        s.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
+    : [];
 
-  const handleCategoryClick = (categoryTitle: string) => {
-    navigate("/services", { state: { category: categoryTitle } });
+  // Filter categories by search query (when not searching products)
+  const filteredCategories = !isSearching
+    ? categories.filter(cat =>
+        cat.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        cat.description?.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : categories;
+
+  const handleCategoryClick = (category: ServiceCategory) => {
+    const categoryTag = getCategoryTag(category);
+    navigate("/services", { state: { category: categoryTag } });
   };
 
   const handleBackToCategories = () => {
+    setSearchQuery("");
+    setIsSearching(false);
     navigate("/services", { state: { category: null } });
   };
 
-  const currentCategory = SERVICE_CATEGORIES.find(cat => cat.title === selectedCategory);
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
+    setIsSearching(value.trim().length > 0);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+    setIsSearching(false);
+  };
+
+  const currentCategory = categories.find(cat => getCategoryTag(cat) === selectedCategory);
 
   return (
     <Layout>
@@ -117,23 +173,34 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Search Bar */}
-      {!selectedCategory && (
-        <section className="bg-background py-8 border-b border-border">
-          <div className="page-container">
-            <div className="max-w-2xl mx-auto relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search products or services..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 h-14 text-lg rounded-xl border-2 border-muted-foreground/20 focus:border-primary"
-              />
-            </div>
+      {/* Search Bar - Always visible */}
+      <section className="bg-background py-8 border-b border-border">
+        <div className="page-container">
+          <div className="max-w-2xl mx-auto relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search all products and services..."
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="pl-12 pr-12 h-14 text-lg rounded-xl border-2 border-muted-foreground/20 focus:border-primary"
+            />
+            {searchQuery && (
+              <button
+                onClick={clearSearch}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            )}
           </div>
-        </section>
-      )}
+          {isSearching && (
+            <p className="text-center text-sm text-muted-foreground mt-4">
+              Found {searchResults.length} product{searchResults.length !== 1 ? 's' : ''} matching "{searchQuery}"
+            </p>
+          )}
+        </div>
+      </section>
 
       {/* Main Content */}
       <section className="py-12 lg:py-20 bg-background min-h-[60vh]">
@@ -142,6 +209,42 @@ export default function ServicesPage() {
             <div className="flex flex-col items-center justify-center py-32 text-muted-foreground">
               <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
               <p className="font-bold uppercase tracking-widest text-xs">Loading Services...</p>
+            </div>
+          ) : isSearching ? (
+            /* Search Results View */
+            <div>
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-2xl lg:text-3xl font-black uppercase tracking-tight">
+                  Search Results
+                </h2>
+                <Button variant="outline" onClick={clearSearch} className="rounded-none">
+                  <X className="h-4 w-4 mr-2" />
+                  Clear Search
+                </Button>
+              </div>
+
+              {searchResults.length === 0 ? (
+                <div className="text-center py-20 bg-muted/20 rounded-2xl border-2 border-dashed border-muted-foreground/10">
+                  <Search className="h-16 w-16 mx-auto text-muted-foreground/30 mb-6" />
+                  <h3 className="text-xl font-bold uppercase tracking-tight text-muted-foreground mb-2">
+                    No Results Found
+                  </h3>
+                  <p className="text-sm text-muted-foreground/60 max-w-sm mx-auto">
+                    Try a different search term or browse our categories below.
+                  </p>
+                  <Button variant="outline" onClick={clearSearch} className="mt-8 rounded-none border-2 h-12 px-8 font-bold uppercase">
+                    Browse Categories
+                  </Button>
+                </div>
+              ) : (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <AnimatePresence mode="popLayout">
+                    {searchResults.map((product, index) => (
+                      <ProductCard key={product.id} product={product} index={index} />
+                    ))}
+                  </AnimatePresence>
+                </div>
+              )}
             </div>
           ) : selectedCategory ? (
             /* Category Detail View - Show Products */
@@ -160,10 +263,10 @@ export default function ServicesPage() {
                 className="mb-12"
               >
                 <span className="text-primary font-black text-sm uppercase tracking-widest mb-2 block">
-                  Category {currentCategory?.id}
+                  Category {currentCategory?.letter}
                 </span>
                 <h2 className="text-3xl lg:text-4xl font-black uppercase tracking-tight mb-4">
-                  {currentCategory?.title.split('.')[1]?.trim() || selectedCategory}
+                  {currentCategory?.title || selectedCategory}
                 </h2>
                 <p className="text-muted-foreground text-lg max-w-2xl">
                   {currentCategory?.description}
@@ -216,10 +319,12 @@ export default function ServicesPage() {
                       <CategoryCard
                         key={category.id}
                         category={{
-                          ...category,
-                          image: getCategoryImage(category.title)
+                          id: category.letter,
+                          title: `${category.letter}. ${category.title}`,
+                          description: category.description || "",
+                          image: getCategoryImage(category)
                         }}
-                        onClick={() => handleCategoryClick(category.title)}
+                        onClick={() => handleCategoryClick(category)}
                         index={index}
                       />
                     ))}
