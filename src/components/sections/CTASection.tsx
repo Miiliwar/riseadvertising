@@ -22,7 +22,7 @@ export function CTASection() {
           viewport={{ once: true }}
           className="text-center text-primary-foreground max-w-3xl mx-auto"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black mb-6">
             Let's Build Your Brand Visibility
           </h2>
           <p className="text-lg md:text-xl text-primary-foreground mb-10 font-medium">

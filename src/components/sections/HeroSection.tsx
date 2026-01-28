@@ -8,7 +8,7 @@ import riseTextureIcon from "@/assets/rise-texture-icon.png";
 
 export function HeroSection() {
   return (
-    <section className="relative h-[calc(100vh_-_92px)] lg:h-[calc(100vh_-_100px)] flex flex-col overflow-hidden">
+    <section className="relative h-[calc(100vh_-_56px)] lg:h-[calc(100vh_-_100px)] flex flex-col overflow-hidden">
       {/* Main Hero */}
       <div className="flex-1 bg-background flex items-center relative overflow-hidden">
         <div className="page-container py-1 lg:py-4">
@@ -28,6 +28,17 @@ export function HeroSection() {
               <p className="text-sm md:text-xl font-medium text-foreground mb-6 max-w-xl mx-auto lg:mx-0 leading-relaxed">
                 Helping businesses stand out with quality signage, printing, and creative branding.
               </p>
+
+              {/* Mobile Hero Image (Visible only on mobile) */}
+              <div className="lg:hidden mb-6 relative group">
+                <div className="relative w-full flex items-center justify-center">
+                  <img
+                    src={brandingShowcase}
+                    alt="RISE Advertising"
+                    className="w-full h-auto max-h-[30vh] object-contain rounded-lg shadow-xl"
+                  />
+                </div>
+              </div>
 
               {/* Search Bar */}
               <div className="relative max-w-sm mx-auto lg:mx-0 mb-4 lg:mb-6">
@@ -71,7 +82,7 @@ export function HeroSection() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}
-              className="relative mt-2 lg:mt-0 max-w-[300px] lg:max-w-md mx-auto h-full flex items-center justify-center overflow-hidden"
+              className="relative mt-2 lg:mt-0 max-w-[300px] lg:max-w-md mx-auto h-full hidden lg:flex items-center justify-center overflow-hidden"
             >
               <div className="relative w-full flex items-center justify-center">
                 <img

@@ -71,7 +71,7 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center text-primary-foreground max-w-3xl mx-auto"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 uppercase">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black mb-6 uppercase">
               About Rise Printing & Advertising
             </h1>
             <p className="text-lg md:text-xl text-white mb-10 font-medium">
@@ -117,7 +117,7 @@ export default function AboutPage() {
               <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
                 WHO WE ARE
               </p>
-              <h2 className="text-3xl md:text-4xl font-black mb-6">
+              <h2 className="text-2xl md:text-4xl font-black mb-6">
                 A Team of Creative Professionals
               </h2>
               <div className="space-y-4 text-lg text-muted-foreground">
@@ -160,7 +160,7 @@ export default function AboutPage() {
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
               OUR STORY
             </p>
-            <h2 className="text-3xl md:text-4xl font-black mb-6">
+            <h2 className="text-2xl md:text-4xl font-black mb-6">
               From Vision to Reality
             </h2>
             <div className="space-y-4 text-lg text-muted-foreground text-left">
@@ -225,7 +225,7 @@ export default function AboutPage() {
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
               OUR VALUES
             </p>
-            <h2 className="text-3xl md:text-4xl font-black">
+            <h2 className="text-2xl md:text-4xl font-black">
               The Principles That Guide Us
             </h2>
           </motion.div>
@@ -263,7 +263,7 @@ export default function AboutPage() {
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
               OUR CAPABILITIES
             </p>
-            <h2 className="text-3xl md:text-4xl font-black">
+            <h2 className="text-2xl md:text-4xl font-black">
               What We Can Do For You
             </h2>
           </motion.div>
@@ -298,7 +298,7 @@ export default function AboutPage() {
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
               INDUSTRIES WE SERVE
             </p>
-            <h2 className="text-3xl md:text-4xl font-black">
+            <h2 className="text-2xl md:text-4xl font-black">
               Trusted Across Sectors
             </h2>
           </motion.div>
@@ -332,7 +332,7 @@ export default function AboutPage() {
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
               OUR TEAM
             </p>
-            <h2 className="text-3xl md:text-4xl font-black">
+            <h2 className="text-2xl md:text-4xl font-black">
               Meet The Professionals
             </h2>
             <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">

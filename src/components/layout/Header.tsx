@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Phone, Moon, Sun, User, LogIn, ChevronRight } from "lucide-react";
+import { Menu, X, Phone, Moon, Sun, User, LogIn, ChevronRight, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -38,7 +38,7 @@ export function Header() {
   return (
     <>
       {/* Top Contact Bar - Black Background */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-black text-white py-2">
+      <div className="hidden md:block fixed top-0 left-0 right-0 z-50 bg-black text-white py-2">
         <div className="page-container flex items-center justify-between text-sm">
           <div className="flex items-center gap-3 md:gap-4 overflow-x-auto no-scrollbar">
             <a href="https://www.google.com/maps/place/RISE+ADVERTISING+AND+PRINTING/@8.9510213,38.7177277,17z"
@@ -79,7 +79,7 @@ export function Header() {
       </div>
 
       {/* Main Header - Red Background */}
-      <header className="fixed top-[36px] left-0 right-0 z-50 bg-primary text-primary-foreground">
+      <header className="fixed top-0 md:top-[36px] left-0 right-0 z-50 bg-primary text-primary-foreground">
         <nav className="page-container" aria-label="Global">
           <div className="flex items-center justify-between h-14 md:h-16">
             {/* Logo */}
@@ -135,11 +135,11 @@ export function Header() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       {(isAdmin || isEditor) && (
-                        <DropdownMenuItem onClick={() => navigate("/admin")}>
+                        <DropdownMenuItem onSelect={() => navigate("/admin")}>
                           Admin Dashboard
                         </DropdownMenuItem>
                       )}
-                      <DropdownMenuItem onClick={handleSignOut}>
+                      <DropdownMenuItem onSelect={handleSignOut}>
                         log Out
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -188,6 +188,21 @@ export function Header() {
                 className="lg:hidden py-4 border-t border-white/20 bg-primary/95 backdrop-blur-lg overflow-y-auto max-h-[calc(100vh-100px)]"
               >
                 <div className="flex flex-col gap-1">
+                  {/* Admin Dashboard Link for Mobile */}
+                  {user && (isAdmin || isEditor) && (
+                    <Link
+                      to="/admin"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="px-4 py-3.5 text-base font-bold rounded-none transition-colors text-white bg-white/10 flex items-center justify-between group underline decoration-white/30 underline-offset-4"
+                    >
+                      <span className="flex items-center gap-2">
+                        <LayoutDashboard className="h-5 w-5 text-white" />
+                        Admin Dashboard
+                      </span>
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                  )}
+
                   {navigation.map((item) => (
                     <Link
                       key={item.name}

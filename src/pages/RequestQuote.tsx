@@ -164,7 +164,7 @@ export default function RequestQuotePage() {
                             <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
                                 <CheckCircle2 className="h-10 w-10 text-green-600" />
                             </div>
-                            <h1 className="text-3xl font-bold mb-4">Quote Request Received!</h1>
+                            <h1 className="text-2xl md:text-3xl font-bold mb-4">Quote Request Received!</h1>
                             <p className="text-muted-foreground mb-8">
                                 Thank you for your interest. Our team will review your request and
                                 get back to you within 24 hours with a detailed quote.

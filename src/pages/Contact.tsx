@@ -35,7 +35,7 @@ export default function ContactPage() {
               className="space-y-8"
             >
               <div>
-                <h2 className="text-3xl font-bold mb-6">Get In Touch</h2>
+                <h2 className="text-2xl md:text-3xl font-bold mb-6">Get In Touch</h2>
                 <p className="text-muted-foreground text-lg mb-8">
                   Whether you have a question about our services, pricing, or need technical support, our team is ready to answer all your questions.
                 </p>

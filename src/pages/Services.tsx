@@ -153,7 +153,7 @@ export default function ServicesPage() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-3xl mx-auto"
           >
-            <h1 className="text-4xl lg:text-6xl font-black uppercase tracking-tight mb-4">
+            <h1 className="text-3xl lg:text-6xl font-black uppercase tracking-tight mb-4">
               Signage, Printing & Branding Solutions
             </h1>
             <p className="text-lg lg:text-xl text-white/90 italic mb-8">
@@ -265,7 +265,7 @@ export default function ServicesPage() {
                 <span className="text-primary font-black text-sm uppercase tracking-widest mb-2 block">
                   Category {currentCategory?.letter}
                 </span>
-                <h2 className="text-3xl lg:text-4xl font-black uppercase tracking-tight mb-4">
+                <h2 className="text-2xl lg:text-4xl font-black uppercase tracking-tight mb-4">
                   {currentCategory?.title || selectedCategory}
                 </h2>
                 <p className="text-muted-foreground text-lg max-w-2xl">
@@ -300,7 +300,7 @@ export default function ServicesPage() {
             /* Categories Grid View */
             <div>
               <div className="text-center mb-12">
-                <h2 className="text-3xl lg:text-4xl font-black uppercase tracking-tight mb-4">
+                <h2 className="text-2xl lg:text-4xl font-black uppercase tracking-tight mb-4">
                   Featured Products / Services
                 </h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -414,7 +414,7 @@ export function ServiceDetailPage() {
               <ArrowLeft className="h-4 w-4" />
               Back to {service.tags?.[0]?.split('.')[1]?.trim() || "Services"}
             </Link>
-            <h1 className="text-4xl lg:text-6xl font-black uppercase tracking-tight leading-none mb-6">
+            <h1 className="text-3xl lg:text-6xl font-black uppercase tracking-tight leading-none mb-6">
               {service.title}
             </h1>
             <p className="text-xl text-white/80 font-medium max-w-2xl">

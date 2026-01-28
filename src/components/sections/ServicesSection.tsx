@@ -91,7 +91,7 @@ export function ServicesSection() {
           <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
             CORE SERVICES
           </p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-black uppercase">
             Our Core Branding &<br />Printing Services
           </h2>
         </motion.div>

@@ -50,8 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(session?.user ?? null);
 
         if (session?.user) {
-          // Use setTimeout to avoid potential race conditions
-          setTimeout(() => checkUserRole(session.user.id), 0);
+          await checkUserRole(session.user.id);
         } else {
           setIsAdmin(false);
           setIsEditor(false);
@@ -62,12 +61,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     // Then check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
 
       if (session?.user) {
-        checkUserRole(session.user.id);
+        await checkUserRole(session.user.id);
       }
 
       setLoading(false);
