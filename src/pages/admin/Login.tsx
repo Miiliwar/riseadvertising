@@ -36,7 +36,10 @@ export default function AdminLogin() {
         toast.error(error.message);
       } else {
         toast.success("Login successful!");
-        // Navigation will happen via auth state change
+        // Explicitly navigate for better mobile reliability
+        setTimeout(() => {
+          navigate("/admin", { replace: true });
+        }, 100);
       }
     } catch (error) {
       toast.error("An error occurred during login");
