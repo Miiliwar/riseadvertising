@@ -190,9 +190,34 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="page-container py-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <p className="text-white/40 text-xs">
-              © {new Date().getFullYear()} RISE Advertising. All rights reserved.
-            </p>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 font-medium uppercase tracking-widest">
+              <p className="text-white/40 text-xs text-center sm:text-left">
+                © {new Date().getFullYear()} RISE Advertising. All rights reserved.
+              </p>
+              <div className="text-white/60 text-xs flex items-center gap-1.5 border-l border-white/20 pl-6 hidden sm:flex">
+                <span>Developed by</span>
+                <a
+                  href="https://miilis-prtfolio.lovable.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:text-white transition-colors font-bold"
+                >
+                  Million Wariso
+                </a>
+              </div>
+              <div className="text-white/60 text-xs flex items-center justify-center gap-1.5 sm:hidden">
+                <span>Developed by</span>
+                <a
+                  href="https://miilis-prtfolio.lovable.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:text-white transition-colors font-bold"
+                >
+                  Million Wariso
+                </a>
+              </div>
+            </div>
+
             <div className="flex items-center gap-4">
               {socialLinks.map((social) => {
                 const IconComponent = social.icon;

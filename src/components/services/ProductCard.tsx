@@ -23,9 +23,14 @@ export function ProductCard({ product, index }: ProductCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
     >
-      <div className="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-card cursor-pointer border border-border/50 shadow-lg hover:shadow-xl transition-shadow duration-300">
-        {/* Image Container - shifts left on hover */}
-        <div className="absolute inset-0 flex transition-all duration-500 ease-out group-hover:w-[55%] group-hover:left-0">
+      <div className="group relative h-[160px] sm:h-[180px] lg:aspect-[4/3] lg:h-auto overflow-hidden rounded-2xl bg-card cursor-pointer border border-border/50 shadow-lg hover:shadow-xl transition-shadow duration-300">
+        {/* 
+          MOBILE-FIRST: 50/50 split on mobile so users don't have to "hover" to see title.
+          DESKTOP (lg): Reveal on hover.
+        */}
+
+        {/* Image Container */}
+        <div className="absolute inset-y-0 left-0 w-1/2 lg:w-full lg:inset-0 transition-all duration-500 ease-out lg:group-hover:w-[55%]">
           <img
             src={product.image_url || "/placeholder.svg"}
             alt={product.title}
@@ -33,20 +38,20 @@ export function ProductCard({ product, index }: ProductCardProps) {
           />
         </div>
 
-        {/* Content Container - fades in from right on hover */}
-        <div className="absolute right-0 top-0 bottom-0 w-[45%] flex flex-col justify-center items-start p-4 lg:p-5 bg-card opacity-0 translate-x-full transition-all duration-500 ease-out group-hover:opacity-100 group-hover:translate-x-0">
-          <h3 className="text-foreground text-sm lg:text-base font-black uppercase tracking-tight leading-tight mb-3 line-clamp-3">
+        {/* Content Container */}
+        <div className="absolute inset-y-0 right-0 w-1/2 lg:w-[45%] lg:opacity-0 lg:translate-x-full flex flex-col justify-center items-start p-4 lg:p-5 bg-card transition-all duration-500 ease-out lg:group-hover:opacity-100 lg:group-hover:translate-x-0">
+          <h3 className="text-foreground text-xs lg:text-base font-black uppercase tracking-tight leading-tight mb-2 lg:mb-3 line-clamp-3">
             {product.title}
           </h3>
           {product.price_range && (
-            <span className="text-primary font-bold text-xs mb-3 block">
+            <span className="text-primary font-bold text-[10px] lg:text-xs mb-2 lg:mb-3 block">
               {product.price_range}
             </span>
           )}
           <Button
             asChild
             size="sm"
-            className="w-fit rounded-none font-bold uppercase text-xs tracking-wider group/btn bg-primary hover:bg-primary/90"
+            className="h-8 lg:h-9 px-3 lg:px-4 rounded-none font-bold uppercase text-[10px] lg:text-xs tracking-wider group/btn bg-primary hover:bg-primary/90"
           >
             <Link to={`/services/${product.slug}`} state={{ category: product.tags?.[0] || "All" }}>
               View
@@ -55,8 +60,8 @@ export function ProductCard({ product, index }: ProductCardProps) {
           </Button>
         </div>
 
-        {/* Subtle border indicator on hover */}
-        <div className="absolute inset-0 border-2 border-primary/0 rounded-2xl transition-all duration-300 group-hover:border-primary/30 pointer-events-none" />
+        {/* Subtle border indicator on hover (Desktop) */}
+        <div className="absolute inset-0 border-2 border-primary/0 rounded-2xl transition-all duration-300 lg:group-hover:border-primary/30 pointer-events-none" />
       </div>
     </motion.div>
   );

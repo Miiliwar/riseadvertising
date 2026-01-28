@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Phone, Moon, Sun, User, LogIn } from "lucide-react";
+import { Menu, X, Phone, Moon, Sun, User, LogIn, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/theme-provider";
@@ -39,14 +40,19 @@ export function Header() {
       {/* Top Contact Bar - Black Background */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-black text-white py-2">
         <div className="page-container flex items-center justify-between text-sm">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 md:gap-4 overflow-x-auto no-scrollbar">
             <a href="https://www.google.com/maps/place/RISE+ADVERTISING+AND+PRINTING/@8.9510213,38.7177277,17z"
               target="_self"
-              rel="noopener noreferrer" className="flex items-center gap-1 hover:text-primary transition-colors">
-              📍 Addis Ababa, Ethiopia
+              rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-primary transition-colors whitespace-nowrap">
+              <span className="text-primary font-bold">📍</span>
+              <span className="hidden xs:inline">Addis Ababa, Ethiopia</span>
+              <span className="xs:hidden">Addis Ababa</span>
             </a>
-            <a href="tel:+251936704476" className="flex items-center gap-1 hover:text-primary transition-colors">
-              📞 Call us: +251936704476
+            <div className="w-px h-3 bg-white/20" />
+            <a href="tel:+251936704476" className="flex items-center gap-1.5 hover:text-primary transition-colors whitespace-nowrap">
+              <span className="text-primary font-bold">📞</span>
+              <span className="hidden xs:inline">+251 936 704 476</span>
+              <span className="xs:hidden">Call Now</span>
             </a>
           </div>
           <div className="hidden md:flex items-center gap-3">
@@ -172,43 +178,62 @@ export function Header() {
             </div>
           </div>
 
-          {/* Mobile Navigation */}
-          {mobileMenuOpen && (
-            <div className="lg:hidden py-4 border-t border-white/20 animate-slide-up bg-primary">
-              <div className="flex flex-col gap-2">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={cn(
-                      "px-4 py-3 text-base font-semibold rounded-lg transition-colors text-white",
-                      location.pathname === item.href
-                        ? "bg-white/20"
-                        : "hover:bg-white/10"
-                    )}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-                <div className="pt-4 mt-2 border-t border-white/20">
-                  <a
-                    href="tel:+251936704476"
-                    className="flex items-center gap-2 px-4 py-3 text-base font-semibold text-white"
-                  >
-                    <Phone className="h-5 w-5" />
-                    <span>+251 936 704 476</span>
-                  </a>
-
-                  <Button asChild className="w-full mt-2 bg-black text-white hover:bg-black/80 rounded-none">
-                    <Link to="/request-quote" onClick={() => setMobileMenuOpen(false)}>
-                      Request a Quote
+          {/* Mobile Navigation Overlay */}
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="lg:hidden py-4 border-t border-white/20 bg-primary/95 backdrop-blur-lg overflow-y-auto max-h-[calc(100vh-100px)]"
+              >
+                <div className="flex flex-col gap-1">
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={cn(
+                        "px-4 py-3.5 text-base font-bold rounded-none transition-colors text-white flex items-center justify-between group",
+                        location.pathname === item.href
+                          ? "bg-white/10"
+                          : "hover:bg-white/5"
+                      )}
+                    >
+                      {item.name}
+                      <ChevronRight className={cn(
+                        "h-4 w-4 transition-transform",
+                        location.pathname === item.href ? "translate-x-0" : "-translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
+                      )} />
                     </Link>
-                  </Button>
+                  ))}
+
+                  <div className="px-4 pt-6 mt-4 border-t border-white/10 space-y-4">
+                    <div className="flex flex-col gap-4">
+                      <a
+                        href="tel:+251936704476"
+                        className="flex items-center gap-3 py-2 text-white/90 hover:text-white transition-colors"
+                      >
+                        <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                          <Phone className="h-5 w-5" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-[10px] uppercase tracking-widest opacity-60">Call Us Directly</span>
+                          <span className="text-base font-black">+251 936 704 476</span>
+                        </div>
+                      </a>
+                    </div>
+
+                    <Button asChild size="lg" className="w-full bg-black text-white hover:bg-black/90 rounded-none h-14 font-black uppercase tracking-widest">
+                      <Link to="/request-quote" onClick={() => setMobileMenuOpen(false)}>
+                        Request a Quote
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </div>
-          )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </nav>
       </header>
     </>

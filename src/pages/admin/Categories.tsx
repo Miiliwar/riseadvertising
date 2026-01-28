@@ -342,8 +342,8 @@ export default function AdminCategories() {
 
         {/* Category Dialog */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="max-w-2xl overflow-hidden glassmorphism border-none p-0">
-            <DialogHeader className="p-8 bg-primary text-primary-foreground border-none">
+          <DialogContent className="max-w-2xl overflow-hidden glassmorphism border-none p-0 flex flex-col h-[90vh]">
+            <DialogHeader className="p-8 bg-primary text-primary-foreground border-none shrink-0">
               <div className="flex items-center gap-4">
                 <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-md">
                   {editingCategory ? (
@@ -365,7 +365,7 @@ export default function AdminCategories() {
               </div>
             </DialogHeader>
 
-            <form onSubmit={handleSubmit} className="p-8 space-y-6">
+            <form onSubmit={handleSubmit} className="p-8 space-y-6 flex-1 overflow-y-auto custom-scrollbar">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label className="font-black uppercase text-[9px] tracking-[0.2em] text-muted-foreground/60">

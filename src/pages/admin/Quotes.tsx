@@ -324,20 +324,20 @@ export default function AdminQuotes() {
 
         {/* Details Dialog - Enhanced Layout */}
         <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
+          <DialogContent className="max-w-3xl overflow-hidden glassmorphism border-none p-0 flex flex-col h-[90vh]">
+            <DialogHeader className="p-8 bg-primary text-primary-foreground border-none shrink-0">
+              <DialogTitle className="text-3xl font-black uppercase tracking-tighter flex items-center gap-3">
                 Quote #{selectedQuote?.id.slice(0, 8)}
-                <span className={`text-xs px-2 py-1 rounded-full font-normal ${getStatusStyle(selectedQuote?.status || 'new')}`}>
-                  {selectedQuote?.status?.toUpperCase() || 'NEW'}
+                <span className={`text-[10px] px-2 py-1 rounded shadow-lg font-black uppercase tracking-widest bg-white text-primary`}>
+                  {selectedQuote?.status || 'NEW'}
                 </span>
               </DialogTitle>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-white/70 text-xs font-bold uppercase tracking-widest leading-none mt-1">
                 Submitted on {selectedQuote && new Date(selectedQuote.created_at).toLocaleString()}
               </p>
             </DialogHeader>
             {selectedQuote && (
-              <div className="space-y-8 mt-4">
+              <div className="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
                 {/* Section: Customer Info */}
                 <div className="space-y-4">
                   <h4 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase flex items-center gap-2 border-b pb-2">
