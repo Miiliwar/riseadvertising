@@ -197,7 +197,7 @@ export function Footer() {
               <div className="text-white/60 text-xs flex items-center gap-1.5 border-l border-white/20 pl-6 hidden sm:flex">
                 <span>Developed by</span>
                 <a
-                  href="https://miilis-prtfolio.lovable.app"
+                  href="https://miilis-prtfolio.vercel.app"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:text-white transition-colors font-bold"
@@ -208,7 +208,7 @@ export function Footer() {
               <div className="text-white/60 text-xs flex items-center justify-center gap-1.5 sm:hidden">
                 <span>Developed by</span>
                 <a
-                  href="https://miilis-prtfolio.lovable.app"
+                  href="https://miilis-prtfolio.vercel.app"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:text-white transition-colors font-bold"

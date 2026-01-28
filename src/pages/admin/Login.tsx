@@ -36,10 +36,7 @@ export default function AdminLogin() {
         toast.error(error.message);
       } else {
         toast.success("Login successful!");
-        // Explicitly navigate for better mobile reliability
-        setTimeout(() => {
-          navigate("/admin", { replace: true });
-        }, 100);
+        // Navigation will happen via the useEffect above once roles are loaded
       }
     } catch (error) {
       toast.error("An error occurred during login");
