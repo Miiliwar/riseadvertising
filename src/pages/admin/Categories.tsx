@@ -63,19 +63,43 @@ export default function AdminCategories() {
     fetchCategories();
   }, []);
 
-  const fetchCategories = async () => {
+  const fetchCategories = async (retryCount = 0) => {
     try {
       setLoading(true);
+      console.log(`Fetching categories (Attempt ${retryCount + 1})...`);
+
       const { data, error } = await supabase
         .from("service_categories")
         .select("*")
         .order("sort_order", { ascending: true });
 
-      if (error) throw error;
+      if (error) {
+        // If it's an abort error and we haven't retried too much, retry
+        if (error.code === '20' || error.message.includes('AbortError')) { // Postgres cancel or Fetch abort
+          if (retryCount < 3) {
+            console.log("Fetch aborted, retrying...");
+            setTimeout(() => fetchCategories(retryCount + 1), 500);
+            return;
+          }
+        }
+        console.error("Supabase Error:", error);
+        throw error;
+      }
+
+      console.log("Categories data:", data);
       setCategories(data || []);
     } catch (error: any) {
-      console.error("Error fetching categories:", error);
-      toast.error("Failed to load categories");
+      // Ignore AbortError if it persists, it's usually client-side noise
+      if (error.name === 'AbortError' || error.message.includes('AbortError')) {
+        console.warn("Fetch aborted (ignoring)");
+        if (retryCount < 3) {
+          setTimeout(() => fetchCategories(retryCount + 1), 500);
+        }
+        return;
+      }
+
+      console.error("Error fetching categories (Catch):", error);
+      toast.error("Failed to load categories: " + (error.message || "Unknown error"));
     } finally {
       setLoading(false);
     }
