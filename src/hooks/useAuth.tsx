@@ -22,35 +22,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isEditor, setIsEditor] = useState(false);
 
-  const checkUserRole = async (userId: string) => {
+  const checkUserRole = async (userId: string, email?: string) => {
     try {
-      console.log('[Auth Debug] Checking role for user:', userId);
-
       const { data, error } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userId);
 
       if (error) {
-        console.error('[Auth Debug] Error checking user role:', error);
-        console.error('[Auth Debug] Error details:', JSON.stringify(error, null, 2));
-        return;
+        console.error('Error checking user role:', error);
       }
 
-      console.log('[Auth Debug] Role data received:', data);
+      let roles = data?.map(r => r.role) || [];
 
-      const roles = data?.map(r => r.role) || [];
-      console.log('[Auth Debug] Parsed roles:', roles);
+      // Fallback: Check email directly (Super Admin Access)
+      // This ensures you ALWAYS have access if you are the owner
+      if (email === 'riseadvertising11@gmail.com' || email === 'admin@riseadvertising.com') {
+        if (!roles.includes('admin')) {
+          console.log('Admin detected by email override');
+          roles.push('admin');
+        }
+      }
 
       const hasAdmin = roles.includes('admin');
-      const hasEditor = roles.includes('editor') || roles.includes('admin');
-
-      console.log('[Auth Debug] isAdmin:', hasAdmin, 'isEditor:', hasEditor);
+      const hasEditor = roles.includes('editor') || hasAdmin;
 
       setIsAdmin(hasAdmin);
       setIsEditor(hasEditor);
     } catch (error) {
-      console.error('[Auth Debug] Exception in checkUserRole:', error);
+      console.error('Error checking user role:', error);
     }
   };
 
@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(session?.user ?? null);
 
         if (session?.user) {
-          await checkUserRole(session.user.id);
+          await checkUserRole(session.user.id, session.user.email);
         } else {
           setIsAdmin(false);
           setIsEditor(false);
@@ -78,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(session?.user ?? null);
 
       if (session?.user) {
-        await checkUserRole(session.user.id);
+        await checkUserRole(session.user.id, session.user.email);
       }
 
       setLoading(false);
