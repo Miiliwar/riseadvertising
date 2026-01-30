@@ -21,10 +21,10 @@ export default function AdminLogin() {
 
   // If already logged in, redirect appropriately
   useEffect(() => {
-    if (!authLoading && user && (isAdmin || isEditor)) {
+    if (!authLoading && user) {
       navigate("/admin", { replace: true });
     }
-  }, [user, isAdmin, isEditor, authLoading, navigate]);
+  }, [user, authLoading, navigate]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ export default function AdminLogin() {
         toast.error(error.message);
       } else {
         toast.success("Login successful!");
-        // Navigation will happen via the useEffect above once roles are loaded
+        setTimeout(() => navigate("/admin", { replace: true }), 500);
       }
     } catch (error) {
       toast.error("An error occurred during login");

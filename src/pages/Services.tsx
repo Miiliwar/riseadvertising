@@ -38,43 +38,53 @@ export default function ServicesPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
   // Get selected category from URL state
   const selectedCategory = (location.state as any)?.category || null;
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setLoading(true);
+  async function fetchData() {
+    try {
+      setLoading(true);
+      setError(null);
 
-        // Fetch categories and services in parallel
-        const [categoriesRes, servicesRes] = await Promise.all([
-          supabase
-            .from("service_categories")
-            .select("*")
-            .eq("published", true)
-            .order("sort_order", { ascending: true }),
-          supabase
-            .from("services")
-            .select("*")
-            .eq("published", true)
-            .order("sort_order", { ascending: true })
-        ]);
+      // Add a safety timeout of 10 seconds
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Request timed out")), 10000)
+      );
 
-        if (categoriesRes.error) throw categoriesRes.error;
-        if (servicesRes.error) throw servicesRes.error;
+      // Fetch categories and services in parallel
+      const fetchPromise = Promise.all([
+        supabase
+          .from("service_categories")
+          .select("*")
+          .eq("published", true)
+          .order("sort_order", { ascending: true }),
+        supabase
+          .from("services")
+          .select("*")
+          .eq("published", true)
+          .order("sort_order", { ascending: true })
+      ]);
 
-        setCategories(categoriesRes.data || []);
-        setServices(servicesRes.data || []);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
+      const [categoriesRes, servicesRes] = await Promise.race([fetchPromise, timeoutPromise]) as any;
+
+      if (categoriesRes.error) throw categoriesRes.error;
+      if (servicesRes.error) throw servicesRes.error;
+
+      setCategories(categoriesRes.data || []);
+      setServices(servicesRes.data || []);
+    } catch (err: any) {
+      console.error("Error fetching data:", err);
+      setError(err.message || "Failed to load services. Please check your connection.");
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -209,6 +219,22 @@ export default function ServicesPage() {
             <div className="flex flex-col items-center justify-center py-32 text-muted-foreground">
               <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
               <p className="font-bold uppercase tracking-widest text-xs">Loading Services...</p>
+            </div>
+          ) : error ? (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <AlertCircle className="h-16 w-16 text-destructive mb-6" />
+              <h3 className="text-xl font-bold uppercase tracking-tight mb-2">
+                Unable to Load Services
+              </h3>
+              <p className="text-muted-foreground max-w-md mx-auto mb-8">
+                {error}
+              </p>
+              <Button
+                onClick={() => fetchData()}
+                className="rounded-none font-bold uppercase h-12 px-8"
+              >
+                Try Again
+              </Button>
             </div>
           ) : isSearching ? (
             /* Search Results View */

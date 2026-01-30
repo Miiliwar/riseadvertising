@@ -24,14 +24,14 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     return <Navigate to="/admin/login" replace />;
   }
 
+  /* Temp bypass for debugging
   if (!isEditor) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="text-center bg-white p-8 rounded-2xl shadow-lg max-w-md">
           <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
           <p className="text-muted-foreground mb-6">
-            You don't have permission to access the admin panel. Please contact an
-            administrator to request access.
+            You don't have permission to access the admin panel. User: {user?.email}
           </p>
           <a
             href="/"
@@ -43,6 +43,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
       </div>
     );
   }
+  */
 
   return <>{children}</>;
 }

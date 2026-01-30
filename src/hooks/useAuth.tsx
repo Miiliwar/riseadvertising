@@ -24,21 +24,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkUserRole = async (userId: string) => {
     try {
+      console.log('[Auth Debug] Checking role for user:', userId);
+
       const { data, error } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userId);
 
       if (error) {
-        console.error('Error checking user role:', error);
+        console.error('[Auth Debug] Error checking user role:', error);
+        console.error('[Auth Debug] Error details:', JSON.stringify(error, null, 2));
         return;
       }
 
+      console.log('[Auth Debug] Role data received:', data);
+
       const roles = data?.map(r => r.role) || [];
-      setIsAdmin(roles.includes('admin'));
-      setIsEditor(roles.includes('editor') || roles.includes('admin'));
+      console.log('[Auth Debug] Parsed roles:', roles);
+
+      const hasAdmin = roles.includes('admin');
+      const hasEditor = roles.includes('editor') || roles.includes('admin');
+
+      console.log('[Auth Debug] isAdmin:', hasAdmin, 'isEditor:', hasEditor);
+
+      setIsAdmin(hasAdmin);
+      setIsEditor(hasEditor);
     } catch (error) {
-      console.error('Error checking user role:', error);
+      console.error('[Auth Debug] Exception in checkUserRole:', error);
     }
   };
 
@@ -93,9 +105,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    setIsAdmin(false);
-    setIsEditor(false);
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    } finally {
+      setIsAdmin(false);
+      setIsEditor(false);
+      setUser(null);
+      setSession(null);
+      localStorage.clear(); // Clear local storage to be safe
+    }
   };
 
   return (

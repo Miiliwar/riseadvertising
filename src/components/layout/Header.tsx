@@ -125,7 +125,20 @@ export function Header() {
               </Button>
 
               {/* Login/User Button */}
-              <div className="flex items-center">
+              <div className="flex items-center gap-1 md:gap-2">
+                {/* Admin Dashboard Button (Desktop) */}
+                {user && (isAdmin || isEditor) && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="hidden md:flex rounded-full h-9 w-9 md:h-10 md:w-10 text-white hover:bg-white/20"
+                    onClick={() => navigate("/admin")}
+                    title="Admin Dashboard"
+                  >
+                    <LayoutDashboard className="h-4 w-4 md:h-5 md:w-5" />
+                  </Button>
+                )}
+
                 {user ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -140,7 +153,7 @@ export function Header() {
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuItem onSelect={handleSignOut}>
-                        log Out
+                        Log Out
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
