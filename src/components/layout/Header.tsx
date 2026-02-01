@@ -17,7 +17,7 @@ import {
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Services", href: "/services" },
-  { name: "Our Works", href: "/portfolio" },
+  { name: "Portfolio/Our Works", href: "/portfolio" },
   { name: "About Us", href: "/about" },
   { name: "FAQ", href: "/faq" },
   { name: "Contact Us", href: "/contact" },
@@ -99,13 +99,17 @@ export function Header() {
                   key={item.name}
                   to={item.href}
                   className={cn(
-                    "text-sm font-semibold transition-colors hover:text-white/70",
+                    "relative text-sm font-semibold transition-colors hover:text-white/70 py-1",
                     location.pathname === item.href
                       ? "text-white"
                       : "text-white/90"
                   )}
                 >
                   {item.name}
+                  {/* Active underline indicator */}
+                  {location.pathname === item.href && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full" />
+                  )}
                 </Link>
               ))}
             </div>

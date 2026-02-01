@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,8 +8,6 @@
    Bold. Professional. Print-Ready.
    Colors: Red #E31B23, Black #000, White #FFF
 */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 /* Scrollbar Utilities */
 .custom-scrollbar::-webkit-scrollbar {

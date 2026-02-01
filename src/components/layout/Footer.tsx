@@ -195,25 +195,29 @@ export function Footer() {
                 © {new Date().getFullYear()} RISE Advertising. All rights reserved.
               </p>
               <div className="text-white/60 text-xs flex items-center gap-1.5 border-l border-white/20 pl-6 hidden sm:flex">
-                <span>Developed by</span>
                 <a
-                  href="https://miilis-prtfolio.vercel.app"
+                  href="https://t.me/Miiliwar"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:text-white transition-colors font-bold"
+                  className="flex items-center gap-1.5 hover:text-white transition-colors group"
                 >
-                  Million Wariso
+                  <span>Developed by</span>
+                  <span className="text-primary group-hover:text-white transition-colors font-bold">
+                    Million 0907858058
+                  </span>
                 </a>
               </div>
               <div className="text-white/60 text-xs flex items-center justify-center gap-1.5 sm:hidden">
-                <span>Developed by</span>
                 <a
-                  href="https://miilis-prtfolio.vercel.app"
+                  href="https://t.me/Miiliwar"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:text-white transition-colors font-bold"
+                  className="flex items-center gap-1.5 hover:text-white transition-colors group"
                 >
-                  Million Wariso
+                  <span>Developed by</span>
+                  <span className="text-primary group-hover:text-white transition-colors font-bold">
+                    Million 0907858058
+                  </span>
                 </a>
               </div>
             </div>

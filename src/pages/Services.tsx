@@ -50,9 +50,9 @@ export default function ServicesPage() {
       setLoading(true);
       setError(null);
 
-      // Add a safety timeout of 10 seconds
+      // Add a safety timeout of 30 seconds
       const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Request timed out")), 10000)
+        setTimeout(() => reject(new Error("Request timed out")), 30000)
       );
 
       // Fetch categories and services in parallel

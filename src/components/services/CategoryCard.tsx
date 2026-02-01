@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,9 +14,10 @@ interface CategoryCardProps {
   index: number;
 }
 
-export function CategoryCard({ category, onClick, index }: CategoryCardProps) {
+export const CategoryCard = forwardRef<HTMLDivElement, CategoryCardProps>(({ category, onClick, index }, ref) => {
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
@@ -58,4 +60,6 @@ export function CategoryCard({ category, onClick, index }: CategoryCardProps) {
       <div className="absolute inset-0 border-2 border-primary/0 rounded-2xl transition-all duration-300 lg:group-hover:border-primary/30 pointer-events-none" />
     </motion.div>
   );
-}
+});
+
+CategoryCard.displayName = "CategoryCard";
