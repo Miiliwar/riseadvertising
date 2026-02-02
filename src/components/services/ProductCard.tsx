@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 interface ProductCardProps {
   product: {
@@ -17,51 +18,74 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index }: ProductCardProps) {
+  const [showInfo, setShowInfo] = useState(false);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
+      onClick={() => setShowInfo(!showInfo)}
+      className="relative aspect-square sm:aspect-[4/3] group overflow-hidden rounded-2xl bg-card cursor-pointer border border-border/50 shadow-lg hover:shadow-xl transition-shadow duration-300"
     >
-      <div className="group relative h-[160px] sm:h-[180px] lg:aspect-[4/3] lg:h-auto overflow-hidden rounded-2xl bg-card cursor-pointer border border-border/50 shadow-lg hover:shadow-xl transition-shadow duration-300">
-        {/* 
-          MOBILE-FIRST: 50/50 split on mobile so users don't have to "hover" to see title.
-          DESKTOP (lg): Reveal on hover.
-        */}
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src={product.image_url || "/placeholder.svg"}
+          alt={product.title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        {/* Gradient Overlay (Constant for readability) */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 group-hover:opacity-60 transition-opacity" />
+      </div>
 
-        {/* Image Container */}
-        <div className="absolute inset-y-0 left-0 w-1/2 lg:w-full lg:inset-0 transition-all duration-500 ease-out lg:group-hover:w-[55%]">
-          <img
-            src={product.image_url || "/placeholder.svg"}
-            alt={product.title}
-            className="w-full h-full object-cover transition-transform duration-700"
-          />
-        </div>
-
-        {/* Content Container */}
-        <div className="absolute inset-y-0 right-0 w-1/2 lg:w-[45%] lg:opacity-0 lg:translate-x-full flex flex-col justify-center items-start p-4 lg:p-5 bg-card transition-all duration-500 ease-out lg:group-hover:opacity-100 lg:group-hover:translate-x-0">
-          <h3 className="text-foreground text-xs lg:text-base font-black uppercase tracking-tight leading-tight mb-2 lg:mb-3 line-clamp-3">
-            {product.title}
-          </h3>
-          {product.price_range && (
-            <span className="text-primary font-bold text-[10px] lg:text-xs mb-2 lg:mb-3 block">
-              {product.price_range}
+      {/* Basic Label (Always visible on mobile bottom if not open?) - Actually user said "when clicked shows..." */}
+      <AnimatePresence>
+        {(showInfo || false) && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="absolute inset-0 z-10 bg-black/80 backdrop-blur-sm p-4 flex flex-col justify-center items-center text-center backdrop-blur-lg"
+          >
+            <span className="text-primary font-black text-[10px] uppercase tracking-widest mb-1">
+              {product.tags?.[0]?.split('.')[1]?.trim() || "Rise Print"}
             </span>
-          )}
+            <h3 className="text-white text-xs sm:text-base font-black uppercase tracking-tight leading-tight mb-4 line-clamp-3">
+              {product.title}
+            </h3>
+            <Button
+              asChild
+              size="sm"
+              className="h-8 rounded-none font-bold uppercase text-[10px] tracking-wider bg-primary hover:bg-primary/90"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Link to={`/services/${product.slug}`} state={{ category: product.tags?.[0] || "All" }}>
+                View Detail
+                <ArrowRight className="h-3 w-3 ml-1" />
+              </Link>
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Hover Info (lg+) - Only show if not already showing phone info? Or just hiding it on lg+ */}
+      <div className="hidden lg:flex absolute inset-0 z-20 opacity-0 group-hover:opacity-100 bg-black/40 p-5 flex-col justify-end transition-opacity duration-300 pointer-events-none">
+        <span className="text-primary font-black text-xs uppercase tracking-widest mb-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+          {product.tags?.[0]?.split('.')[1]?.trim() || "Rise Print"}
+        </span>
+        <h3 className="text-white text-lg font-black uppercase tracking-tight leading-tight mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+          {product.title}
+        </h3>
+        <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150">
           <Button
             asChild
             size="sm"
-            className="h-8 lg:h-9 px-3 lg:px-4 rounded-none font-bold uppercase text-[10px] lg:text-xs tracking-wider group/btn bg-primary hover:bg-primary/90"
+            className="h-9 px-4 rounded-none font-bold uppercase text-xs tracking-wider bg-primary hover:bg-primary/90"
           >
-            <Link to={`/services/${product.slug}`} state={{ category: product.tags?.[0] || "All" }}>
-              View Detail
-              <ArrowRight className="h-3 w-3 ml-1 transition-transform group-hover/btn:translate-x-1" />
-            </Link>
+            <span>View Detail</span>
           </Button>
         </div>
-
-        {/* Subtle border indicator on hover (Desktop) */}
-        <div className="absolute inset-0 border-2 border-primary/0 rounded-2xl transition-all duration-300 lg:group-hover:border-primary/30 pointer-events-none" />
       </div>
     </motion.div>
   );

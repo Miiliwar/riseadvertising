@@ -1,5 +1,5 @@
-import { forwardRef } from "react";
-import { motion } from "framer-motion";
+import { forwardRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -15,49 +15,85 @@ interface CategoryCardProps {
 }
 
 export const CategoryCard = forwardRef<HTMLDivElement, CategoryCardProps>(({ category, onClick, index }, ref) => {
+  const [showInfo, setShowInfo] = useState(false);
+
+  const handleMobileClick = (e: React.MouseEvent) => {
+    // If we're on a mobile device (touch), we might want to prevent the parent onClick (which navigates)
+    // and instead show our info first.
+    if (window.innerWidth < 1024) {
+      e.preventDefault();
+      e.stopPropagation();
+      setShowInfo(!showInfo);
+    } else {
+      onClick();
+    }
+  };
+
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
-      className="group relative h-[160px] sm:h-[200px] lg:aspect-[4/3] lg:h-auto overflow-hidden rounded-2xl bg-card cursor-pointer border border-border/50 shadow-lg hover:shadow-xl transition-shadow duration-300"
-      onClick={onClick}
+      className="group relative aspect-square sm:aspect-[4/3] overflow-hidden rounded-2xl bg-card cursor-pointer border border-border/50 shadow-lg hover:shadow-xl transition-shadow duration-300"
+      onClick={handleMobileClick}
     >
-      {/* 
-        MOBILE (Default): Split layout 50/50
-        DESKTOP (lg): Full image, reveal on hover
-      */}
-
-      {/* Image Container */}
-      <div className="absolute inset-y-0 left-0 w-1/2 lg:w-full lg:inset-0 transition-all duration-500 ease-out lg:group-hover:w-[55%]">
+      {/* Background Image */}
+      <div className="absolute inset-0">
         <img
           src={category.image || "/placeholder.svg"}
           alt={category.title}
-          className="w-full h-full object-cover transition-transform duration-700"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 group-hover:opacity-60 transition-opacity" />
       </div>
 
-      {/* Content Container */}
-      <div className="absolute inset-y-0 right-0 w-1/2 lg:w-[45%] lg:opacity-0 lg:translate-x-full flex flex-col justify-center items-start p-4 lg:p-5 bg-card transition-all duration-500 ease-out lg:group-hover:opacity-100 lg:group-hover:translate-x-0">
-        <span className="text-primary font-black text-[10px] lg:text-xs uppercase tracking-widest mb-1 lg:mb-2 block">
-          Cat {category.id}
+      {/* Info Overlay (Mobile Only Toggle) */}
+      <AnimatePresence>
+        {showInfo && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="absolute inset-0 z-10 bg-black/80 backdrop-blur-md p-4 flex flex-col justify-center items-center text-center p-2"
+          >
+            <span className="text-primary font-black text-[10px] uppercase tracking-widest mb-1">
+              Category {category.id}
+            </span>
+            <h3 className="text-white text-xs sm:text-base font-black uppercase tracking-tight leading-tight mb-4">
+              {category.title.split('.')[1]?.trim() || category.title}
+            </h3>
+            <Button
+              variant="default"
+              size="sm"
+              className="h-8 rounded-none font-bold uppercase text-[10px] tracking-wider bg-primary hover:bg-primary/90"
+              onClick={onClick}
+            >
+              View more
+              <ArrowRight className="h-3 w-3 ml-1" />
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Hover Info (lg+) */}
+      <div className="hidden lg:flex absolute inset-0 z-20 opacity-0 group-hover:opacity-100 bg-black/40 p-5 flex-col justify-end transition-opacity duration-300 pointer-events-none">
+        <span className="text-primary font-black text-xs uppercase tracking-widest mb-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+          Category {category.id}
         </span>
-        <h3 className="text-foreground text-sm lg:text-lg font-black uppercase tracking-tight leading-tight mb-2 lg:mb-3 line-clamp-2">
+        <h3 className="text-white text-lg font-black uppercase tracking-tight leading-tight mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
           {category.title.split('.')[1]?.trim() || category.title}
         </h3>
-        <Button
-          variant="default"
-          size="sm"
-          className="h-8 lg:h-9 px-3 lg:px-4 rounded-none font-bold uppercase text-[10px] lg:text-xs tracking-wider group/btn bg-primary hover:bg-primary/90"
-        >
-          View more
-          <ArrowRight className="h-3 w-3 ml-1 transition-transform group-hover/btn:translate-x-1" />
-        </Button>
+        <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150">
+          <Button
+            variant="default"
+            size="sm"
+            className="h-9 px-4 rounded-none font-bold uppercase text-xs tracking-wider bg-primary hover:bg-primary/90"
+          >
+            <span>View more</span>
+          </Button>
+        </div>
       </div>
-
-      {/* Subtle border indicator on hover (Desktop only for precision) */}
-      <div className="absolute inset-0 border-2 border-primary/0 rounded-2xl transition-all duration-300 lg:group-hover:border-primary/30 pointer-events-none" />
     </motion.div>
   );
 });
