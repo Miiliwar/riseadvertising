@@ -50,13 +50,9 @@ export default function ServicesPage() {
       setLoading(true);
       setError(null);
 
-      // Add a safety timeout of 30 seconds
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Request timed out")), 30000)
-      );
-
       // Fetch categories and services in parallel
-      const fetchPromise = Promise.all([
+      console.log("Fetching services and categories from Supabase...");
+      const [categoriesRes, servicesRes] = await Promise.all([
         supabase
           .from("service_categories")
           .select("*")
@@ -69,15 +65,24 @@ export default function ServicesPage() {
           .order("sort_order", { ascending: true })
       ]);
 
-      const [categoriesRes, servicesRes] = await Promise.race([fetchPromise, timeoutPromise]) as any;
+      if (categoriesRes.error) {
+        console.error("Categories fetch error:", categoriesRes.error);
+        throw categoriesRes.error;
+      }
+      if (servicesRes.error) {
+        console.error("Services fetch error:", servicesRes.error);
+        throw servicesRes.error;
+      }
 
-      if (categoriesRes.error) throw categoriesRes.error;
-      if (servicesRes.error) throw servicesRes.error;
+      console.log("Successfully fetched data:", {
+        categoriesCount: categoriesRes.data?.length,
+        servicesCount: servicesRes.data?.length
+      });
 
       setCategories(categoriesRes.data || []);
       setServices(servicesRes.data || []);
     } catch (err: any) {
-      console.error("Error fetching data:", err);
+      console.error("Detailed fetch error:", err);
       setError(err.message || "Failed to load services. Please check your connection.");
     } finally {
       setLoading(false);
