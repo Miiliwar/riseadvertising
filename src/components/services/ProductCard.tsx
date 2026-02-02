@@ -20,73 +20,59 @@ interface ProductCardProps {
 export function ProductCard({ product, index }: ProductCardProps) {
   const [showInfo, setShowInfo] = useState(false);
 
+  // Determine if details should be shown (hover on desktop OR active state on mobile)
+  const isRevealed = showInfo;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
       onClick={() => setShowInfo(!showInfo)}
+      onMouseEnter={() => setShowInfo(true)}
+      onMouseLeave={() => setShowInfo(false)}
       className="relative aspect-square sm:aspect-[4/3] group overflow-hidden rounded-2xl bg-card cursor-pointer border border-border/50 shadow-lg hover:shadow-xl transition-shadow duration-300"
     >
-      {/* Background Image */}
-      <div className="absolute inset-0">
+      {/* Image Container - Shifts left on reveal */}
+      <div
+        className={`absolute inset-y-0 left-0 transition-all duration-500 ease-in-out ${isRevealed ? "w-1/2" : "w-full"
+          }`}
+      >
         <img
           src={product.image_url || "/placeholder.svg"}
           alt={product.title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="w-full h-full object-cover"
         />
-        {/* Gradient Overlay (Constant for readability) */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 group-hover:opacity-60 transition-opacity" />
+        {/* Subtle shadow on the right edge of the image when revealed to give depth */}
+        <div className={`absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-black/10 to-transparent transition-opacity duration-500 ${isRevealed ? "opacity-100" : "opacity-0"}`} />
       </div>
 
-      {/* Basic Label (Always visible on mobile bottom if not open?) - Actually user said "when clicked shows..." */}
-      <AnimatePresence>
-        {(showInfo || false) && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="absolute inset-0 z-10 bg-black/80 backdrop-blur-sm p-4 flex flex-col justify-center items-center text-center backdrop-blur-lg"
-          >
-            <span className="text-primary font-black text-[10px] uppercase tracking-widest mb-1">
-              {product.tags?.[0]?.split('.')[1]?.trim() || "Rise Print"}
-            </span>
-            <h3 className="text-white text-xs sm:text-base font-black uppercase tracking-tight leading-tight mb-4 line-clamp-3">
-              {product.title}
-            </h3>
-            <Button
-              asChild
-              size="sm"
-              className="h-8 rounded-none font-bold uppercase text-[10px] tracking-wider bg-primary hover:bg-primary/90"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Link to={`/services/${product.slug}`} state={{ category: product.tags?.[0] || "All" }}>
-                View Detail
-                <ArrowRight className="h-3 w-3 ml-1" />
-              </Link>
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Desktop Hover Info (lg+) - Only show if not already showing phone info? Or just hiding it on lg+ */}
-      <div className="hidden lg:flex absolute inset-0 z-20 opacity-0 group-hover:opacity-100 bg-black/40 p-5 flex-col justify-end transition-opacity duration-300 pointer-events-none">
-        <span className="text-primary font-black text-xs uppercase tracking-widest mb-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+      {/* Content Container - Fades in on the right */}
+      <div
+        className={`absolute inset-y-0 right-0 w-1/2 flex flex-col justify-center items-start p-3 sm:p-4 bg-card transition-all duration-500 ease-in-out ${isRevealed ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
+          }`}
+      >
+        <span className="text-primary font-black text-[10px] sm:text-xs uppercase tracking-widest mb-1">
           {product.tags?.[0]?.split('.')[1]?.trim() || "Rise Print"}
         </span>
-        <h3 className="text-white text-lg font-black uppercase tracking-tight leading-tight mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+        <h3 className="text-foreground text-[10px] sm:text-sm font-black uppercase tracking-tight leading-tight mb-3 line-clamp-3">
           {product.title}
         </h3>
-        <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150">
-          <Button
-            asChild
-            size="sm"
-            className="h-9 px-4 rounded-none font-bold uppercase text-xs tracking-wider bg-primary hover:bg-primary/90"
-          >
-            <span>View Detail</span>
-          </Button>
-        </div>
+        <Button
+          asChild
+          size="sm"
+          className="h-7 sm:h-8 px-2 sm:px-3 rounded-none font-bold uppercase text-[9px] sm:text-[10px] tracking-wider bg-primary hover:bg-primary/90"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Link to={`/services/${product.slug}`} state={{ category: product.tags?.[0] || "All" }}>
+            View Detail
+            <ArrowRight className="h-3 w-3 ml-1" />
+          </Link>
+        </Button>
       </div>
+
+      {/* Subtle border indicator on hover */}
+      <div className={`absolute inset-0 border-2 rounded-2xl transition-all duration-300 pointer-events-none ${isRevealed ? "border-primary/30" : "border-transparent"}`} />
     </motion.div>
   );
 }
