@@ -137,9 +137,12 @@ export default function AboutPage() {
               className="relative"
             >
               <div className="aspect-square bg-secondary rounded-2xl overflow-hidden relative">
-                <img
-                  src={brandingShowcase}
-                  alt="RISE Advertising - Branding Showcase"
+                <video
+                  src="/videos/hero-video.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   className="w-full h-full object-cover"
                 />
               </div>

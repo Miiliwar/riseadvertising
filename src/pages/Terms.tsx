@@ -5,7 +5,7 @@ export default function TermsPage() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-hero-pattern py-20">
+      <section className="bg-primary py-20 lg:py-28 relative overflow-hidden">
         <div className="page-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -155,8 +155,7 @@ export default function ServicesPage() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-hero-pattern py-16 lg:py-24 relative overflow-hidden text-center text-white">
-        <div className="absolute inset-0 bg-primary/10 backdrop-blur-[2px]" />
+      <section className="bg-primary py-20 lg:py-28 relative overflow-hidden text-center text-white">
         <div className="page-container relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -424,8 +423,7 @@ export function ServiceDetailPage() {
   return (
     <Layout>
       {/* Hero Detail */}
-      <section className="bg-hero-pattern py-20 lg:py-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary/20 backdrop-blur-sm" />
+      <section className="bg-primary py-20 lg:py-28 relative overflow-hidden">
         <div className="page-container relative z-10">
           <motion.div
             initial={{ opacity: 0, x: -30 }}

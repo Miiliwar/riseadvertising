@@ -51,7 +51,7 @@ export const CategoryCard = forwardRef<HTMLDivElement, CategoryCardProps>(({ cat
           size="sm"
           className="h-8 lg:h-9 px-3 lg:px-4 rounded-none font-bold uppercase text-[10px] lg:text-xs tracking-wider group/btn bg-primary hover:bg-primary/90"
         >
-          View
+          View more
           <ArrowRight className="h-3 w-3 ml-1 transition-transform group-hover/btn:translate-x-1" />
         </Button>
       </div>
