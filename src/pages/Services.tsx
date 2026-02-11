@@ -9,6 +9,7 @@ import { CTASection } from "@/components/sections/CTASection";
 import { supabase } from "@/integrations/supabase/client";
 import { CategoryCard } from "@/components/services/CategoryCard";
 import { ProductCard } from "@/components/services/ProductCard";
+import { useQuery } from "@tanstack/react-query";
 
 interface Service {
   id: string;
@@ -35,63 +36,40 @@ interface ServiceCategory {
 export default function ServicesPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [services, setServices] = useState<Service[]>([]);
-  const [categories, setCategories] = useState<ServiceCategory[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
   // Get selected category from URL state
   const selectedCategory = (location.state as any)?.category || null;
 
-  async function fetchData() {
-    try {
-      setLoading(true);
-      setError(null);
+  const { data: categories = [], isLoading: loadingCategories, error: catError } = useQuery({
+    queryKey: ["service-categories"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("service_categories")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return data as ServiceCategory[];
+    },
+  });
 
-      // Fetch categories and services in parallel
-      console.log("Fetching services and categories from Supabase...");
-      const [categoriesRes, servicesRes] = await Promise.all([
-        supabase
-          .from("service_categories")
-          .select("*")
-          .eq("published", true)
-          .order("sort_order", { ascending: true }),
-        supabase
-          .from("services")
-          .select("*")
-          .eq("published", true)
-          .order("sort_order", { ascending: true })
-      ]);
+  const { data: services = [], isLoading: loadingServices, error: svcError } = useQuery({
+    queryKey: ["all-services"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("services")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return data as Service[];
+    },
+  });
 
-      if (categoriesRes.error) {
-        console.error("Categories fetch error:", categoriesRes.error);
-        throw categoriesRes.error;
-      }
-      if (servicesRes.error) {
-        console.error("Services fetch error:", servicesRes.error);
-        throw servicesRes.error;
-      }
-
-      console.log("Successfully fetched data:", {
-        categoriesCount: categoriesRes.data?.length,
-        servicesCount: servicesRes.data?.length
-      });
-
-      setCategories(categoriesRes.data || []);
-      setServices(servicesRes.data || []);
-    } catch (err: any) {
-      console.error("Detailed fetch error:", err);
-      setError(err.message || "Failed to load services. Please check your connection.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const loading = loadingCategories || loadingServices;
+  const error = catError || svcError ? (catError?.message || svcError?.message || "Failed to load services.") : null;
 
   // Get category image - use custom image or first product image
   const getCategoryImage = (category: ServiceCategory) => {
@@ -234,7 +212,7 @@ export default function ServicesPage() {
                 {error}
               </p>
               <Button
-                onClick={() => fetchData()}
+                onClick={() => window.location.reload()}
                 className="rounded-none font-bold uppercase h-12 px-8"
               >
                 Try Again
