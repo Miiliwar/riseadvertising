@@ -117,14 +117,14 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* Portfolio Grid */}
-      <section className="py-16 lg:py-24">
-        <div className="page-container">
+      {/* Portfolio Marquee */}
+      <section className="py-16 lg:py-24 overflow-hidden">
+        <div className="page-container mb-10">
           {/* Category Filter */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-wrap justify-center gap-2 mb-12"
+            className="flex flex-wrap justify-center gap-2"
           >
             {categories.map((category) => (
               <button
@@ -141,56 +141,49 @@ export default function PortfolioPage() {
               </button>
             ))}
           </motion.div>
+        </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {filteredItems.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                layout
+        {/* Marquee Row */}
+        <div className="relative w-full">
+          <motion.div
+            className="flex gap-5 w-max"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: filteredItems.length * 6, repeat: Infinity, ease: "linear" }}
+          >
+            {/* Duplicate items for seamless loop */}
+            {[...filteredItems, ...filteredItems].map((item, index) => (
+              <button
+                key={`${item.id}-${index}`}
+                onClick={() => setSelectedItem(item)}
+                className="group relative flex-shrink-0 w-[300px] md:w-[400px] lg:w-[450px] aspect-[4/3] rounded-xl overflow-hidden"
               >
-                <button
-                  onClick={() => setSelectedItem(item)}
-                  className="portfolio-item group block w-full text-left aspect-[4/3] relative rounded-xl overflow-hidden"
-                >
-                  {/* Image */}
-                  <img
-                    src={item.images[0]}
-                    alt={item.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+                <img
+                  src={item.images[0]}
+                  alt={item.title}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity" />
 
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-
-                  {/* Featured Badge */}
-                  {item.featured && (
-                    <div className="absolute top-4 left-4 px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-full">
-                      Featured
-                    </div>
-                  )}
-
-                  {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
-                    <div className="text-xs font-semibold text-primary mb-1">{item.category}</div>
-                    <h3 className="text-lg font-bold mb-1">{item.title}</h3>
-                    <p className="text-sm text-white/70">{item.client}</p>
+                {item.featured && (
+                  <div className="absolute top-4 left-4 px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-full">
+                    Featured
                   </div>
+                )}
 
-                  {/* Hover Icon */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-100 scale-50">
-                    <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center">
-                      <Eye className="h-6 w-6 text-primary-foreground" />
-                    </div>
+                <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
+                  <div className="text-xs font-semibold text-primary mb-1">{item.category}</div>
+                  <h3 className="text-lg font-bold mb-1">{item.title}</h3>
+                  <p className="text-sm text-white/70">{item.client}</p>
+                </div>
+
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-100 scale-50">
+                  <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center">
+                    <Eye className="h-6 w-6 text-primary-foreground" />
                   </div>
-                </button>
-              </motion.div>
+                </div>
+              </button>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
