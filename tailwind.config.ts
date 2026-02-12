@@ -118,7 +118,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "float": "float 3s ease-in-out infinite",
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
-        "marquee": "marquee 48s linear infinite",
+        "marquee": "marquee 72s linear infinite",
       },
       backgroundImage: {
         "hero-pattern": "linear-gradient(135deg, hsl(var(--rise-black)) 0%, hsl(var(--rise-gray-800)) 100%)",
