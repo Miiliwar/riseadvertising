@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { CTASection } from "@/components/sections/CTASection";
 import { cn } from "@/lib/utils";
 import { Eye, X, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
 // Import portfolio images (fallbacks)
 import brandingItems from "@/assets/portfolio/branding-items.jpg";
@@ -49,41 +50,29 @@ const fallbackPortfolioItems = [
 
 export default function PortfolioPage() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [items, setItems] = useState<PortfolioItem[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
 
-  useEffect(() => {
-    async function fetchItems() {
-      try {
-        const { data, error } = await supabase
-          .from("portfolio")
-          .select("*")
-          .eq("published", true)
-          .order("created_at", { ascending: false });
+  const { data: items = [], isLoading: loading } = useQuery({
+    queryKey: ["portfolio-items"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("portfolio")
+        .select("*")
+        .eq("published", true)
+        .order("created_at", { ascending: false });
 
-        if (error) throw error;
+      if (error) throw error;
 
-        if (data && data.length > 0) {
-          const transformedData = data.map(item => ({
-            ...item,
-            images: Array.isArray(item.images) ? item.images : [],
-            category: item.tags && item.tags.length > 0 ? item.tags[0] : "Other"
-          }));
-          setItems(transformedData as unknown as PortfolioItem[]);
-        } else {
-          setItems(fallbackPortfolioItems as unknown as PortfolioItem[]);
-        }
-      } catch (error) {
-        console.error("Error fetching portfolio items:", error);
-        setItems(fallbackPortfolioItems as PortfolioItem[]);
-      } finally {
-        setLoading(false);
+      if (data && data.length > 0) {
+        return data.map(item => ({
+          ...item,
+          images: Array.isArray(item.images) ? item.images : [],
+          category: item.tags && item.tags.length > 0 ? item.tags[0] : "Other"
+        })) as unknown as PortfolioItem[];
       }
-    }
-
-    fetchItems();
-  }, []);
+      return fallbackPortfolioItems as unknown as PortfolioItem[];
+    },
+  });
 
   const filteredItems = activeCategory === "All"
     ? items
