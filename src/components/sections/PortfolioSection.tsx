@@ -1,6 +1,7 @@
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowRight, Eye } from "lucide-react";
+import { motion, useAnimationControls } from "framer-motion";
+import { ArrowRight, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Import portfolio images
 import brandingItems from "@/assets/portfolio/branding-items.jpg";
@@ -64,6 +65,18 @@ const portfolioItems = [
 ];
 
 export function PortfolioSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [scrollX, setScrollX] = useState(0);
+  const controls = useAnimationControls();
+  const isDragging = useRef(false);
+  const marqueeRef = useRef<HTMLDivElement>(null);
+
+  const scrollBy = (direction: number) => {
+    if (!containerRef.current) return;
+    containerRef.current.scrollBy({ left: direction * 400, behavior: "smooth" });
+  };
+
   return (
     <section className="py-20 lg:py-28 overflow-hidden">
       <div className="page-container">
@@ -82,11 +95,35 @@ export function PortfolioSection() {
         </motion.div>
       </div>
 
-      {/* Marquee Row - pauses on hover via CSS */}
+      {/* Marquee Row with drag & nav buttons */}
       <div className="relative w-full group/marquee">
-        <div
-          className="flex gap-5 w-max animate-[marquee_48s_linear_infinite] group-hover/marquee:[animation-play-state:paused]"
+        {/* Navigation Arrows */}
+        <button
+          onClick={() => scrollBy(-1)}
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-border shadow-lg flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-colors opacity-0 group-hover/marquee:opacity-100"
+          aria-label="Scroll left"
         >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <button
+          onClick={() => scrollBy(1)}
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-border shadow-lg flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-colors opacity-0 group-hover/marquee:opacity-100"
+          aria-label="Scroll right"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
+
+        <div
+          ref={containerRef}
+          className="overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          <div
+            className={`flex gap-5 w-max ${!isPaused ? "animate-marquee" : ""}`}
+            style={{ animationPlayState: isPaused ? "paused" : "running" }}
+          >
           {[...portfolioItems, ...portfolioItems].map((item, index) => (
             <Link
               key={`${item.id}-${index}`}
@@ -119,6 +156,7 @@ export function PortfolioSection() {
               </div>
             </Link>
           ))}
+          </div>
         </div>
       </div>
 
