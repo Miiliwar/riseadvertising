@@ -82,12 +82,10 @@ export function PortfolioSection() {
         </motion.div>
       </div>
 
-      {/* Marquee Row */}
-      <div className="relative w-full">
-        <motion.div
-          className="flex gap-5 w-max"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: portfolioItems.length * 8, repeat: Infinity, ease: "linear" }}
+      {/* Marquee Row - pauses on hover via CSS */}
+      <div className="relative w-full group/marquee">
+        <div
+          className="flex gap-5 w-max animate-[marquee_48s_linear_infinite] group-hover/marquee:[animation-play-state:paused]"
         >
           {[...portfolioItems, ...portfolioItems].map((item, index) => (
             <Link
@@ -121,7 +119,7 @@ export function PortfolioSection() {
               </div>
             </Link>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {/* View All CTA */}
