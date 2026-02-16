@@ -56,11 +56,17 @@ export default function PortfolioPage() {
   useEffect(() => {
     async function fetchItems() {
       try {
-        const { data, error } = await supabase
+        const fetchPromise = supabase
           .from("portfolio")
           .select("*")
           .eq("published", true)
           .order("created_at", { ascending: false });
+
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Request timed out")), 15000)
+        );
+
+        const { data, error } = await Promise.race([fetchPromise, timeoutPromise]) as any;
 
         if (error) throw error;
 

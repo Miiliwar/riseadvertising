@@ -5,34 +5,7 @@ import type { Database } from './types';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-// Simple in-memory lock implementation to avoid Navigator Locks API issues
-const locks = new Map<string, Promise<any>>();
 
-const customLock = async <T>(
-  name: string,
-  acquireTimeout: number,
-  fn: () => Promise<T>
-): Promise<T> => {
-  const startTime = Date.now();
-
-  // Wait for existing lock if present
-  while (locks.has(name)) {
-    if (Date.now() - startTime > acquireTimeout) {
-      throw new Error(`Lock acquisition timed out for ${name}`);
-    }
-    await new Promise(resolve => setTimeout(resolve, 50));
-  }
-
-  // Create and store the lock promise
-  const lockPromise = fn();
-  locks.set(name, lockPromise);
-
-  try {
-    return await lockPromise;
-  } finally {
-    locks.delete(name);
-  }
-};
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
@@ -44,7 +17,6 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     autoRefreshToken: true,
     detectSessionInUrl: true,
     flowType: 'pkce',
-    lock: customLock,
   },
   global: {
     headers: {

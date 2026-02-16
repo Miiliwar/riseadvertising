@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Loader2, Info, Phone, Mail, Check, AlertCircle, Search, X } from "lucide-react";
@@ -35,63 +36,57 @@ interface ServiceCategory {
 export default function ServicesPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [services, setServices] = useState<Service[]>([]);
-  const [categories, setCategories] = useState<ServiceCategory[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
-
   // Get selected category from URL state
   const selectedCategory = (location.state as any)?.category || null;
 
-  async function fetchData() {
-    try {
-      setLoading(true);
-      setError(null);
+  const { data: categories = [], isLoading: categoriesLoading, error: categoriesError, refetch: refetchCategories } = useQuery({
+    queryKey: ["service_categories"],
+    queryFn: async () => {
+      console.log("Fetching categories...");
+      const { data, error } = await supabase
+        .from("service_categories")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: true });
 
-      // Fetch categories and services in parallel
-      console.log("Fetching services and categories from Supabase...");
-      const [categoriesRes, servicesRes] = await Promise.all([
-        supabase
-          .from("service_categories")
-          .select("*")
-          .eq("published", true)
-          .order("sort_order", { ascending: true }),
-        supabase
-          .from("services")
-          .select("*")
-          .eq("published", true)
-          .order("sort_order", { ascending: true })
-      ]);
-
-      if (categoriesRes.error) {
-        console.error("Categories fetch error:", categoriesRes.error);
-        throw categoriesRes.error;
+      if (error) {
+        console.error("Error fetching categories:", error);
+        throw error;
       }
-      if (servicesRes.error) {
-        console.error("Services fetch error:", servicesRes.error);
-        throw servicesRes.error;
+      return data as ServiceCategory[];
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: 3,
+  });
+
+  const { data: services = [], isLoading: servicesLoading, error: servicesError, refetch: refetchServices } = useQuery({
+    queryKey: ["services"],
+    queryFn: async () => {
+      console.log("Fetching services...");
+      const { data, error } = await supabase
+        .from("services")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: true });
+
+      if (error) {
+        console.error("Error fetching services:", error);
+        throw error;
       }
+      return data as Service[];
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: 3,
+  });
 
-      console.log("Successfully fetched data:", {
-        categoriesCount: categoriesRes.data?.length,
-        servicesCount: servicesRes.data?.length
-      });
+  const loading = categoriesLoading || servicesLoading;
+  const errorObj = categoriesError || servicesError;
+  const error = errorObj ? (errorObj as Error).message : null;
 
-      setCategories(categoriesRes.data || []);
-      setServices(servicesRes.data || []);
-    } catch (err: any) {
-      console.error("Detailed fetch error:", err);
-      setError(err.message || "Failed to load services. Please check your connection.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const refetchAll = () => {
+    refetchCategories();
+    refetchServices();
+  };
 
   // Get category image - use custom image or first product image
   const getCategoryImage = (category: ServiceCategory) => {
@@ -116,6 +111,9 @@ export default function ServicesPage() {
   const filteredProducts = selectedCategory
     ? services.filter(s => s.tags?.includes(selectedCategory))
     : [];
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
   // Search across all products
   const searchResults = searchQuery.trim()
@@ -234,7 +232,7 @@ export default function ServicesPage() {
                 {error}
               </p>
               <Button
-                onClick={() => fetchData()}
+                onClick={() => refetchAll()}
                 className="rounded-none font-bold uppercase h-12 px-8"
               >
                 Try Again
