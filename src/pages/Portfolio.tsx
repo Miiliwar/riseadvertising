@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { CTASection } from "@/components/sections/CTASection";
 import { cn } from "@/lib/utils";
 import { Eye, X, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
 // Import portfolio images (fallbacks)
 import brandingItems from "@/assets/portfolio/branding-items.jpg";
@@ -49,10 +50,9 @@ const fallbackPortfolioItems = [
 
 export default function PortfolioPage() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [items, setItems] = useState<PortfolioItem[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
 
+<<<<<<< HEAD
   useEffect(() => {
     async function fetchItems() {
       try {
@@ -69,27 +69,29 @@ export default function PortfolioPage() {
         const { data, error } = await Promise.race([fetchPromise, timeoutPromise]) as any;
 
         if (error) throw error;
+=======
+  const { data: items = [], isLoading: loading } = useQuery({
+    queryKey: ["portfolio-items"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("portfolio")
+        .select("*")
+        .eq("published", true)
+        .order("created_at", { ascending: false });
 
-        if (data && data.length > 0) {
-          const transformedData = data.map(item => ({
-            ...item,
-            images: Array.isArray(item.images) ? item.images : [],
-            category: item.tags && item.tags.length > 0 ? item.tags[0] : "Other"
-          }));
-          setItems(transformedData as unknown as PortfolioItem[]);
-        } else {
-          setItems(fallbackPortfolioItems as unknown as PortfolioItem[]);
-        }
-      } catch (error) {
-        console.error("Error fetching portfolio items:", error);
-        setItems(fallbackPortfolioItems as PortfolioItem[]);
-      } finally {
-        setLoading(false);
+      if (error) throw error;
+>>>>>>> 4c8265783166d7005e536a41bcb6ea8e8f4a4455
+
+      if (data && data.length > 0) {
+        return data.map(item => ({
+          ...item,
+          images: Array.isArray(item.images) ? item.images : [],
+          category: item.tags && item.tags.length > 0 ? item.tags[0] : "Other"
+        })) as unknown as PortfolioItem[];
       }
-    }
-
-    fetchItems();
-  }, []);
+      return fallbackPortfolioItems as unknown as PortfolioItem[];
+    },
+  });
 
   const filteredItems = activeCategory === "All"
     ? items
@@ -163,31 +165,25 @@ export default function PortfolioPage() {
                   onClick={() => setSelectedItem(item)}
                   className="portfolio-item group block w-full text-left aspect-[4/3] relative rounded-xl overflow-hidden"
                 >
-                  {/* Image */}
                   <img
                     src={item.images[0]}
                     alt={item.title}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-
-                  {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
-                  {/* Featured Badge */}
                   {item.featured && (
                     <div className="absolute top-4 left-4 px-3 py-1 bg-primary text-primary-foreground text-xs font-bold rounded-full">
                       Featured
                     </div>
                   )}
 
-                  {/* Content */}
                   <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
                     <div className="text-xs font-semibold text-primary mb-1">{item.category}</div>
                     <h3 className="text-lg font-bold mb-1">{item.title}</h3>
                     <p className="text-sm text-white/70">{item.client}</p>
                   </div>
 
-                  {/* Hover Icon */}
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-100 scale-50">
                     <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center">
                       <Eye className="h-6 w-6 text-primary-foreground" />
