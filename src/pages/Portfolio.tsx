@@ -52,24 +52,6 @@ export default function PortfolioPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
 
-<<<<<<< HEAD
-  useEffect(() => {
-    async function fetchItems() {
-      try {
-        const fetchPromise = supabase
-          .from("portfolio")
-          .select("*")
-          .eq("published", true)
-          .order("created_at", { ascending: false });
-
-        const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Request timed out")), 15000)
-        );
-
-        const { data, error } = await Promise.race([fetchPromise, timeoutPromise]) as any;
-
-        if (error) throw error;
-=======
   const { data: items = [], isLoading: loading } = useQuery({
     queryKey: ["portfolio-items"],
     queryFn: async () => {
@@ -80,7 +62,6 @@ export default function PortfolioPage() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
->>>>>>> 4c8265783166d7005e536a41bcb6ea8e8f4a4455
 
       if (data && data.length > 0) {
         return data.map(item => ({
